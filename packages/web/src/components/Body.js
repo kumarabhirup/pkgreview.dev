@@ -14,5 +14,6 @@ export default function MainUi({ children }) {
 }
 
 MainUi.propTypes = {
-  children: PropTypes.element.isRequired,
+  children: PropTypes.oneOfType([PropTypes.element, PropTypes.string])
+    .isRequired,
 }

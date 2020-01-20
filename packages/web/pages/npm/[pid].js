@@ -1,4 +1,5 @@
 import React from 'react'
+import npmApi from 'npm-api'
 import { useRouter } from 'next/router'
 
 import RegularPage from '../../src/components/RegularPage'

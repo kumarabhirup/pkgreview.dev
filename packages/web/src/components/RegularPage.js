@@ -33,13 +33,14 @@ export default function RegularPage({ children }) {
 
           <Footer className="block accent fixed">
             {meta.name} ‒ created by{' '}
-            <Link href="https://twitter.com/kumar_abhirup">
+            <Link href="//twitter.com/kumar_abhirup">
               <a
                 style={{
                   color: '#fff',
                   fontStyle: 'italic',
                   textDecoration: 'none',
                 }}
+                target="_blank"
               >
                 @kumar_abhirup
               </a>
@@ -52,5 +53,6 @@ export default function RegularPage({ children }) {
 }
 
 RegularPage.propTypes = {
-  children: PropTypes.element.isRequired,
+  children: PropTypes.oneOfType([PropTypes.element, PropTypes.string])
+    .isRequired,
 }
