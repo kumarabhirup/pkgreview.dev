@@ -1,0 +1,31 @@
+{
+  "name": "pkgreview",
+  "version": "1.0.0",
+  "private": true,
+  "workspaces": [
+    "packages/*"
+  ],
+  "scripts": {
+    "build-web": "(cd web && npm run build)",
+    "build": "lerna run build --parallel",
+    "build:watch": "lerna run build:watch --parallel # for watching typescript files",
+    "dev": "lerna run dev --parallel",
+    "start": "lerna run start --parallel",
+    "deploy:now": "now",
+    "lint": "lerna run lint --parallel",
+    "lint:fix": "lerna run lint:fix --parallel",
+    "test": "lerna run test --parallel",
+    "test:ci": "lerna run test:ci --parallel",
+    "postinstall": "lerna bootstrap"
+  },
+  "main": "index.js",
+  "repository": "git@github.com:iqubex-technologies/pkgreview.git",
+  "author": "Kumar Abhirup <kumarabhirup5@gmail.com> (http://kumar.now.sh)",
+  "license": "MIT",
+  "devDependencies": {
+    "lerna": "^3.16.4"
+  },
+  "engines": {
+    "node": "12.x"
+  }
+}

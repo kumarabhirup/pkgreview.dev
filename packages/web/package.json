@@ -1,0 +1,54 @@
+{
+  "name": "web",
+  "version": "1.0.0",
+  "main": "index.js",
+  "license": "MIT",
+  "scripts": {
+    "dev": "npm run gulp && next -p 3001",
+    "start": "npm run gulp && next start",
+    "build": "npm run gulp && next build",
+    "gulp": "gulp",
+    "gulp:watch": "gulp watch",
+    "lint": "eslint src/** pages/**",
+    "lint:fix": "eslint src/** pages/** --fix",
+    "test": "NODE_ENV=test jest --passWithNoTests --watch",
+    "test:ci": "NODE_ENV=test jest --passWithNoTests"
+  },
+  "dependencies": {
+    "@zeit/next-sass": "^1.0.1",
+    "dotenv": "^8.1.0",
+    "next": "^9.0.5",
+    "rc-upload": "^2.9.4",
+    "react": "^16.9.0",
+    "react-dom": "^16.9.0",
+    "react-scroll": "^1.7.14",
+    "react-spring": "^8.0.27",
+    "stein-js-client": "0.0.2",
+    "styled-components": "^4.3.2"
+  },
+  "devDependencies": {
+    "autoprefixer": "^9.6.1",
+    "babel-eslint": "^10.0.3",
+    "cssnano": "^4.1.10",
+    "eslint": "^6.3.0",
+    "eslint-config-airbnb": "^18.0.1",
+    "eslint-config-prettier": "^6.2.0",
+    "eslint-config-wesbos": "0.0.19",
+    "eslint-plugin-html": "^6.0.0",
+    "eslint-plugin-import": "^2.16.0",
+    "eslint-plugin-jsx-a11y": "^6.2.1",
+    "eslint-plugin-prettier": "^3.0.1",
+    "eslint-plugin-react": "^7.12.4",
+    "eslint-plugin-react-hooks": "^2.0.1",
+    "gulp": "^4.0.2",
+    "gulp-postcss": "^8.0.0",
+    "gulp-sass": "^4.0.2",
+    "gulp-sourcemaps": "^2.6.5",
+    "jest": "^24.9.0",
+    "node-sass": "^4.12.0",
+    "prettier": "^1.16.4"
+  },
+  "engines": {
+    "node": "12.x"
+  }
+}

@@ -1,0 +1,34 @@
+{
+  "version": 2,
+  "name": "pkgreview",
+  "public": true,
+  "alias": ["pkgreview"],
+  "scope": "iqubex-technologies",
+  "build": {
+    "env": {
+      "PR_GA_TRACKING_ID": "@prgatrackingid"
+    }
+  },
+  "env": {},
+  "builds": [
+    {
+      "src": "packages/web/package.json",
+      "use": "@now/next"
+    },
+    {
+      "src": "packages/backend/src/index.ts",
+      "use": "@now/node-server"
+    }
+  ],
+  "routes": [
+    {
+      "src": "/api/(.*)",
+      "dest": "packages/backend/src/index.ts"
+    },
+    {
+      "src": "(.*)",
+      "dest": "packages/web$1",
+      "continue": true
+    }
+  ]
+}
