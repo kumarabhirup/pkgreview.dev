@@ -30,9 +30,11 @@ class MyDocument extends Document {
       <html lang="en">
         <Head>
           {this.props.styleTags}
+
           <link
             rel="stylesheet"
-            href="https://unpkg.com/blocks.css/dist/blocks.min.css"
+            href="https://cdn.jsdelivr.net/gh/thesephist/blocks.css/src/blocks.css"
+            type="text/css"
           />
         </Head>
         <body style={{ padding: 0, margin: 0 }}>

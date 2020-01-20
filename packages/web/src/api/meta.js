@@ -1,3 +1,3 @@
 export const meta = {
-  title: 'Bulk Mail UI',
+  title: 'pkgreview.dev',
 }

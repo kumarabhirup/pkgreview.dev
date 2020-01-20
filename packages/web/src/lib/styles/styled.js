@@ -31,6 +31,7 @@ export const Container = styled.main`
 
 export const Header = styled.header`
   line-height: 20px;
+  display: inline-block;
 
   a {
     color: #ffffff;

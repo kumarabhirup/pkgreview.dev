@@ -20,12 +20,14 @@ export default function HomePage() {
         <Container>
           <Link href="/">
             <Header className="block accent">
-              <h1>💌 AdventMail</h1>
+              <h1>pkgreview.dev</h1>
             </Header>
           </Link>
+
           <Spacing />
           <AnimatedMailUi />
           <Spacing />
+
           <Footer className="block accent fixed">This is the footer.</Footer>
         </Container>
       </animated.div>
