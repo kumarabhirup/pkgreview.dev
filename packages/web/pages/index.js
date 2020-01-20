@@ -6,7 +6,7 @@ import { useSpring, animated } from 'react-spring'
 import { meta } from '../src/api/meta'
 import { Container, Header, Footer, Spacing } from '../src/lib/styles/styled'
 import { fadeInWithRotation } from '../src/lib/reactSpringAnimations'
-import AnimatedMailUi from '../src/components/AnimatedMailUi'
+import MainUi from '../src/components/Body'
 
 export default function HomePage() {
   const fadeIn = useSpring(fadeInWithRotation)
@@ -25,10 +25,31 @@ export default function HomePage() {
           </Link>
 
           <Spacing />
-          <AnimatedMailUi />
+
+          <MainUi>
+            See{' '}
+            <code className="block accent fixed" style={{ display: 'inline' }}>
+              pkgreview.dev/npm/package-name
+            </code>{' '}
+            for reviews. Webpage still under development.
+          </MainUi>
+
           <Spacing />
 
-          <Footer className="block accent fixed">This is the footer.</Footer>
+          <Footer className="block accent fixed">
+            pkgreview.dev ‒ created by{' '}
+            <Link href="https://twitter.com/kumar_abhirup">
+              <a
+                style={{
+                  color: '#fff',
+                  fontStyle: 'italic',
+                  textDecoration: 'none',
+                }}
+              >
+                @kumar_abhirup
+              </a>
+            </Link>
+          </Footer>
         </Container>
       </animated.div>
     </>

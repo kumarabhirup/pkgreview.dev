@@ -1,8 +1,8 @@
 import styled from 'styled-components'
 
 export const Container = styled.main`
-  font-family: 'SF Pro Text', 'SF Pro Icons', 'Helvetica Neue', 'Helvetica',
-    'Arial', sans-serif;
+  font-family: 'dankmono', 'SF Pro Text', 'SF Pro Icons', 'Helvetica Neue',
+    'Helvetica', 'Arial', sans-serif;
   margin: 0 auto;
   padding: 0px;
   font-size: 16px;
