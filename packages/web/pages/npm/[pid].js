@@ -4,6 +4,7 @@ import { useRouter } from 'next/router'
 import RegularPage from '../../src/components/RegularPage'
 import PackageInfoBlock from '../../src/components/PackageInfoBlock'
 import PackageReviewsBlock from '../../src/components/PackageReviewsBlock'
+import ComposeReviewBlock from '../../src/components/ComposeReviewBlock'
 import { Spacing } from '../../src/lib/styles/styled'
 
 export default function Package() {
@@ -14,6 +15,10 @@ export default function Package() {
     <RegularPage>
       <PackageInfoBlock packageSlug={`npm/${pid}`} />
       <PackageReviewsBlock packageSlug={`npm/${pid}`} />
+
+      <Spacing />
+
+      <ComposeReviewBlock packageSlug={`npm/${pid}`} />
     </RegularPage>
   )
 }
