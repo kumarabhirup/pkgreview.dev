@@ -57,41 +57,49 @@ export const Footer = styled.footer``
 
 export const FlexContainer = styled.div`
   display: flex;
+  flex: 1 1;
   /* border: 1px solid red; */
+
+  h1 {
+    line-height: 50px;
+  }
+
+  h3 {
+    display: inline;
+    border-bottom: 2px solid #000;
+  }
+
+  p {
+    text-align: justify;
+    margin-top: 5px;
+  }
 
   @media (orientation: portrait) {
     flex-direction: column-reverse;
 
     & > * {
-      /* border: 1px solid red; */
+      border: 1px solid red;
       margin: 0px auto;
       padding: 0px;
       width: 100%;
     }
-
-    h1 {
-      text-align: center;
-    }
   }
 
   @media (orientation: landscape) {
-    & > * {
-      /* border: 1px solid red; */
+    & * {
+      /* border: 0.1px solid red; */
       margin: 0px auto;
       padding: 0px;
-      line-height: 50px;
     }
 
     & > :first-child {
-      width: 60%;
+      width: ${({ firstWidth }) => firstWidth || '60%'};
     }
 
     & > :last-child {
-      width: 40%;
+      width: ${({ lastWidth }) => lastWidth || '40%'};
 
-      .dv-star-rating-star {
-        font-size: 60px;
-      }
+      ${({ lastTextAlign }) => (lastTextAlign ? 'text-align: end;' : null)}
     }
   }
 `
