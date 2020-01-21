@@ -4,7 +4,6 @@ import Link from 'next/link'
 import { useSpring, animated } from 'react-spring'
 import { PropTypes } from 'prop-types'
 
-import MainUi from './Body'
 import { meta } from '../api/meta'
 import { Container, Header, Footer, Spacing } from '../lib/styles/styled'
 import { fadeInWithRotation } from '../lib/reactSpringAnimations'
@@ -27,7 +26,7 @@ export default function RegularPage({ children }) {
 
           <Spacing />
 
-          <MainUi>{children}</MainUi>
+          {children}
 
           <Spacing />
 
