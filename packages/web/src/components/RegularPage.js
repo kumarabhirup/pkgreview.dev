@@ -7,6 +7,7 @@ import { PropTypes } from 'prop-types'
 import { meta } from '../api/meta'
 import { Container, Header, Footer, Spacing } from '../lib/styles/styled'
 import { fadeInWithRotation } from '../lib/reactSpringAnimations'
+import SearchBox from './SearchBox'
 
 export default function RegularPage({ children }) {
   const fadeIn = useSpring(fadeInWithRotation)
@@ -23,6 +24,16 @@ export default function RegularPage({ children }) {
               <h1>{meta.name}</h1>
             </Header>
           </Link>
+
+          <p>
+            <Link href="/">
+              <a style={{ color: '#000', fontSize: '20px' }}>
+                Sign In with GitHub 😻 to Post and Moderate reviews
+              </a>
+            </Link>
+          </p>
+
+          <SearchBox />
 
           <Spacing />
 

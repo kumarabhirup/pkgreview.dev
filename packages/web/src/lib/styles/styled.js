@@ -113,3 +113,17 @@ export const ReviewTextbox = styled.textarea`
   border-radius: 10px;
   padding: 20px 0px;
 `
+
+export const SearchBoxStyledComponent = styled.div`
+  display: block;
+  width: 98%;
+
+  input {
+    width: 1100px;
+    max-width: 97%;
+    padding: 10px;
+    font-size: 20px;
+    font-family: 'dankmono';
+    border: none;
+  }
+`

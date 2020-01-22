@@ -29,6 +29,12 @@ export default function ComposeReviewBlock({ packageSlug }) {
         }}
         type="submit"
       >
+        <img
+          src="https://react.semantic-ui.com/images/avatar/small/joe.jpg"
+          alt="Profile"
+          style={{ borderRadius: '100%' }}
+        />
+        <br />
         Post Your Review
       </button>
     </Block>
