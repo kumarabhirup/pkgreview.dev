@@ -26,11 +26,11 @@ export default function PackageInfoBlock({ packageSlug }) {
           </p>
 
           <p>
-            <h3>Version</h3> v2.0.0
+            <h3>Version</h3> v16.12.0
           </p>
 
           <p>
-            <h3>Author</h3> Kumar Abhirup
+            <h3>Author</h3> Facebook
           </p>
 
           <p>

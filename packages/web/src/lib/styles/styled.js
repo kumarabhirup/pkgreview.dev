@@ -101,3 +101,15 @@ export const FlexContainer = styled.div`
     }
   }
 `
+
+export const ReviewTextbox = styled.textarea`
+  display: block;
+  width: 100%;
+  resize: vertical;
+  font-family: 'dankmono';
+  font-size: 25px;
+  border: none;
+  border: 1px solid rgba(0, 0, 0, 0.5);
+  border-radius: 10px;
+  padding: 20px 0px;
+`

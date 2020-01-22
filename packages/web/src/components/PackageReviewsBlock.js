@@ -11,14 +11,14 @@ export default function PackageReviewsBlock({ packageSlug }) {
       <section className="reviewsBlock">
         <h1>Reviews</h1>
 
-        {[1, 2].map(review => (
+        {[1].map(review => (
           <article
             className="block accent"
             style={{ padding: '10px', marginTop: '40px' }}
           >
             <FlexContainer
-              firstWidth="40%"
-              lastWidth="60%"
+              firstWidth="35%"
+              lastWidth="65%"
               style={{ textAlign: 'start' }}
             >
               <div
@@ -47,19 +47,8 @@ export default function PackageReviewsBlock({ packageSlug }) {
 
               <div style={{ padding: '20px' }}>
                 <p style={{ fontSize: '20px' }}>
-                  It is a long established fact that a reader will be distracted
-                  by the readable content of a page when looking at its layout.
-                  It is a long established fact that a reader will be distracted
-                  by the reIt is a long established fact that a reader will be
-                  distracted by the reIt is a long established fact that a
-                  reader will be distracted by the reIt is a long established
-                  fact that a reader will be distracted by the reIt is a long
-                  established fact that a reader will be distracted by the reIt
-                  is a long established fact that a reader will be distracted by
-                  the reIt is a long established fact that a reader will be
-                  distracted by the reIt is a long established fact that a
-                  reader will be distracted by the reIt is a long established
-                  fact that a reader will be distracted by the re
+                  This is a very small demo review. This is how things will
+                  kinda look like.
                 </p>
               </div>
             </FlexContainer>
