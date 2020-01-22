@@ -3,6 +3,7 @@
   "name": "pkgreview",
   "public": true,
   "alias": ["pkgreview"],
+  "scope": "iqubex-technologies",
   "build": {
     "env": {
       "PR_GA_TRACKING_ID": "@prgatrackingid"
