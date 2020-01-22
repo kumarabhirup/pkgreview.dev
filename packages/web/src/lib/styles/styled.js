@@ -120,7 +120,7 @@ export const SearchBoxStyledComponent = styled.div`
 
   input {
     width: 1100px;
-    max-width: 97%;
+    max-width: 95%;
     padding: 10px;
     font-size: 20px;
     font-family: 'dankmono';

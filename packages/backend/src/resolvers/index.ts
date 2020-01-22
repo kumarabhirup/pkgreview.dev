@@ -1,6 +1,5 @@
 // Mutations
 import exampleMutation from './mutations/exampleMutation'
-import sendMails from './mutations/sendMails'
 
 // Queries
 import exampleQuery from './queries/exampleQuery'
@@ -15,7 +14,6 @@ export default {
   },
   Mutation: {
     exampleMutation,
-    sendMails,
   },
   Subscription: {
     newMail,
