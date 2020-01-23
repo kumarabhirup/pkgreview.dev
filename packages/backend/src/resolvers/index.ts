@@ -1,5 +1,6 @@
 // Mutations
 import exampleMutation from './mutations/exampleMutation'
+import loginMutation from './mutations/loginMutation'
 
 // Queries
 import exampleQuery from './queries/exampleQuery'
@@ -14,6 +15,7 @@ export default {
   },
   Mutation: {
     exampleMutation,
+    loginMutation,
   },
   Subscription: {
     newMail,

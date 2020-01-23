@@ -5,9 +5,30 @@ const typeDefs = `
     channelHash: String!
   }
 
+  type User {
+    _id: Int!
+    name: String!
+    email: String!
+    reviews: [Review]
+  }
+
+  type Review {
+    _id: Int!
+    author: User!
+    rating: Rating!
+    review: String!
+    package: String!
+  }
+
+  type Rating {
+    score: Int!
+    total: Int!
+  }
+
   # Mutations
   type Mutation {
     exampleMutation: String
+    loginMutation: User
   }
 
   # Queries

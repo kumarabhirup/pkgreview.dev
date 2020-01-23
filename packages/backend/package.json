@@ -13,6 +13,7 @@
     "test": "echo \"No tests specified\""
   },
   "devDependencies": {
+    "@types/mongoose": "^5.5.43",
     "@types/node": "^12.7.3",
     "@types/node-cron": "^2.0.2",
     "@types/nodemailer": "^6.4.0",

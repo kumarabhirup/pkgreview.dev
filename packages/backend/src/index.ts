@@ -5,6 +5,7 @@ import * as bodyParser from 'body-parser'
 import typeDefs from './utils/schema'
 import resolvers from './resolvers'
 import pubsub from './utils/pubsub'
+import db from './utils/database'
 
 const server: GraphQLServer = new GraphQLServer({
   typeDefs,
@@ -15,6 +16,7 @@ const server: GraphQLServer = new GraphQLServer({
   context: (request): object => ({
     ...request,
     pubsub,
+    db,
   }),
 })
 
