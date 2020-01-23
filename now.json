@@ -6,13 +6,16 @@
   "scope": "iqubex-technologies",
   "build": {
     "env": {
-      "PR_GA_TRACKING_ID": "@prgatrackingid"
+      "PR_GA_TRACKING_ID": "@prgatrackingid",
+      "PR_GITHUB_CLIENT_ID": "@prgithubclientid"
     }
   },
   "env": {
     "PR_MONGODB_USERNAME": "@prmongodbusername",
     "PR_MONGODB_PASSWORD": "@prmongodbpassword",
-    "PR_MONGODB_CLUSTER": "@prmongodbcluster"
+    "PR_MONGODB_CLUSTER": "@prmongodbcluster",
+    "PR_GITHUB_CLIENT_SECRET": "@prgithubclientsecret",
+    "PR_GITHUB_CLIENT_ID": "@prgithubclientid"
   },
   "builds": [
     {

@@ -28,7 +28,7 @@ export default function RegularPage({ children }) {
 
           <p>
             <GitHubLogin
-              clientId="ad1b5b85c145e4227664"
+              clientId={process.env.PR_GITHUB_CLIENT_ID}
               className="loginText"
               buttonText="Sign In with GitHub 😻 to Post and Moderate reviews"
               redirectUri=""

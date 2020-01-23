@@ -9,6 +9,7 @@ const typeDefs = `
     _id: Int!
     name: String!
     email: String!
+    githubUsername: String!
     reviews: [Review]
   }
 
@@ -28,7 +29,7 @@ const typeDefs = `
   # Mutations
   type Mutation {
     exampleMutation: String
-    loginMutation: User
+    loginMutation(codeForToken: String!): User
   }
 
   # Queries
