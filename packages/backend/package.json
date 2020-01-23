@@ -40,6 +40,7 @@
     "body-parser": "^1.19.0",
     "bulk-mail-cli": "^2.0.6",
     "cookie-parser": "^1.4.4",
+    "cors": "^2.8.5",
     "dotenv": "^8.1.0",
     "graphql-yoga": "^1.18.3",
     "jsonwebtoken": "^8.5.1",

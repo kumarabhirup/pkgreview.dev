@@ -2,13 +2,14 @@ import React from 'react'
 import Head from 'next/head'
 import Link from 'next/link'
 import { useSpring, animated } from 'react-spring'
-import { PropTypes } from 'prop-types'
-import GitHubLogin from 'react-github-login'
+import PropTypes from 'prop-types'
 
 import { meta } from '../api/meta'
 import { Container, Header, Footer, Spacing } from '../lib/styles/styled'
 import { fadeInWithRotation } from '../lib/reactSpringAnimations'
 import SearchBox from './SearchBox'
+import ProvideUser from './ProvideUser'
+import Login from './Login'
 
 export default function RegularPage({ children }) {
   const fadeIn = useSpring(fadeInWithRotation)
@@ -27,17 +28,17 @@ export default function RegularPage({ children }) {
           </Link>
 
           <p>
-            <GitHubLogin
-              clientId={process.env.PR_GITHUB_CLIENT_ID}
-              className="loginText"
-              buttonText="Sign In with GitHub 😻 to Post and Moderate reviews"
-              redirectUri=""
-              scope="read:user read:repo"
-              onSuccess={onSucces => {
-                console.log(onSucces)
+            <ProvideUser>
+              {({ data, error, loading }) => {
+                if (error) return `There's an error.`
+
+                if (loading) return `Loading`
+
+                if (data._id) return data.name
+
+                return <Login />
               }}
-              onFailure={onFailure => console.log(onFailure)}
-            />
+            </ProvideUser>
           </p>
 
           <SearchBox />

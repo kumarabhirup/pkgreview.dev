@@ -13,7 +13,6 @@ const httpLink = new HttpLink({
   uri: process.env.PR_API_ENDPOINT
     ? `${process.env.PR_API_ENDPOINT}/api/graphql`
     : `/api/graphql`,
-  credentials: 'include',
 })
 const cache = new InMemoryCache()
 

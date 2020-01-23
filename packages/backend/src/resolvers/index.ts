@@ -4,6 +4,7 @@ import loginMutation from './mutations/loginMutation'
 
 // Queries
 import exampleQuery from './queries/exampleQuery'
+import getCurrentUserQuery from './queries/getCurrentUserQuery'
 
 // Subscriptions
 import newMail from './subscriptions/newMail'
@@ -12,6 +13,7 @@ import newMail from './subscriptions/newMail'
 export default {
   Query: {
     exampleQuery,
+    getCurrentUser: getCurrentUserQuery,
   },
   Mutation: {
     exampleMutation,

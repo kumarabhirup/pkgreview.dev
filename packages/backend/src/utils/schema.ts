@@ -40,6 +40,7 @@ const typeDefs = `
   # Queries
   type Query {
     exampleQuery: String
+    getCurrentUser: User
   }
 
   # Subscriptions

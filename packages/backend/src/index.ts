@@ -1,3 +1,5 @@
+/* eslint-disable @typescript-eslint/ban-ts-ignore */
+
 import './utils/env'
 import { GraphQLServer } from 'graphql-yoga'
 import * as cookieParser from 'cookie-parser'
@@ -60,7 +62,10 @@ server.express.use(async (req, res, next) => {
   }
 
   // @ts-ignore
-  const user = await userModel.findById(req.userId).select('id name email githubUsername')
+  const user = await userModel
+    // @ts-ignore
+    .findById(req.userId)
+    .select('id name email githubUsername')
 
   // @ts-ignore
   req.user = user
@@ -75,7 +80,6 @@ const PORT = 4000
 server.start(
   {
     endpoint: '/api/graphql',
-    cacheControl: false,
     port: PORT,
   },
   details => console.log(`GraphQL Server is running on PORT ${details.port}`)
