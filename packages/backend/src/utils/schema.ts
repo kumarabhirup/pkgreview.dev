@@ -6,7 +6,7 @@ const typeDefs = `
   }
 
   type User {
-    _id: Int!
+    _id: String!
     name: String!
     email: String!
     githubUsername: String!
@@ -14,7 +14,7 @@ const typeDefs = `
   }
 
   type Review {
-    _id: Int!
+    _id: String!
     author: User!
     rating: Rating!
     review: String!

@@ -2,14 +2,18 @@
 
 import '../../utils/env'
 import * as mongoose from 'mongoose'
+import * as jwt from 'jsonwebtoken'
 import axios from 'axios'
 
 import userModel from '../../models/User'
+import { Context, ContextParameters } from 'graphql-yoga/dist/types'
+
+type Response = ContextParameters["response"]
 
 const loginMutation = async (
   parent,
   { codeForToken }: { codeForToken: string },
-  { db }: { db: mongoose.Connection },
+  { db, response }: { db: mongoose.Connection, response: Response },
   info
 ): Promise<any> => {
   let user
@@ -49,7 +53,14 @@ const loginMutation = async (
     .insertMany([{ name, email, githubUsername: login }])
     .then(data => data[0])
 
-  return saveUser
+  const token = jwt.sign({ userId: saveUser._id.toString() }, process.env.PR_JWT_SECRET)
+  
+  response.cookie('pkgreviewToken', token, {
+      httpOnly: true,
+      maxAge: 1000 * 60 * 60 * 24 * 7
+  })
+
+  return {...saveUser.toObject(), _id: saveUser._id.toString()}
 }
 
 export default loginMutation
