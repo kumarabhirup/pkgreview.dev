@@ -30,7 +30,7 @@
       "dest": "packages/backend/src/index.ts"
     },
     {
-      "src": "(.*)",
+      "sr c": "(.*)",
       "dest": "packages/web$1",
       "continue": true
     }
