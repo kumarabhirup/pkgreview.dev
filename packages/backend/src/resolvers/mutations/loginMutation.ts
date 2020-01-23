@@ -5,7 +5,7 @@ import * as mongoose from 'mongoose'
 import * as jwt from 'jsonwebtoken'
 import axios from 'axios'
 
-import { Context, ContextParameters } from 'graphql-yoga/dist/types'
+import { ContextParameters } from 'graphql-yoga/dist/types'
 import userModel from '../../models/User'
 
 type Response = ContextParameters['response']
@@ -15,7 +15,7 @@ const loginMutation = async (
   { codeForToken }: { codeForToken: string },
   { db, response }: { db: mongoose.Connection; response: Response },
   info
-): Promise<any> => {
+): Promise<object> => {
   let user
 
   try {
@@ -56,8 +56,11 @@ const loginMutation = async (
 
   let mutateUser
 
-  if (isUserAlreadySignedIn) {
-    // Save the User to the Database
+  if (await isUserAlreadySignedIn) {
+    mutateUser = await userModel
+      .findOneAndUpdate({ githubId: id }, { updatedAt: time })
+      .exec()
+  } else {
     mutateUser = await userModel
       .insertMany([
         {
@@ -70,15 +73,14 @@ const loginMutation = async (
         },
       ])
       .then(data => data[0])
-  } else {
-    mutateUser = await userModel.findOneAndUpdate(
-      { githubId: id },
-      { updatedAt: time }
-    )
   }
 
+  const refreshedUserInfo = await userModel
+    .findById(mutateUser?._id?.toString())
+    .then(data => data.toObject())
+
   const token = jwt.sign(
-    { userId: mutateUser._id.toString() },
+    { userId: refreshedUserInfo?._id?.toString() },
     process.env.PR_JWT_SECRET
   )
 
@@ -87,7 +89,7 @@ const loginMutation = async (
     maxAge: 1000 * 60 * 60 * 24 * 7,
   })
 
-  return { ...mutateUser.toObject(), _id: mutateUser._id.toString() }
+  return { ...refreshedUserInfo, _id: refreshedUserInfo?._id?.toString() }
 }
 
 export default loginMutation
