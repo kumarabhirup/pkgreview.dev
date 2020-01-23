@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import React from 'react'
 import Head from 'next/head'
 import Link from 'next/link'
 import { useSpring, animated } from 'react-spring'
@@ -10,6 +10,7 @@ import { fadeInWithRotation } from '../lib/reactSpringAnimations'
 import SearchBox from './SearchBox'
 import ProvideUser from './ProvideUser'
 import Login from './Login'
+import SignOut from './SignOut'
 
 export default function RegularPage({ children }) {
   const fadeIn = useSpring(fadeInWithRotation)
@@ -34,7 +35,13 @@ export default function RegularPage({ children }) {
 
                 if (loading) return `Loading`
 
-                if (data?.getCurrentUser?._id) return data.getCurrentUser.name
+                if (data?.getCurrentUser?._id)
+                  return (
+                    <>
+                      <SignOut>Sign Out</SignOut>
+                      {data.getCurrentUser.name}
+                    </>
+                  )
 
                 return <Login />
               }}
