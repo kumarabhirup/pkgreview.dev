@@ -11,6 +11,7 @@ const typeDefs = `
     email: String!
     githubUsername: String!
     githubId: Int!
+    token: String!
     reviews: [Review]
     createdAt: String!
     updatedAt: String!
@@ -40,7 +41,7 @@ const typeDefs = `
   # Queries
   type Query {
     exampleQuery: String
-    getCurrentUser: User
+    getCurrentUser(token: String): User
   }
 
   # Subscriptions

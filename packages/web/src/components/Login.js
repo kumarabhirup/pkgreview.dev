@@ -2,8 +2,9 @@ import React, { useState } from 'react'
 import GitHubLogin from 'react-github-login'
 import { useMutation } from 'react-apollo'
 import gql from 'graphql-tag'
+import { useRouter } from 'next/router'
 
-import { CURRENT_USER_QUERY } from './ProvideUser'
+import cookies from '../lib/cookies'
 
 const SIGNIN_MUTATION = gql`
   mutation SIGNIN_MUTATION($codeForToken: String!) {
@@ -11,6 +12,7 @@ const SIGNIN_MUTATION = gql`
       _id
       name
       email
+      token
       githubUsername
       createdAt
       updatedAt
@@ -20,16 +22,15 @@ const SIGNIN_MUTATION = gql`
 
 export default function Login() {
   const [codeForToken, setCodeForToken] = useState(null)
+  const [userToken, setUserToken] = useState(null)
 
-  const [signInMutation, { loading, data, error }] = useMutation(
-    SIGNIN_MUTATION,
-    {
-      refetchQueries: [{ query: CURRENT_USER_QUERY }],
-      variables: {
-        codeForToken,
-      },
-    }
-  )
+  const router = useRouter()
+
+  const [signInMutation, mutationData] = useMutation(SIGNIN_MUTATION, {
+    variables: {
+      codeForToken,
+    },
+  })
 
   return (
     <GitHubLogin
@@ -41,7 +42,18 @@ export default function Login() {
       onSuccess={async ({ code }) => {
         await setCodeForToken(code)
 
-        signInMutation()
+        const mutation = await signInMutation()
+
+        if (mutation.data.loginMutation.token) {
+          setUserToken(mutation.data.loginMutation.token)
+
+          cookies.set('pkgReviewToken', mutation.data.loginMutation.token, {
+            path: '/',
+            maxAge: 1000 * 60 * 60 * 24 * 7,
+          })
+
+          router.reload()
+        }
       }}
       onFailure={() => {
         // Fail Silently, Gracefully.

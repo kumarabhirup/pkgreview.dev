@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState, useEffect } from 'react'
 import Head from 'next/head'
 import Link from 'next/link'
 import { useSpring, animated } from 'react-spring'
@@ -34,7 +34,7 @@ export default function RegularPage({ children }) {
 
                 if (loading) return `Loading`
 
-                if (data._id) return data.name
+                if (data?.getCurrentUser?._id) return data.getCurrentUser.name
 
                 return <Login />
               }}
