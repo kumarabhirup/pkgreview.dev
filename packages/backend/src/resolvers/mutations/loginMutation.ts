@@ -5,15 +5,15 @@ import * as mongoose from 'mongoose'
 import * as jwt from 'jsonwebtoken'
 import axios from 'axios'
 
-import userModel from '../../models/User'
 import { Context, ContextParameters } from 'graphql-yoga/dist/types'
+import userModel from '../../models/User'
 
-type Response = ContextParameters["response"]
+type Response = ContextParameters['response']
 
 const loginMutation = async (
   parent,
   { codeForToken }: { codeForToken: string },
-  { db, response }: { db: mongoose.Connection, response: Response },
+  { db, response }: { db: mongoose.Connection; response: Response },
   info
 ): Promise<any> => {
   let user
@@ -41,6 +41,7 @@ const loginMutation = async (
   }
 
   const {
+    id,
     email,
     name,
 
@@ -48,19 +49,45 @@ const loginMutation = async (
     login,
   } = user
 
-  // Save the User to the Database
-  const saveUser = await userModel
-    .insertMany([{ name, email, githubUsername: login }])
-    .then(data => data[0])
+  // Check if user already exists, if yes, just generate the token...
+  const isUserAlreadySignedIn = await userModel.findOne({ githubId: id })
 
-  const token = jwt.sign({ userId: saveUser._id.toString() }, process.env.PR_JWT_SECRET)
-  
+  const time = new Date().toISOString()
+
+  let mutateUser
+
+  if (isUserAlreadySignedIn) {
+    // Save the User to the Database
+    mutateUser = await userModel
+      .insertMany([
+        {
+          name,
+          email,
+          githubUsername: login,
+          githubId: id,
+          createdAt: time,
+          updatedAt: time,
+        },
+      ])
+      .then(data => data[0])
+  } else {
+    mutateUser = await userModel.findOneAndUpdate(
+      { githubId: id },
+      { updatedAt: time }
+    )
+  }
+
+  const token = jwt.sign(
+    { userId: mutateUser._id.toString() },
+    process.env.PR_JWT_SECRET
+  )
+
   response.cookie('pkgreviewToken', token, {
-      httpOnly: true,
-      maxAge: 1000 * 60 * 60 * 24 * 7
+    httpOnly: true,
+    maxAge: 1000 * 60 * 60 * 24 * 7,
   })
 
-  return {...saveUser.toObject(), _id: saveUser._id.toString()}
+  return { ...mutateUser.toObject(), _id: mutateUser._id.toString() }
 }
 
 export default loginMutation

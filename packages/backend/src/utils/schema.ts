@@ -10,7 +10,10 @@ const typeDefs = `
     name: String!
     email: String!
     githubUsername: String!
+    githubId: Int!
     reviews: [Review]
+    createdAt: String!
+    updatedAt: String!
   }
 
   type Review {
@@ -19,6 +22,8 @@ const typeDefs = `
     rating: Rating!
     review: String!
     package: String!
+    createdAt: String!
+    updatedAt: String!
   }
 
   type Rating {

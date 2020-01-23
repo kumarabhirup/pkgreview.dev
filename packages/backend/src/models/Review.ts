@@ -14,6 +14,8 @@ export const reviewSchema = new mongoose.Schema({
   },
   review: { type: String, required: true, trim: true },
   package: { type: String, required: true, trim: true },
+  createdAt: { type: String, required: true, trim: true },
+  updatedAt: { type: String, required: true, trim: true },
 })
 
 const reviewModel = database.model('Review', reviewSchema)
