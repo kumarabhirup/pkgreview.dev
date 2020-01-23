@@ -6,6 +6,7 @@ module.exports = withSass({
   env: {
     PR_GA_TRACKING_ID: process.env.PR_GA_TRACKING_ID,
     PR_GITHUB_CLIENT_ID: process.env.PR_GITHUB_CLIENT_ID,
+    PR_API_ENDPOINT: process.env.PR_API_ENDPOINT,
   },
   cssModules: true,
   webpack: (config, { isServer }) => {
