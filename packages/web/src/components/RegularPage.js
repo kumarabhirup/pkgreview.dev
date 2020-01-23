@@ -3,6 +3,7 @@ import Head from 'next/head'
 import Link from 'next/link'
 import { useSpring, animated } from 'react-spring'
 import { PropTypes } from 'prop-types'
+import GitHubLogin from 'react-github-login'
 
 import { meta } from '../api/meta'
 import { Container, Header, Footer, Spacing } from '../lib/styles/styled'
@@ -26,11 +27,17 @@ export default function RegularPage({ children }) {
           </Link>
 
           <p>
-            <Link href="/">
-              <a style={{ color: '#000', fontSize: '20px' }}>
-                Sign In with GitHub 😻 to Post and Moderate reviews
-              </a>
-            </Link>
+            <GitHubLogin
+              clientId="ad1b5b85c145e4227664"
+              className="loginText"
+              buttonText="Sign In with GitHub 😻 to Post and Moderate reviews"
+              redirectUri=""
+              scope="read:user read:repo"
+              onSuccess={onSucces => {
+                console.log(onSucces)
+              }}
+              onFailure={onFailure => console.log(onFailure)}
+            />
           </p>
 
           <SearchBox />

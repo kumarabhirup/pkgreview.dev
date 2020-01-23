@@ -27,6 +27,16 @@ export const Container = styled.main`
   a.nextApp:hover {
     border-bottom: 1px solid #0076ff;
   }
+
+  .loginText {
+    color: #000;
+    font-family: 'dankmono';
+    font-size: 20px;
+    background: none;
+    border: none;
+    text-decoration: underline;
+    cursor: pointer;
+  }
 `
 
 export const Header = styled.header`
