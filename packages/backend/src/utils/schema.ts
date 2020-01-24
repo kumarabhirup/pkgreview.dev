@@ -40,6 +40,11 @@ const typeDefs = `
     total: Int!
   }
 
+  input RatingInput {
+    score: Int!
+    total: Int!
+  }
+
   type Maintainer {
     name: String!
     email: String!
@@ -49,6 +54,7 @@ const typeDefs = `
   type Mutation {
     exampleMutation: String
     loginMutation(codeForToken: String!): User
+    writeReview(review: String!, rating: RatingInput!, packageName: String!, currentUserToken: String!): Review
   }
 
   # Queries

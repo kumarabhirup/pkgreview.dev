@@ -1,6 +1,7 @@
 // Mutations
 import exampleMutation from './mutations/exampleMutation'
 import loginMutation from './mutations/loginMutation'
+import writeReviewMutation from './mutations/writeReviewMutation'
 
 // Queries
 import exampleQuery from './queries/exampleQuery'
@@ -17,5 +18,6 @@ export default {
   Mutation: {
     exampleMutation,
     loginMutation,
+    writeReview: writeReviewMutation,
   },
 }
