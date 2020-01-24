@@ -28,18 +28,21 @@ export default function RegularPage({ children }) {
             </Header>
           </Link>
 
-          <p>
+          <p className="loginText">
             <ProvideUser>
               {({ data, error, loading }) => {
                 if (error) return `There's an error.`
 
-                if (loading) return `Loading`
+                if (loading) return `Loading...`
 
                 if (data?.getCurrentUser?._id)
                   return (
                     <>
-                      <SignOut>Sign Out</SignOut>
-                      {data.getCurrentUser.name}
+                      <span>Heya 👋 {data.getCurrentUser.name}!</span>
+                      <span>&nbsp;•&nbsp;</span>
+                      <SignOut className="loginText underline pointer">
+                        Sign Out
+                      </SignOut>
                     </>
                   )
 

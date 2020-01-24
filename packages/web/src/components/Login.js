@@ -35,7 +35,7 @@ export default function Login() {
   return (
     <GitHubLogin
       clientId={process.env.PR_GITHUB_CLIENT_ID}
-      className="loginText"
+      className="loginText underline pointer"
       buttonText="Sign In with GitHub 😻 to Post and Moderate reviews"
       redirectUri=""
       scope="read:user"

@@ -34,8 +34,14 @@ export const Container = styled.main`
     font-size: 20px;
     background: none;
     border: none;
-    text-decoration: underline;
+  }
+
+  .pointer {
     cursor: pointer;
+  }
+
+  .underline {
+    text-decoration: underline;
   }
 `
 

@@ -4,11 +4,14 @@ import { useRouter } from 'next/router'
 
 import cookies from '../lib/cookies'
 
-export default function SignOut({ children }) {
+export default function SignOut(props) {
   const router = useRouter()
+
+  const { children } = props
 
   return (
     <button
+      {...props}
       type="button"
       onClick={() => {
         cookies.remove('pkgReviewToken', { path: '/' })
