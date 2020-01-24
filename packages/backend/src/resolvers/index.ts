@@ -13,7 +13,7 @@ export default {
   Query: {
     exampleQuery,
     getCurrentUser: getCurrentUserQuery,
-    getPackage: getPackageQuery,
+    getPackageAndReviews: getPackageQuery,
   },
   Mutation: {
     exampleMutation,

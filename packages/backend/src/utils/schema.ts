@@ -61,7 +61,7 @@ const typeDefs = `
   type Query {
     exampleQuery: String
     getCurrentUser(token: String): User
-    getPackage(slug: String!, type: String!, currentUserToken: String): Package
+    getPackageAndReviews(slug: String!, type: String!, currentUserToken: String): Package
   }
 `
 
