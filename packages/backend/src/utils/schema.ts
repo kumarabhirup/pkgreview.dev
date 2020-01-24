@@ -43,11 +43,6 @@ const typeDefs = `
     exampleQuery: String
     getCurrentUser(token: String): User
   }
-
-  # Subscriptions
-  type Subscription {
-    newMail(channelHash: String!): NewMailResponse!
-  }
 `
 
 export default typeDefs
