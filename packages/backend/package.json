@@ -13,10 +13,12 @@
     "test": "echo \"No tests specified\""
   },
   "devDependencies": {
+    "@types/cheerio": "^0.22.15",
     "@types/mongoose": "^5.5.43",
     "@types/node": "^12.7.3",
     "@types/node-cron": "^2.0.2",
     "@types/nodemailer": "^6.4.0",
+    "@types/puppeteer": "^2.0.0",
     "@typescript-eslint/eslint-plugin": "^2.0.0",
     "@typescript-eslint/parser": "^2.0.0",
     "babel-eslint": "^9.0.0",
@@ -39,6 +41,7 @@
     "axios": "^0.19.2",
     "body-parser": "^1.19.0",
     "bulk-mail-cli": "^2.0.6",
+    "cheerio": "^1.0.0-rc.3",
     "cookie-parser": "^1.4.4",
     "cors": "^2.8.5",
     "dotenv": "^8.1.0",
@@ -46,6 +49,7 @@
     "jsonwebtoken": "^8.5.1",
     "mongoose": "^5.7.7",
     "node-cron": "^2.0.3",
+    "puppeteer": "^2.0.0",
     "tslib": "^1.10.0"
   },
   "engines": {

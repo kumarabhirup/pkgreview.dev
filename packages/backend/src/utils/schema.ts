@@ -1,10 +1,5 @@
 const typeDefs = `
-  # Returned data after newMail received
-  type NewMailResponse {
-    email: String!
-    channelHash: String!
-  }
-
+  # Database Fields
   type User {
     _id: String!
     name: String!
@@ -12,7 +7,7 @@ const typeDefs = `
     githubUsername: String!
     githubId: Int!
     token: String!
-    reviews: [Review]
+    reviews: [Review]!
     createdAt: String!
     updatedAt: String!
   }
@@ -22,14 +17,30 @@ const typeDefs = `
     author: User!
     rating: Rating!
     review: String!
-    package: String!
+    package: String! # Package! Populate Later
     createdAt: String!
     updatedAt: String!
+  }
+
+  # Non-Database fields
+  type Package {
+    name: String!
+    type: String!
+    version: String!
+    maintainers: [Maintainer]!
+    githubRepoUrl: String
+    description: String
+    reviews: [Review]!
   }
 
   type Rating {
     score: Int!
     total: Int!
+  }
+
+  type Maintainer {
+    name: String!
+    email: String!
   }
 
   # Mutations
@@ -42,6 +53,7 @@ const typeDefs = `
   type Query {
     exampleQuery: String
     getCurrentUser(token: String): User
+    getPackage(slug: String!, type: String!): Package
   }
 `
 
