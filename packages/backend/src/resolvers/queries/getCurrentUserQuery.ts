@@ -2,7 +2,6 @@
 /* eslint-disable @typescript-eslint/camelcase */
 
 import '../../utils/env'
-import * as mongoose from 'mongoose'
 import * as jwt from 'jsonwebtoken'
 
 import { ContextParameters } from 'graphql-yoga/dist/types'
@@ -13,7 +12,7 @@ type Request = ContextParameters['request']
 const getCurrentUserQuery = async (
   parent,
   { token }: { token: string },
-  { db, request }: { db: mongoose.Connection; request: Request },
+  { request }: { request: Request },
   info
 ): Promise<object> => {
   let userId
@@ -22,7 +21,7 @@ const getCurrentUserQuery = async (
   if (token) userId = jwt.verify(token, process.env.PR_JWT_SECRET).userId
 
   // @ts-ignore
-  request.userId = userId
+  if (request) request.userId = userId
 
   if (userId) {
     const currentUser = await userModel.findById(userId)

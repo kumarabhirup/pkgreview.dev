@@ -7,12 +7,17 @@ import * as puppeteer from 'puppeteer'
 
 import reviewModel from '../../models/Review'
 import { getWindowHandle } from '../../utils/puppeteerDirect'
+import getCurrentUserQuery from './getCurrentUserQuery'
 
 type PackageType = 'npm'
 
 const getPackageQuery = async (
   parent,
-  { slug, type }: { slug: string; type: PackageType },
+  {
+    slug,
+    type,
+    currentUserToken,
+  }: { slug: string; type: PackageType; currentUserToken: string },
   context,
   info
 ): Promise<object> => {
@@ -52,6 +57,31 @@ const getPackageQuery = async (
         averageRating = totalRating / reviews.length
       }
 
+      // Is logged in user a maintainer?
+      let isUserMaintainer = null
+
+      if (currentUserToken) {
+        isUserMaintainer = null
+
+        const user = await getCurrentUserQuery(
+          null,
+          { token: currentUserToken },
+          { request: context.request },
+          null
+        )
+
+        if (
+          npmContext?.context?.packageVersion?.maintainers
+            .map(maintainer => maintainer.email)
+            // @ts-ignore
+            .includes(user.email)
+        ) {
+          isUserMaintainer = true
+        } else {
+          isUserMaintainer = false
+        }
+      }
+
       return {
         name: npmContext?.context?.packageVersion?.name,
         type: 'npm',
@@ -61,6 +91,7 @@ const getPackageQuery = async (
         description: npmContext?.context?.packageVersion?.description,
         reviews,
         rating: averageRating,
+        isUserMaintainer,
       }
     }
 

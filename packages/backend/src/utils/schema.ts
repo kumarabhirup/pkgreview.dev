@@ -32,6 +32,7 @@ const typeDefs = `
     description: String
     reviews: [Review]
     rating: Float
+    isUserMaintainer: Boolean
   }
 
   type Rating {
@@ -54,7 +55,7 @@ const typeDefs = `
   type Query {
     exampleQuery: String
     getCurrentUser(token: String): User
-    getPackage(slug: String!, type: String!): Package
+    getPackage(slug: String!, type: String!, currentUserToken: String): Package
   }
 `
 
