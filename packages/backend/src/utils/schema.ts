@@ -7,7 +7,7 @@ const typeDefs = `
     githubUsername: String!
     githubId: Int!
     token: String!
-    reviews: [Review]!
+    reviews: [Review]
     createdAt: String!
     updatedAt: String!
   }
@@ -27,11 +27,11 @@ const typeDefs = `
     name: String!
     type: String!
     version: String!
-    maintainers: [Maintainer]!
+    maintainers: [Maintainer]
     githubRepoUrl: String
     description: String
-    reviews: [Review]!
-    rating: Rating
+    reviews: [Review]
+    rating: Float
   }
 
   type Rating {
