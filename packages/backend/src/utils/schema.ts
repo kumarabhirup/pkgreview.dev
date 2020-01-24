@@ -22,6 +22,14 @@ const typeDefs = `
     updatedAt: String!
   }
 
+  type Flag {
+    _id: String!
+    by: User!
+    review: Review!
+    createdAt: String!
+    updatedAt: String!
+  }
+
   # Non-Database fields
   type Package {
     name: String!
@@ -55,6 +63,7 @@ const typeDefs = `
     exampleMutation: String
     loginMutation(codeForToken: String!): User
     writeReview(review: String!, rating: RatingInput!, packageName: String!, currentUserToken: String!): Review
+    flagReview(reviewId: String!, currentUserToken: String!): Flag!
   }
 
   # Queries
