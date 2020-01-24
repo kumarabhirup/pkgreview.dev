@@ -31,6 +31,7 @@ const typeDefs = `
     githubRepoUrl: String
     description: String
     reviews: [Review]!
+    rating: Rating
   }
 
   type Rating {

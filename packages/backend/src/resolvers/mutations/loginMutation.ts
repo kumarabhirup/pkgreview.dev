@@ -84,11 +84,6 @@ const loginMutation = async (
     process.env.PR_JWT_SECRET
   )
 
-  // response.cookie('pkgreviewToken', token, {
-  //   httpOnly: true,
-  //   maxAge: 1000 * 60 * 60 * 24 * 7,
-  // })
-
   return {
     ...refreshedUserInfo,
     _id: refreshedUserInfo?._id?.toString(),

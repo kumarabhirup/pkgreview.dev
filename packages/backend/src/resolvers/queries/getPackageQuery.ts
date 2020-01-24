@@ -2,7 +2,6 @@
 
 import '../../utils/env'
 import * as puppeteer from 'puppeteer'
-import * as cheerio from 'cheerio'
 
 import reviewModel from '../../models/Review'
 import { getWindowHandle } from '../../utils/puppeteerDirect'
