@@ -81,7 +81,8 @@ const loginMutation = async (
 
   const token = jwt.sign(
     { userId: refreshedUserInfo?._id?.toString() },
-    process.env.PR_JWT_SECRET
+    process.env.PR_JWT_SECRET,
+    { expiresIn: '10d' }
   )
 
   return {
