@@ -8,6 +8,7 @@ import flagReviewMutation from './mutations/flagReviewMutation'
 import exampleQuery from './queries/exampleQuery'
 import getCurrentUserQuery from './queries/getCurrentUserQuery'
 import getPackageQuery from './queries/getPackageQuery'
+import searchPackageQuery from './queries/searchPackageQuery'
 
 // Export
 export default {
@@ -15,6 +16,7 @@ export default {
     exampleQuery,
     getCurrentUser: getCurrentUserQuery,
     getPackageAndReviews: getPackageQuery,
+    searchPackage: searchPackageQuery,
   },
   Mutation: {
     exampleMutation,

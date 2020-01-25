@@ -54,7 +54,8 @@ const typeDefs = `
   }
 
   type Maintainer {
-    name: String!
+    name: String
+    username: String
     email: String!
   }
 
@@ -71,6 +72,7 @@ const typeDefs = `
     exampleQuery: String
     getCurrentUser(token: String): User
     getPackageAndReviews(slug: String!, type: String!, currentUserToken: String): Package
+    searchPackage(searchString: String!, skip: Int = 0, limit: Int = 5): [Package]
   }
 `
 
