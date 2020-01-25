@@ -130,7 +130,7 @@ export const ReviewTextbox = styled.textarea`
   padding: 20px 0px;
 `
 
-export const SearchBoxStyledComponent = styled.div`
+export const SearchBoxStyledComponent = styled.form`
   display: block;
   width: 98%;
 

@@ -6,7 +6,7 @@ import Center from './Center'
 
 export default function Block({ children }) {
   return (
-    <Body className="block fixed">
+    <Body className="block fixed blockSelecter">
       <Center>{children}</Center>
     </Body>
   )

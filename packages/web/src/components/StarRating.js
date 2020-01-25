@@ -25,7 +25,7 @@ export default function StarRating({
         name="review" /* name of the radio input, it is required */
         value={rating} /* number of selected icon (`0` - none, `1` - first) */
         starCount={5} /* number of icons in rating, default `5` */
-        renderStarIcon={() => `⭑`}
+        renderStarIcon={() => `✯`}
         starColor={starColor || '#4f78ff'}
         emptyStarColor={emptyStarColor || '#eaeaea'}
       />
