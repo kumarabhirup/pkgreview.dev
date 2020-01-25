@@ -21,7 +21,7 @@
   "main": "index.js",
   "repository": "git@github.com:iqubex-technologies/pkgreview.git",
   "author": "Kumar Abhirup <kumarabhirup5@gmail.com> (http://kumar.now.sh)",
-  "license": "MIT",
+  "license": "MPL-2.0",
   "devDependencies": {
     "lerna": "^3.16.4"
   },
