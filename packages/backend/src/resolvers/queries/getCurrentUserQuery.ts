@@ -14,7 +14,7 @@ const getCurrentUserQuery = async (
   { token }: { token: string },
   { request }: { request: Request },
   info
-): Promise<object> => {
+): Promise<object | null> => {
   let userId
 
   // eslint-disable-next-line prefer-destructuring
@@ -24,7 +24,9 @@ const getCurrentUserQuery = async (
   if (request) request.userId = userId
 
   if (userId) {
-    const currentUser = await userModel.findById(userId)
+    const currentUser = await userModel
+      .findById(userId)
+      .then(data => data.toObject())
 
     return currentUser
   }

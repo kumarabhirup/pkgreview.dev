@@ -40,24 +40,59 @@ const writeReviewMutation = async (
     throw new Error("The user isn't logged in")
   }
 
-  const time = new Date().toISOString()
+  // Check Rating
+  if (rating.score > rating.total || rating.score <= 0) {
+    throw new Error('Invalid rating')
+  }
+
+  // Find for the existing review...
+  const existingReview = await reviewModel
+    .findOne()
+    .and([{ author: user }, { package: packageName }])
+    .then(data => data?.toObject())
 
   // TODO: If user exists, write the review
-  const createReview = await reviewModel
-    .insertMany([
-      {
-        author: user,
-        rating,
-        package: packageName,
-        review,
-        createdAt: time,
-        updatedAt: time,
-      },
-    ])
-    .then(data => data[0])
-    .then(data => data.populate('author').toObject())
+  const time = new Date().toISOString()
 
-  return { ...createReview, _id: createReview?._id?.toString() }
+  let mutateReview
+
+  if (existingReview) {
+    mutateReview = await reviewModel
+      .findOneAndUpdate(
+        {
+          author: user,
+          package: packageName,
+        },
+        {
+          author: user,
+          rating,
+          package: packageName,
+          review,
+          updatedAt: time,
+        }
+      )
+      // eslint-disable-next-line no-return-await
+      .then(async data => await data?.populate('author')?.execPopulate())
+      .then(data => data?.toObject())
+  } else {
+    mutateReview = await reviewModel
+      .insertMany([
+        {
+          author: user,
+          rating,
+          package: packageName,
+          review,
+          createdAt: time,
+          updatedAt: time,
+        },
+      ])
+      .then(data => data[0])
+      // eslint-disable-next-line no-return-await
+      .then(async data => await data?.populate('author')?.execPopulate())
+      .then(data => data?.toObject())
+  }
+
+  return { ...mutateReview, _id: mutateReview?._id }
 }
 
 export default writeReviewMutation
