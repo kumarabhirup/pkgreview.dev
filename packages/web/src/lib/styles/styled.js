@@ -133,6 +133,7 @@ export const ReviewTextbox = styled.textarea`
 export const SearchBoxStyledComponent = styled.form`
   display: block;
   width: 98%;
+  z-index: 2;
 
   input {
     width: 1100px;

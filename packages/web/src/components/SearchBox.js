@@ -110,16 +110,15 @@ export default function SearchBox() {
           {...getRootProps({})}
           action="#"
           onSubmit={e => e.preventDefault()}
-          className="wrapper block"
+          className="wrapper block fixed"
         >
-          {console.log(isOpen)}
           <input
             {...getInputProps({
               type: 'search',
               placeholder: '🍹 Search a library/package',
               required: 'required',
               id: 'search',
-              className: `header_search_input ${loading && 'loading'}`,
+              className: `${loading && 'loading'}`,
               onChange: event => {
                 event.persist()
                 onInputChange(event, apolloClient)
