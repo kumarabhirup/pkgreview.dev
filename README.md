@@ -50,6 +50,6 @@ $ yarn dev # run development server
 
 **Mozilla Public License 2.0**
 
-&copy; Kumar Abhirup 👉 [![Twitter](https://img.shields.io/twitter/follow/kumar_abhirup.svg?style=social&label=@kumar_abhirup)](https://twitter.com/kumar_abhirup/)
+Created by [Kumar Abhirup](https://kumar.now.sh) 👉 [![Twitter](https://img.shields.io/twitter/follow/kumar_abhirup.svg?style=social&label=@kumar_abhirup)](https://twitter.com/kumar_abhirup/)
 
 <img src="https://i.ibb.co/dDfCkYC/lisence.jpg" alt="Mozilla Public License 2.0" />
