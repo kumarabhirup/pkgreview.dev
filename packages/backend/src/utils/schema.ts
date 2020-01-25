@@ -7,7 +7,7 @@ const typeDefs = `
     githubUsername: String!
     githubId: Int!
     token: String!
-    reviews: [Review]
+    # reviews: [Review]
     createdAt: String!
     updatedAt: String!
   }
@@ -41,6 +41,7 @@ const typeDefs = `
     reviews: [Review]
     rating: Float
     isUserMaintainer: Boolean
+    hasUserReviewed: Boolean
   }
 
   type Rating {

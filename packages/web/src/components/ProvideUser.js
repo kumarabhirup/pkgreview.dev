@@ -12,15 +12,6 @@ export const CURRENT_USER_QUERY = gql`
       email
       githubUsername
       githubId
-      reviews {
-        _id
-        package
-        rating {
-          score
-          total
-        }
-        review
-      }
       createdAt
       updatedAt
     }

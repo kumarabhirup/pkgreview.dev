@@ -59,19 +59,22 @@ const getPackageQuery = async (
         averageRating = totalRating / reviews.length
       }
 
-      // Is logged in user a maintainer?
-      let isUserMaintainer = null
+      // User
+      let user
 
       if (currentUserToken) {
-        isUserMaintainer = null
-
-        const user = await getCurrentUserQuery(
+        user = await getCurrentUserQuery(
           null,
           { token: currentUserToken },
           { request: context.request },
           null
         )
+      }
 
+      // Is logged in user a maintainer?
+      let isUserMaintainer = null
+
+      if (user) {
         if (
           fetchedPackage?.collected?.metadata?.maintainers
             .map(maintainer => maintainer.email)
@@ -81,6 +84,26 @@ const getPackageQuery = async (
           isUserMaintainer = true
         } else {
           isUserMaintainer = false
+        }
+      }
+
+      // Has the logged in user reviewed this package?
+      let hasUserReviewed = null
+
+      if (user) {
+        try {
+          await reviewModel
+            .findOne()
+            .and([{ author: user }, { package: slug }])
+            .then(data => {
+              if (data.toObject()._id) {
+                hasUserReviewed = true
+              } else {
+                hasUserReviewed = false
+              }
+            })
+        } catch (error) {
+          hasUserReviewed = false
         }
       }
 
@@ -94,6 +117,7 @@ const getPackageQuery = async (
         reviews,
         rating: averageRating,
         isUserMaintainer,
+        hasUserReviewed,
       }
     }
 
