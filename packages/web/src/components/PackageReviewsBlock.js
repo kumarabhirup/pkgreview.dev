@@ -6,13 +6,15 @@ import ReviewCard from './ReviewCard'
 export default function PackageReviewsBlock({ packageReviews }) {
   return (
     <>
-      <section className="reviewsBlock">
-        <h1>Reviews</h1>
+      {packageReviews.length > 0 && (
+        <section className="reviewsBlock">
+          <h1>Reviews</h1>
 
-        {packageReviews.map(review => (
-          <ReviewCard key={review._id} review={review} />
-        ))}
-      </section>
+          {packageReviews.map(review => (
+            <ReviewCard key={review._id} review={review} />
+          ))}
+        </section>
+      )}
     </>
   )
 }
