@@ -3,10 +3,9 @@
 /* eslint-disable @typescript-eslint/ban-ts-ignore */
 
 import '../../utils/env'
-import * as puppeteer from 'puppeteer'
+import axios from 'axios'
 
 import reviewModel from '../../models/Review'
-import { getWindowHandle } from '../../utils/puppeteerDirect'
 import getCurrentUserQuery from './getCurrentUserQuery'
 
 type PackageType = 'npm'
@@ -21,18 +20,21 @@ const getPackageQuery = async (
   context,
   info
 ): Promise<object> => {
-  const browser = await puppeteer.launch()
-  const page = await browser.newPage()
-
   if (type === 'npm') {
-    await page.goto(`https://www.npmjs.com/package/${slug}`)
+    let fetchedPackage
 
-    const npmContext = await getWindowHandle(page).__context__
+    try {
+      fetchedPackage = await axios
+        .get(`https://api.npms.io/v2/package/${slug}`)
+        .then(({ data }) => data)
+    } catch (error) {
+      throw new Error('The provided package does not exist')
+    }
 
-    if (npmContext?.context?.packageVersion?.name) {
+    if (fetchedPackage?.collected?.metadata?.name) {
       const reviews = await reviewModel
         .find({
-          package: npmContext?.context?.packageVersion?.name,
+          package: fetchedPackage?.collected?.metadata?.name,
         })
         .populate('author')
         .exec()
@@ -71,7 +73,7 @@ const getPackageQuery = async (
         )
 
         if (
-          npmContext?.context?.packageVersion?.maintainers
+          fetchedPackage?.collected?.metadata?.maintainers
             .map(maintainer => maintainer.email)
             // @ts-ignore
             .includes(user.email)
@@ -83,12 +85,12 @@ const getPackageQuery = async (
       }
 
       return {
-        name: npmContext?.context?.packageVersion?.name,
+        name: fetchedPackage?.collected?.metadata?.name,
         type: 'npm',
-        version: npmContext?.context?.packageVersion?.version,
-        maintainers: npmContext?.context?.packageVersion?.maintainers,
-        githubRepoUrl: npmContext?.context?.packageVersion?.repository,
-        description: npmContext?.context?.packageVersion?.description,
+        version: fetchedPackage?.collected?.metadata?.version,
+        maintainers: fetchedPackage?.collected?.metadata?.maintainers,
+        githubRepoUrl: fetchedPackage?.collected?.metadata?.links?.repository,
+        description: fetchedPackage?.collected?.metadata?.description,
         reviews,
         rating: averageRating,
         isUserMaintainer,

@@ -54,8 +54,7 @@ const typeDefs = `
   }
 
   type Maintainer {
-    name: String
-    username: String
+    username: String!
     email: String!
   }
 
