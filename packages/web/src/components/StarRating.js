@@ -4,6 +4,10 @@ import styled from 'styled-components'
 import PropTypes from 'prop-types'
 
 const Wrapper = styled.div`
+  .dv-star-rating {
+    cursor: default !important;
+  }
+
   .dv-star-rating-star {
     font-size: ${({ fontSize }) => fontSize || '60px'};
   }

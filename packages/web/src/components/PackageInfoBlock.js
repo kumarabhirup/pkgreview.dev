@@ -4,42 +4,75 @@ import PropTypes from 'prop-types'
 import Block from './Block'
 import StarRating from './StarRating'
 import { FlexContainer } from '../lib/styles/styled'
-import extractPackageNameFromSlug from '../lib/extractPackageNameFromSlug'
 
-export default function PackageInfoBlock({ packageSlug }) {
+export default function PackageInfoBlock({ packageInfo }) {
+  const ratingTotal = 5
+
+  const ratingScore = ratingTotal * packageInfo.rating
+
+  const reviewsText = packageInfo.reviews.length === 1 ? 'review' : 'reviews'
+
+  const maintainersText =
+    packageInfo.maintainers.length === 1 ? 'Maintainer' : 'Maintainers'
+
+  const maximumMaintainersToDisplay = 5
+
   return (
     <Block>
       <FlexContainer lastTextAlign>
         <div>
           <h1 style={{ textAlign: 'start' }}>
-            {extractPackageNameFromSlug(packageSlug)}{' '}
-            <img
-              src="https://upload.wikimedia.org/wikipedia/commons/d/db/Npm-logo.svg"
-              width="50"
-              alt="Npm Package Review"
-            />
+            {packageInfo.name}{' '}
+            {packageInfo.type === 'npm' && (
+              <img
+                src="https://upload.wikimedia.org/wikipedia/commons/d/db/Npm-logo.svg"
+                width="50"
+                alt="Npm Package Review"
+              />
+            )}
           </h1>
 
+          <p>{packageInfo.description}</p>
+
           <p>
-            It is a long established fact that a reader will be distracted by
-            the readable content of a page when looking at its layout.
+            <h3>Version</h3> v{packageInfo.version}
           </p>
 
           <p>
-            <h3>Version</h3> v16.12.0
+            <h3>{maintainersText}</h3>{' '}
+            {packageInfo.maintainers.map(
+              (maintainer, index) =>
+                index < maximumMaintainersToDisplay &&
+                `${maintainer.username}${
+                  index !==
+                  packageInfo.maintainers.slice(0, maximumMaintainersToDisplay)
+                    .length -
+                    1
+                    ? `, `
+                    : ''
+                }`
+            )}
+            {maximumMaintainersToDisplay < packageInfo.maintainers.length &&
+              `, etc.`}
           </p>
 
           <p>
-            <h3>Author</h3> Facebook
-          </p>
-
-          <p>
-            <h3>Rating</h3> 4/5 (1 review)
+            <h3>Rating</h3>{' '}
+            {packageInfo.reviews.length > 0 ? (
+              <>
+                {ratingScore}/{ratingTotal} ({packageInfo.reviews.length}{' '}
+                {reviewsText})
+              </>
+            ) : (
+              <>
+                − / 5 ({packageInfo.reviews.length} {reviewsText})
+              </>
+            )}
           </p>
         </div>
 
         <h1>
-          <StarRating rating={4} />
+          <StarRating rating={ratingScore} />
         </h1>
       </FlexContainer>
     </Block>
@@ -47,5 +80,5 @@ export default function PackageInfoBlock({ packageSlug }) {
 }
 
 PackageInfoBlock.propTypes = {
-  packageSlug: PropTypes.string.isRequired,
+  packageInfo: PropTypes.object.isRequired,
 }
