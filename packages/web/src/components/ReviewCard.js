@@ -1,14 +1,13 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState } from 'react'
 import PropTypes from 'prop-types'
-import axios from 'axios'
-import { useMutation, useApolloClient } from 'react-apollo'
+import { useMutation } from 'react-apollo'
 import gql from 'graphql-tag'
 
 import cookies from '../lib/cookies'
 import { FlexContainer } from '../lib/styles/styled'
 import Center from './Center'
 import StarRating from './StarRating'
-import { getCurrentUser } from './ProvideUser'
+import useUser from './hooks/useUser'
 
 const FLAG_REVIEW_MUTATION = gql`
   mutation FLAG_REVIEW_MUTATION(
@@ -28,42 +27,15 @@ const FLAG_REVIEW_MUTATION = gql`
 `
 
 export default function ReviewCard({ review }) {
-  const [avatar, setAvatar] = useState(null)
-  const [username, setUsername] = useState(null)
-
-  const [userId, setUserId] = useState(null)
+  const [{ avatar, username }, { userId }] = useUser(review?.author?.githubId)
 
   // null - not flagged, true - flagged, false - error
   const [isFlagged, setIsFlagged] = useState(null)
   const [isFlagLoading, setIsFlagLoading] = useState(false)
 
-  const client = useApolloClient()
-
   const [flagReviewMutation, flagReviewMutationData] = useMutation(
     FLAG_REVIEW_MUTATION
   )
-
-  useEffect(() => {
-    // fetch github user avatar
-    ;(async () => {
-      const response = await axios
-        .get(`https://api.github.com/user/${review.author.githubId}`)
-        .then(({ data }) => data)
-
-      // eslint-disable-next-line camelcase
-      setAvatar(response?.avatar_url)
-      setUsername(response?.login)
-    })()
-
-    // fetch user id
-    ;(async () => {
-      const user = await getCurrentUser(client)
-
-      if (user?.data?.getCurrentUser?._id) {
-        setUserId(user?.data?.getCurrentUser?._id)
-      }
-    })()
-  }, [client, review.author.githubId, review.author.githubUsername])
 
   return (
     <article
