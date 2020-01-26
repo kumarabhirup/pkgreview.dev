@@ -1,14 +1,42 @@
 import React, { useState, useEffect } from 'react'
 import PropTypes from 'prop-types'
 import axios from 'axios'
+import { useMutation } from 'react-apollo'
+import gql from 'graphql-tag'
 
+import cookies from '../lib/cookies'
 import { FlexContainer } from '../lib/styles/styled'
 import Center from './Center'
 import StarRating from './StarRating'
 
+const FLAG_REVIEW_MUTATION = gql`
+  mutation FLAG_REVIEW_MUTATION(
+    $reviewId: String!
+    $currentUserToken: String!
+  ) {
+    flagReview(reviewId: $reviewId, currentUserToken: $currentUserToken) {
+      _id
+      by {
+        _id
+      }
+      review {
+        _id
+      }
+    }
+  }
+`
+
 export default function ReviewCard({ review }) {
   const [avatar, setAvatar] = useState(null)
   const [username, setUsername] = useState(null)
+
+  // null - not flagged, true - flagged, false - error
+  const [isFlagged, setIsFlagged] = useState(null)
+  const [isFlagLoading, setIsFlagLoading] = useState(false)
+
+  const [flagReviewMutation, flagReviewMutationData] = useMutation(
+    FLAG_REVIEW_MUTATION
+  )
 
   useEffect(() => {
     // fetch github user avatar
@@ -70,6 +98,30 @@ export default function ReviewCard({ review }) {
               emptyStarColor="#273b7c"
               fontSize="50px"
             />
+
+            <h6>
+              <button
+                className="block"
+                style={{ padding: '5px' }}
+                onClick={async () => {
+                  const thisFlagReviewMutation = await flagReviewMutation({
+                    variables: {
+                      reviewId: review._id,
+                      currentUserToken: cookies.get('pkgReviewToken'),
+                    },
+                  })
+
+                  if (thisFlagReviewMutation?.data?.flagReview?._id) {
+                    setIsFlagged(true)
+                  }
+                }}
+                disabled={isFlagged || isFlagLoading}
+                type="button"
+              >
+                {isFlagged ? `Reported! Thanks :)` : `Report 🚩`}
+                {isFlagLoading && `Loading...`}
+              </button>
+            </h6>
           </Center>
         </div>
 

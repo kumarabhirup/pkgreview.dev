@@ -79,9 +79,13 @@ export const FlexContainer = styled.div`
     line-height: 50px;
   }
 
-  h3 {
+  p > h3 {
     display: inline;
     border-bottom: 2px solid #000;
+  }
+
+  h3 {
+    display: inline;
   }
 
   p {
