@@ -58,6 +58,13 @@ export const Header = styled.header`
 export const Body = styled.section`
   padding: 20px;
   text-align: center;
+
+  button.block.accent.reviewLoginButton {
+    display: block !important;
+    width: 100% !important;
+    padding: 10px !important;
+    font-size: 20px !important;
+  }
 `
 
 export const UploadButton = styled.button`

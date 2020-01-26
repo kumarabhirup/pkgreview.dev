@@ -4,6 +4,7 @@ import { useMutation } from 'react-apollo'
 import gql from 'graphql-tag'
 
 import cookies from '../lib/cookies'
+import { placeholderUserImage } from '../api/meta'
 import { FlexContainer } from '../lib/styles/styled'
 import Center from './Center'
 import StarRating from './StarRating'
@@ -54,10 +55,7 @@ export default function ReviewCard({ review }) {
         >
           <Center>
             <img
-              src={
-                avatar ||
-                'https://react.semantic-ui.com/images/avatar/small/joe.jpg'
-              }
+              src={avatar || placeholderUserImage}
               alt="Profile"
               width="125"
               style={{ borderRadius: '100%' }}

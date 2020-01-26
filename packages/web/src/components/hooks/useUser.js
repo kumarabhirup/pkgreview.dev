@@ -23,20 +23,24 @@ export default function useUser(githubId = null) {
         setUserGithubId(user?.data?.getCurrentUser?.githubId)
       }
     })()
+  }, [client, githubId, userGithubId])
 
+  useEffect(() => {
     // fetch github user avatar
     ;(async () => {
-      const githubIdToBeConsidered = githubId || userGithubId
+      if (githubId || userGithubId) {
+        const githubIdToBeConsidered = githubId || userGithubId
 
-      const response = await axios
-        .get(`https://api.github.com/user/${githubIdToBeConsidered}`)
-        .then(({ data }) => data)
+        const response = await axios
+          .get(`https://api.github.com/user/${githubIdToBeConsidered}`)
+          .then(({ data }) => data)
 
-      // eslint-disable-next-line camelcase
-      setAvatar(response?.avatar_url)
-      setUsername(response?.login)
+        // eslint-disable-next-line camelcase
+        setAvatar(response?.avatar_url)
+        setUsername(response?.login)
+      }
     })()
-  }, [client, githubId, userGithubId])
+  })
 
   return [
     { avatar, username },

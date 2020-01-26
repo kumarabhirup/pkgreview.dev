@@ -37,6 +37,7 @@
     "react-dom": "^16.9.0",
     "react-github-login": "^1.0.3",
     "react-scroll": "^1.7.14",
+    "react-social-login": "^3.4.6",
     "react-spring": "^8.0.27",
     "react-star-rating-component": "^1.4.1",
     "semantic-ui-react": "^0.88.2",

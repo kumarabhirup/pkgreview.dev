@@ -3,6 +3,8 @@ import GitHubLogin from 'react-github-login'
 import { useMutation } from 'react-apollo'
 import gql from 'graphql-tag'
 import { useRouter } from 'next/router'
+import SocialLogin from 'react-social-login'
+import PropTypes from 'prop-types'
 
 import cookies from '../lib/cookies'
 
@@ -20,7 +22,20 @@ const SIGNIN_MUTATION = gql`
   }
 `
 
-export default function Login() {
+const PrimitiveSocialButton = props => {
+  // eslint-disable-next-line react/prop-types
+  const { children, triggerLogin } = props
+
+  return (
+    <button onClick={triggerLogin} {...props} type="button">
+      {children}
+    </button>
+  )
+}
+
+export const SocialButton = SocialLogin(PrimitiveSocialButton)
+
+export default function Login({ buttonText, className, style }) {
   const [codeForToken, setCodeForToken] = useState(null)
   const [userToken, setUserToken] = useState(null)
 
@@ -35,8 +50,11 @@ export default function Login() {
   return (
     <GitHubLogin
       clientId={process.env.PR_GITHUB_CLIENT_ID}
-      className="loginText underline pointer"
-      buttonText="Sign In with GitHub 😻 to Post and Moderate reviews"
+      className={className ?? `loginText underline pointer`}
+      style={style}
+      buttonText={
+        buttonText || 'Sign In with GitHub 😻 to Post and Moderate reviews'
+      }
       redirectUri=""
       scope="read:user"
       onSuccess={async ({ code }) => {
@@ -60,4 +78,10 @@ export default function Login() {
       }}
     />
   )
+}
+
+Login.propTypes = {
+  buttonText: PropTypes.any,
+  className: PropTypes.string,
+  style: PropTypes.object,
 }

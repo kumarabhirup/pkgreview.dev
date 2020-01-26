@@ -10,7 +10,7 @@ import ComposeReviewBlock from '../../src/components/ComposeReviewBlock'
 import { Spacing } from '../../src/lib/styles/styled'
 import cookies from '../../src/lib/cookies'
 
-const GET_PACKAGE_AND_REVIEWS_QUERY = gql`
+export const GET_PACKAGE_AND_REVIEWS_QUERY = gql`
   query GET_PACKAGE_AND_REVIEWS_QUERY(
     $slug: String!
     $currentUserToken: String
