@@ -67,7 +67,7 @@ export default function SearchBox() {
   const apolloClient = useApolloClient()
 
   const onInputChange = debounce(async (event, client) => {
-    if (event.target.value.length > 2) {
+    if (event.target.value.length > 0) {
       setLoading(true)
 
       const res = await client.query({

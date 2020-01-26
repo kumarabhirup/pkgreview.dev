@@ -40,8 +40,8 @@ const writeReviewMutation = async (
     throw new Error("The user isn't logged in")
   }
 
-  // Check Rating
-  if (rating.score > rating.total || rating.score <= 0) {
+  // Check Rating (For now, let people only rate out of 5)
+  if (rating.score > rating.total || rating.score <= 0 || rating.total !== 5) {
     throw new Error('Invalid rating')
   }
 
