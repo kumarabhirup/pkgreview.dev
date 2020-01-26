@@ -2,7 +2,7 @@
   "version": 2,
   "name": "pkgreview",
   "public": true,
-  "alias": ["pkgreview", "www.pkgreview", "pkgreview.dev", "www.pkgreview.dev"],
+  "alias": ["pkgreview", "pkgreview.dev", "www.pkgreview.dev"],
   "scope": "iqubex-technologies",
   "build": {
     "env": {
