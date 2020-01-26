@@ -55,7 +55,7 @@ export default function Package() {
 
   const { data, loading, error } = useQuery(GET_PACKAGE_AND_REVIEWS_QUERY, {
     variables: {
-      slug: pid,
+      slug: encodeURIComponent(pid),
       currentUserToken: cookies.get('pkgReviewToken'),
     },
   })

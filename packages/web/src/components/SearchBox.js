@@ -85,7 +85,12 @@ export default function SearchBox() {
   }, 400)
 
   const routeToPackage = packageData => {
-    router.push(`/${packageData.type}/${packageData.name}`)
+    router.push(
+      `/${packageData.type}/${encodeURIComponent(packageData.name).replace(
+        '%40',
+        '@'
+      )}`
+    )
   }
 
   resetIdCounter()
