@@ -1,13 +1,14 @@
 import React, { useState, useEffect } from 'react'
 import PropTypes from 'prop-types'
 import axios from 'axios'
-import { useMutation } from 'react-apollo'
+import { useMutation, useApolloClient } from 'react-apollo'
 import gql from 'graphql-tag'
 
 import cookies from '../lib/cookies'
 import { FlexContainer } from '../lib/styles/styled'
 import Center from './Center'
 import StarRating from './StarRating'
+import { getCurrentUser } from './ProvideUser'
 
 const FLAG_REVIEW_MUTATION = gql`
   mutation FLAG_REVIEW_MUTATION(
@@ -30,9 +31,13 @@ export default function ReviewCard({ review }) {
   const [avatar, setAvatar] = useState(null)
   const [username, setUsername] = useState(null)
 
+  const [userId, setUserId] = useState(null)
+
   // null - not flagged, true - flagged, false - error
   const [isFlagged, setIsFlagged] = useState(null)
   const [isFlagLoading, setIsFlagLoading] = useState(false)
+
+  const client = useApolloClient()
 
   const [flagReviewMutation, flagReviewMutationData] = useMutation(
     FLAG_REVIEW_MUTATION
@@ -49,7 +54,16 @@ export default function ReviewCard({ review }) {
       setAvatar(response?.avatar_url)
       setUsername(response?.login)
     })()
-  }, [review.author.githubId, review.author.githubUsername])
+
+    // fetch user id
+    ;(async () => {
+      const user = await getCurrentUser(client)
+
+      if (user?.data?.getCurrentUser?._id) {
+        setUserId(user?.data?.getCurrentUser?._id)
+      }
+    })()
+  }, [client, review.author.githubId, review.author.githubUsername])
 
   return (
     <article
@@ -99,29 +113,35 @@ export default function ReviewCard({ review }) {
               fontSize="50px"
             />
 
-            <h6>
-              <button
-                className="block"
-                style={{ padding: '5px' }}
-                onClick={async () => {
-                  const thisFlagReviewMutation = await flagReviewMutation({
-                    variables: {
-                      reviewId: review._id,
-                      currentUserToken: cookies.get('pkgReviewToken'),
-                    },
-                  })
+            {userId && (
+              <h6>
+                {review?.author?._id === userId ? (
+                  `This is your review`
+                ) : (
+                  <button
+                    className="block"
+                    style={{ padding: '5px' }}
+                    onClick={async () => {
+                      const thisFlagReviewMutation = await flagReviewMutation({
+                        variables: {
+                          reviewId: review._id,
+                          currentUserToken: cookies.get('pkgReviewToken'),
+                        },
+                      })
 
-                  if (thisFlagReviewMutation?.data?.flagReview?._id) {
-                    setIsFlagged(true)
-                  }
-                }}
-                disabled={isFlagged || isFlagLoading}
-                type="button"
-              >
-                {isFlagged ? `Reported! Thanks :)` : `Report 🚩`}
-                {isFlagLoading && `Loading...`}
-              </button>
-            </h6>
+                      if (thisFlagReviewMutation?.data?.flagReview?._id) {
+                        setIsFlagged(true)
+                      }
+                    }}
+                    disabled={isFlagged || isFlagLoading}
+                    type="button"
+                  >
+                    {isFlagged ? `Reported! Thanks :)` : `Report 🚩`}
+                    {isFlagLoading && `Loading...`}
+                  </button>
+                )}
+              </h6>
+            )}
           </Center>
         </div>
 

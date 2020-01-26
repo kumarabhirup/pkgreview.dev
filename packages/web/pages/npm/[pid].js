@@ -41,6 +41,7 @@ const GET_PACKAGE_AND_REVIEWS_QUERY = gql`
           score
           total
         }
+        # isFlaggedByUser
       }
       rating
       isUserMaintainer

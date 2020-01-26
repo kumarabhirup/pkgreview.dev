@@ -6,6 +6,7 @@ import '../../utils/env'
 import flagModel from '../../models/Flag'
 import reviewModel from '../../models/Review'
 import getCurrentUserQuery from '../queries/getCurrentUserQuery'
+import { generateString } from '../../utils/functions'
 
 const flagReviewMutation = async (
   parent,
@@ -35,6 +36,24 @@ const flagReviewMutation = async (
   const time = new Date().toISOString()
 
   const review = await reviewModel.findById(reviewId)
+
+  // Check if the user has already flagged the review...
+  const existingReview = await flagModel
+    .findOne({ by: user, review })
+    .then(data => data.toObject())
+
+  if (existingReview) {
+    // throw new Error("This review has already been flagged")
+
+    // return dummy data
+    return {
+      by: user,
+      review,
+      createdAt: existingReview?.createdAt,
+      updatedAt: existingReview?.updatedAt,
+      _id: existingReview?._id?.toString(),
+    }
+  }
 
   const createFlag = await flagModel
     .insertMany([
