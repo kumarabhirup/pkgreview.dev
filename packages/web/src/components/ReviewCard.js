@@ -2,6 +2,7 @@ import React, { useState } from 'react'
 import PropTypes from 'prop-types'
 import { useMutation } from 'react-apollo'
 import gql from 'graphql-tag'
+import moment from 'moment'
 
 import cookies from '../lib/cookies'
 import { placeholderUserImage } from '../api/meta'
@@ -37,6 +38,8 @@ export default function ReviewCard({ review }) {
   const [flagReviewMutation, flagReviewMutationData] = useMutation(
     FLAG_REVIEW_MUTATION
   )
+
+  const updatedAt = review?.updatedAt
 
   return (
     <article
@@ -76,14 +79,16 @@ export default function ReviewCard({ review }) {
               )}
             </h1>
 
-            {console.log(review)}
-
             <StarRating
               rating={review?.rating?.score}
               starColor="#eaeaea"
               emptyStarColor="#273b7c"
               fontSize="50px"
             />
+
+            <h5>{moment(updatedAt).format('dddd, DD MMMM YYYY − hh:mm a')}</h5>
+
+            <br />
 
             {userId && (
               <h6>

@@ -55,7 +55,7 @@ export default function ComposeReviewBlock({
 
   const [reviewText, setReviewText] = useState(existingReview?.review || '')
   const [ratingScore, setRatingScore] = useState(
-    existingReview?.rating?.score || 0
+    existingReview?.rating?.score || 3
   )
 
   const [mutationLoading, setMutationLoading] = useState(false)

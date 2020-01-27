@@ -28,6 +28,7 @@
     "graphql-tag": "^2.10.1",
     "isomorphic-unfetch": "^3.0.0",
     "lodash.debounce": "^4.0.8",
+    "moment": "^2.24.0",
     "next": "^9.0.5",
     "npm-api": "^1.0.0",
     "prop-types": "^15.7.2",

@@ -8,7 +8,7 @@ import { FlexContainer } from '../lib/styles/styled'
 export default function PackageInfoBlock({ packageInfo }) {
   const ratingTotal = 5
 
-  const ratingScore = ratingTotal * packageInfo.rating
+  const ratingScore = +parseFloat(ratingTotal * packageInfo.rating).toFixed(2)
 
   const reviewsText = packageInfo.reviews.length === 1 ? 'review' : 'reviews'
 
