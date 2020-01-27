@@ -8,8 +8,19 @@ export default function PackageReviewsBlock({ packageReviews }) {
     <>
       {packageReviews.length > 0 && (
         <section className="reviewsBlock">
-          <h1>Reviews</h1>
-
+          <h1
+            style={{
+              display: 'inline-block',
+              lineHeight: '10px',
+              marginTop: '60px',
+            }}
+          >
+            Reviews
+          </h1>
+          &nbsp;
+          <span style={{ fontSize: '15px' }}>
+            or just <a href="#composeReview">POST A REVIEW HERE</a>.
+          </span>
           {packageReviews.map(review => (
             <ReviewCard key={review._id} review={review} />
           ))}
