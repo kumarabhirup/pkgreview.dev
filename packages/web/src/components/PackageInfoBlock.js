@@ -5,10 +5,16 @@ import Block from './Block'
 import StarRating from './StarRating'
 import { FlexContainer } from '../lib/styles/styled'
 
-export default function PackageInfoBlock({ packageInfo }) {
+export const getRatingScore = averageRating => {
   const ratingTotal = 5
 
-  const ratingScore = +parseFloat(ratingTotal * packageInfo.rating).toFixed(2)
+  const ratingScore = +parseFloat(ratingTotal * averageRating).toFixed(2)
+
+  return [ratingScore, ratingTotal]
+}
+
+export default function PackageInfoBlock({ packageInfo }) {
+  const [ratingScore, ratingTotal] = getRatingScore(packageInfo?.rating)
 
   const reviewsText = packageInfo.reviews.length === 1 ? 'review' : 'reviews'
 

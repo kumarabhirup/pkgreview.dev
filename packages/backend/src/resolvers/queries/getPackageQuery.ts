@@ -36,6 +36,7 @@ const getPackageQuery = async (
         .find({
           package: fetchedPackage?.collected?.metadata?.name,
         })
+        .sort('-updatedAt')
         .populate('author')
         .exec()
 

@@ -91,6 +91,7 @@ export default function Package() {
                 review => review?.author?._id === userId
               )[0]
             }
+            averagePackageRating={response?.rating}
             parentComponentRefetch={refetch}
           />
         </>

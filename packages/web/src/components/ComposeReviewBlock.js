@@ -12,7 +12,7 @@ import { placeholderUserImage } from '../api/meta'
 import { ReviewTextbox } from '../lib/styles/styled'
 import extractPackageNameFromSlug from '../lib/extractPackageNameFromSlug'
 import cookies from '../lib/cookies'
-import { CURRENT_USER_QUERY } from './ProvideUser'
+import { getRatingScore } from './PackageInfoBlock'
 
 // eslint-disable-next-line import/no-cycle
 import { GET_PACKAGE_AND_REVIEWS_QUERY } from '../../pages/npm/[pid]'
@@ -47,15 +47,18 @@ const WRITE_REVIEW_MUTATION = gql`
 export default function ComposeReviewBlock({
   packageSlug,
   existingReview,
+  averagePackageRating,
   parentComponentRefetch,
 }) {
   const router = useRouter()
 
   const [{ avatar, username }, { userId }] = useUser()
 
+  const [averageRatingScore] = getRatingScore(averagePackageRating)
+
   const [reviewText, setReviewText] = useState(existingReview?.review || '')
   const [ratingScore, setRatingScore] = useState(
-    existingReview?.rating?.score || 3
+    existingReview?.rating?.score || averageRatingScore || 3
   )
 
   const [mutationLoading, setMutationLoading] = useState(false)
@@ -182,5 +185,6 @@ export default function ComposeReviewBlock({
 ComposeReviewBlock.propTypes = {
   packageSlug: PropTypes.string.isRequired,
   existingReview: PropTypes.object,
+  averagePackageRating: PropTypes.number,
   parentComponentRefetch: PropTypes.func,
 }
