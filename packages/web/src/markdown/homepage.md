@@ -13,9 +13,7 @@ This website was born out of this tweet.
 
 ## 🕹 The idea 🕹
 
-A lot of people find it very difficult to decide
-
-what NPM Package, React Component, Module or Library to use.
+A lot of people find it very difficult to decide what NPM Package, React Component, Module or Library to use.
 
 _`They end up checking GitHub`_ stars, number of forks, ratio of open issues to closed issues, pull requests, last updated date, etc.
 
@@ -25,9 +23,11 @@ _`What people often miss`_, is the first hand experience of the users who have u
 
 After you have got the taste yourself, feel free to review an NPM Package yourself! All you need to do is, search that NPM Package in this website's searchbox and post your review!
 
-<div class="small"><Searchbox /></div>
+---
 
 You may visit any NPM Package by URL itself. `https://pkgreview.dev/npm/<package-name>`
+
+---
 
 ## ✨ Building a Community ✨
 
@@ -37,8 +37,16 @@ _`To be useful to the masses, we need more reviews.` You, as a developer, can co
 
 This project needs the support of the _`JavaScript Community`_.
 
+---
+
 <Login buttonText="💃 Login with GitHub (takes two seconds) 💃" />
 
 and write your first review!
+
+---
+
+# Go review them now!
+
+<div class="small"><Searchbox /></div>
 
 <FeaturedPackages />

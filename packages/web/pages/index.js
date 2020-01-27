@@ -5,6 +5,7 @@ import RegularPage from '../src/components/RegularPage'
 import Block from '../src/components/Block'
 import Login from '../src/components/Login'
 import SearchBox from '../src/components/SearchBox'
+import FeaturedPackages from '../src/components/FeaturedPackages'
 
 import markdown from '../src/markdown/homepage.md'
 
@@ -27,6 +28,12 @@ export default function HomePage() {
                 },
                 Searchbox: {
                   component: SearchBox,
+                  props: {
+                    limit: 2,
+                  },
+                },
+                FeaturedPackages: {
+                  component: FeaturedPackages,
                   props: {
                     limit: 2,
                   },
