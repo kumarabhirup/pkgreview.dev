@@ -7,6 +7,7 @@ import axios from 'axios'
 
 import reviewModel from '../../models/Review'
 import getCurrentUserQuery from './getCurrentUserQuery'
+import { arrayElementMove } from '../../utils/functions'
 
 type PackageType = 'npm'
 
@@ -91,6 +92,8 @@ const getPackageQuery = async (
       // Has the logged in user reviewed this package?
       let hasUserReviewed = null
 
+      let userReviewId = null
+
       if (user) {
         try {
           await reviewModel
@@ -98,6 +101,8 @@ const getPackageQuery = async (
             .and([{ author: user }, { package: slug }])
             .then(data => {
               if (data.toObject()._id) {
+                userReviewId = data.toObject()._id
+
                 hasUserReviewed = true
               } else {
                 hasUserReviewed = false
@@ -108,6 +113,14 @@ const getPackageQuery = async (
         }
       }
 
+      // Find Index of the review in the `reviews` array that is authored by the currentUser
+      const userReviewIndex = userReviewId
+        ? reviews.findIndex(
+            review =>
+              review.toObject()._id.toString() === userReviewId.toString()
+          )
+        : null
+
       return {
         name: fetchedPackage?.collected?.metadata?.name,
         type: 'npm',
@@ -115,7 +128,15 @@ const getPackageQuery = async (
         maintainers: fetchedPackage?.collected?.metadata?.maintainers,
         githubRepoUrl: fetchedPackage?.collected?.metadata?.links?.repository,
         description: fetchedPackage?.collected?.metadata?.description,
-        reviews,
+
+        // The following arranges `reviews` in such a way that the `userReview` appears first!
+        /* eslint-disable prettier/prettier */
+        reviews: userReviewIndex ?
+          // @ts-ignore
+          arrayElementMove(reviews, userReviewIndex, 0)
+          : reviews,
+        /* eslint-enable prettier/prettier */
+
         rating: averageRating,
         isUserMaintainer,
         hasUserReviewed,
