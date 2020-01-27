@@ -40,7 +40,7 @@ const flagReviewMutation = async (
   // Check if the user has already flagged the review...
   const existingReview = await flagModel
     .findOne({ by: user, review })
-    .then(data => data.toObject())
+    .then(data => data?.toObject())
 
   if (existingReview) {
     // throw new Error("This review has already been flagged")
@@ -65,7 +65,7 @@ const flagReviewMutation = async (
       },
     ])
     .then(data => data[0])
-    .then(data => data.populate('by review').toObject())
+    .then(data => data?.populate('by review')?.toObject())
 
   return { ...createFlag, _id: createFlag?._id?.toString() }
 }
