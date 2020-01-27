@@ -1,3 +1,5 @@
+/* eslint-disable react/prop-types */
+
 import React from 'react'
 import { useRouter } from 'next/router'
 import { useQuery } from 'react-apollo'
@@ -52,7 +54,7 @@ export const GET_PACKAGE_AND_REVIEWS_QUERY = gql`
   }
 `
 
-export default function Package() {
+function Package() {
   const router = useRouter()
   const { pid } = router.query
 
@@ -101,3 +103,5 @@ export default function Package() {
     </RegularPage>
   )
 }
+
+export default Package

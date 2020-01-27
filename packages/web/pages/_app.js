@@ -16,6 +16,7 @@ class Wrapper extends App {
 
     // This exposes query to the user
     pageProps.query = ctx.query
+    pageProps.pathname = ctx.pathname
     return { pageProps }
   }
 
