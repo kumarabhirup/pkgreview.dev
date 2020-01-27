@@ -76,6 +76,8 @@ export default function ReviewCard({ review }) {
               )}
             </h1>
 
+            {console.log(review)}
+
             <StarRating
               rating={review?.rating?.score}
               starColor="#eaeaea"

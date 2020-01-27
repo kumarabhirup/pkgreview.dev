@@ -43,7 +43,6 @@ export const GET_PACKAGE_AND_REVIEWS_QUERY = gql`
           score
           total
         }
-        # isFlaggedByUser
       }
       rating
       isUserMaintainer
@@ -58,12 +57,16 @@ export default function Package() {
 
   const [_notUsedVariable, { userId }] = useUser()
 
-  const { data, loading, error } = useQuery(GET_PACKAGE_AND_REVIEWS_QUERY, {
-    variables: {
-      slug: encodeURIComponent(pid),
-      currentUserToken: cookies.get('pkgReviewToken'),
-    },
-  })
+  const { data, loading, error, refetch } = useQuery(
+    GET_PACKAGE_AND_REVIEWS_QUERY,
+    {
+      variables: {
+        slug: encodeURIComponent(pid),
+        currentUserToken: cookies.get('pkgReviewToken'),
+      },
+      fetchPolicy: 'cache-and-network',
+    }
+  )
 
   const response = data?.getPackageAndReviews
 
@@ -87,6 +90,7 @@ export default function Package() {
                 review => review?.author?._id === userId
               )[0]
             }
+            parentComponentRefetch={refetch}
           />
         </>
       )}

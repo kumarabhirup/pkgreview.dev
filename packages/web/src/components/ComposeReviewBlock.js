@@ -2,6 +2,7 @@ import { useMutation } from 'react-apollo'
 import React, { useState } from 'react'
 import PropTypes from 'prop-types'
 import gql from 'graphql-tag'
+import { useRouter } from 'next/router'
 
 import Block from './Block'
 import Login from './Login'
@@ -11,6 +12,7 @@ import { placeholderUserImage } from '../api/meta'
 import { ReviewTextbox } from '../lib/styles/styled'
 import extractPackageNameFromSlug from '../lib/extractPackageNameFromSlug'
 import cookies from '../lib/cookies'
+import { CURRENT_USER_QUERY } from './ProvideUser'
 
 // eslint-disable-next-line import/no-cycle
 import { GET_PACKAGE_AND_REVIEWS_QUERY } from '../../pages/npm/[pid]'
@@ -42,7 +44,13 @@ const WRITE_REVIEW_MUTATION = gql`
   }
 `
 
-export default function ComposeReviewBlock({ packageSlug, existingReview }) {
+export default function ComposeReviewBlock({
+  packageSlug,
+  existingReview,
+  parentComponentRefetch,
+}) {
+  const router = useRouter()
+
   const [{ avatar, username }, { userId }] = useUser()
 
   const [reviewText, setReviewText] = useState(existingReview?.review || '')
@@ -56,7 +64,7 @@ export default function ComposeReviewBlock({ packageSlug, existingReview }) {
   const packageName = extractPackageNameFromSlug(packageSlug)
 
   const [writeReviewMutation] = useMutation(WRITE_REVIEW_MUTATION, {
-    refetchQueries: [
+    refetchQueries: () => [
       {
         query: GET_PACKAGE_AND_REVIEWS_QUERY,
         variables: {
@@ -65,6 +73,7 @@ export default function ComposeReviewBlock({ packageSlug, existingReview }) {
         },
       },
     ],
+    awaitRefetchQueries: true,
   })
 
   const InsideTheButton = () => (
@@ -146,6 +155,8 @@ export default function ComposeReviewBlock({ packageSlug, existingReview }) {
               if (data) {
                 setMutationLoading(false)
                 setMutationData(data?.writeReview)
+
+                router.replace(`/npm/${packageName}`)
               }
             }
           }}
@@ -171,4 +182,5 @@ export default function ComposeReviewBlock({ packageSlug, existingReview }) {
 ComposeReviewBlock.propTypes = {
   packageSlug: PropTypes.string.isRequired,
   existingReview: PropTypes.object,
+  parentComponentRefetch: PropTypes.func,
 }
