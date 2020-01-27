@@ -21,14 +21,6 @@ _`What people often miss`_, is the first hand experience of the users who have u
 
 `pkgreview.dev` will help JavaScript Developers understand and analyze what NPM Module is the best choice for them.
 
-After you have got the taste yourself, feel free to review an NPM Package yourself! All you need to do is, search that NPM Package in this website's searchbox and post your review!
-
----
-
-You may visit any NPM Package by URL itself. `https://pkgreview.dev/npm/<package-name>`
-
----
-
 ## ✨ Building a Community ✨
 
 The app that you are currently seeing is in its MVP phase.
