@@ -6,9 +6,11 @@ import gql from 'graphql-tag'
 import RegularPage from '../../src/components/RegularPage'
 import PackageInfoBlock from '../../src/components/PackageInfoBlock'
 import PackageReviewsBlock from '../../src/components/PackageReviewsBlock'
-import ComposeReviewBlock from '../../src/components/ComposeReviewBlock'
 import { Spacing } from '../../src/lib/styles/styled'
 import cookies from '../../src/lib/cookies'
+// eslint-disable-next-line import/no-cycle
+import ComposeReviewBlock from '../../src/components/ComposeReviewBlock'
+import useUser from '../../src/components/hooks/useUser'
 
 export const GET_PACKAGE_AND_REVIEWS_QUERY = gql`
   query GET_PACKAGE_AND_REVIEWS_QUERY(
@@ -54,6 +56,8 @@ export default function Package() {
   const router = useRouter()
   const { pid } = router.query
 
+  const [_notUsedVariable, { userId }] = useUser()
+
   const { data, loading, error } = useQuery(GET_PACKAGE_AND_REVIEWS_QUERY, {
     variables: {
       slug: encodeURIComponent(pid),
@@ -76,7 +80,14 @@ export default function Package() {
 
           <Spacing />
 
-          <ComposeReviewBlock packageSlug={`npm/${pid}`} />
+          <ComposeReviewBlock
+            packageSlug={`npm/${pid}`}
+            existingReview={
+              response?.reviews?.filter(
+                review => review?.author?._id === userId
+              )[0]
+            }
+          />
         </>
       )}
     </RegularPage>

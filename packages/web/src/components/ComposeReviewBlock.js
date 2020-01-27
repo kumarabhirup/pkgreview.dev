@@ -42,10 +42,16 @@ const WRITE_REVIEW_MUTATION = gql`
   }
 `
 
-export default function ComposeReviewBlock({ packageSlug }) {
+export default function ComposeReviewBlock({ packageSlug, existingReview }) {
   const [{ avatar, username }, { userId }] = useUser()
 
-  const [reviewText, setReviewText] = useState('')
+  const [reviewText, setReviewText] = useState(existingReview?.review || '')
+  const [ratingScore, setRatingScore] = useState(
+    existingReview?.rating?.score || 0
+  )
+
+  const [mutationLoading, setMutationLoading] = useState(false)
+  const [mutationData, setMutationData] = useState(null)
 
   const packageName = extractPackageNameFromSlug(packageSlug)
 
@@ -70,9 +76,20 @@ export default function ComposeReviewBlock({ packageSlug }) {
         style={{ borderRadius: '100%' }}
       />
       <br />
-      {userId
-        ? 'Post Your Review'
-        : '🔥 Sign In with GitHub to Post a review 🔥'}
+      {/* {userId
+        ? `${existingReview ? `Update` : `Post`} Your Review`
+        : '🔥 Sign In with GitHub to Post a review 🔥'} */}
+      {(() => {
+        if (userId) {
+          if (mutationData) return `Package Reviewed Successfully!`
+
+          if (mutationLoading) return `Reviewing...`
+
+          return `${existingReview ? `Update` : `Post`} Your Review`
+        }
+
+        return '🔥 Sign In with GitHub to Post a review 🔥'
+      })()}
     </>
   )
 
@@ -82,7 +99,11 @@ export default function ComposeReviewBlock({ packageSlug }) {
 
       {userId && (
         <>
-          <StarRating rating={4} />
+          <StarRating
+            rating={ratingScore}
+            onRatingChange={rating => setRatingScore(rating)}
+            isEditable
+          />
 
           <ReviewTextbox
             placeholder={`Write your review about '${packageName}' here...`}
@@ -107,11 +128,14 @@ export default function ComposeReviewBlock({ packageSlug }) {
           type="button"
           onClick={async () => {
             if (userId) {
-              const writeReview = await writeReviewMutation({
+              setMutationLoading(true)
+              setMutationData(null)
+
+              const { data } = await writeReviewMutation({
                 variables: {
                   review: reviewText,
                   rating: {
-                    score: 4,
+                    score: ratingScore,
                     total: 5,
                   },
                   packageName,
@@ -119,7 +143,10 @@ export default function ComposeReviewBlock({ packageSlug }) {
                 },
               })
 
-              const id = writeReview?.data?.writeReview?._id
+              if (data) {
+                setMutationLoading(false)
+                setMutationData(data?.writeReview)
+              }
             }
           }}
         >
@@ -143,4 +170,5 @@ export default function ComposeReviewBlock({ packageSlug }) {
 
 ComposeReviewBlock.propTypes = {
   packageSlug: PropTypes.string.isRequired,
+  existingReview: PropTypes.object,
 }
