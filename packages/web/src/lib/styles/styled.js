@@ -43,6 +43,11 @@ export const Container = styled.main`
   .underline {
     text-decoration: underline;
   }
+
+  .block {
+    user-select: auto !important;
+    -webkit-user-select: auto !important;
+  }
 `
 
 export const Header = styled.header`
@@ -145,6 +150,14 @@ export const SearchBoxStyledComponent = styled.form`
   display: block;
   width: 98%;
   z-index: 2;
+
+  label > span {
+    display: block;
+    max-width: 95%;
+    margin: 0px auto;
+    text-align: left;
+    padding-left: 20px;
+  }
 
   input {
     width: 1100px;

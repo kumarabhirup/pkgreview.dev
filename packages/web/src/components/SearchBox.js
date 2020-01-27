@@ -101,6 +101,7 @@ export default function SearchBox() {
       itemToString={packageData =>
         packageData === null ? '' : packageData.name
       }
+      defaultHighlightedIndex={0}
     >
       {({
         getRootProps,
@@ -117,19 +118,23 @@ export default function SearchBox() {
           onSubmit={e => e.preventDefault()}
           className="wrapper block fixed"
         >
-          <input
-            {...getInputProps({
-              type: 'search',
-              placeholder: '🍹 Search a library/package',
-              required: 'required',
-              id: 'search',
-              className: `${loading && 'loading'}`,
-              onChange: event => {
-                event.persist()
-                onInputChange(event, apolloClient)
-              },
-            })}
-          />
+          {/* eslint-disable-next-line jsx-a11y/label-has-associated-control, jsx-a11y/label-has-for */}
+          <label {...getLabelProps({ htmlFor: 'search' })}>
+            {inputValue.length > 0 && <span>🍹 Search a library/package</span>}
+            <input
+              {...getInputProps({
+                id: 'search',
+                type: 'search',
+                placeholder: '🍹 Search a library/package',
+                required: 'required',
+                className: `${loading && 'loading'}`,
+                onChange: event => {
+                  event.persist()
+                  onInputChange(event, apolloClient)
+                },
+              })}
+            />
+          </label>
 
           {isOpen ? (
             <Dropdown packages={packages}>
