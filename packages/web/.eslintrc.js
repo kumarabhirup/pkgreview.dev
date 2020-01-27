@@ -14,7 +14,8 @@ module.exports = {
     "node": true
   },
   "plugins": [
-    "html"
+    "html",
+    "markdown"
   ],
   "settings": {
     "html/html-extensions": [".html"]
