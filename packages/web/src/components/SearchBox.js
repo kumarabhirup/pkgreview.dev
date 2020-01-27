@@ -5,12 +5,13 @@ import { useApolloClient } from 'react-apollo'
 import Downshift, { resetIdCounter } from 'downshift'
 import styled from 'styled-components'
 import { useRouter } from 'next/router'
+import PropTypes from 'prop-types'
 
 import { SearchBoxStyledComponent } from '../lib/styles/styled'
 
 const SEARCH_PACKAGES_QUERY = gql`
-  query SEARCH_PACKAGES_QUERY($searchString: String!) {
-    searchPackage(searchString: $searchString) {
+  query SEARCH_PACKAGES_QUERY($searchString: String!, $limit: Int) {
+    searchPackage(searchString: $searchString, limit: $limit) {
       name
       type
       version
@@ -58,7 +59,7 @@ const DropDownItem = styled.div`
   }
 `
 
-export default function SearchBox() {
+export default function SearchBox({ limit }) {
   const [packages, setPackages] = useState([])
   const [loading, setLoading] = useState(false)
 
@@ -72,7 +73,7 @@ export default function SearchBox() {
 
       const res = await client.query({
         query: SEARCH_PACKAGES_QUERY,
-        variables: { searchString: event.target.value },
+        variables: { searchString: event.target.value, limit: limit || 5 },
       })
 
       if (res.data.searchPackage.length > 0) {
@@ -150,6 +151,7 @@ export default function SearchBox() {
                   {packageData.type === 'npm' && (
                     <img
                       width="50"
+                      className="searchImage"
                       src="https://upload.wikimedia.org/wikipedia/commons/d/db/Npm-logo.svg"
                       alt={packageData.name}
                     />
@@ -165,4 +167,8 @@ export default function SearchBox() {
       )}
     </Downshift>
   )
+}
+
+SearchBox.propTypes = {
+  limit: PropTypes.number,
 }
