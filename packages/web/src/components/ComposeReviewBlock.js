@@ -107,77 +107,79 @@ export default function ComposeReviewBlock({
 
   return (
     <Block id="composeReview">
-      <h1>Help others by reviewing this library</h1>
+      <>
+        <h1>Help others by reviewing this library</h1>
 
-      {userId && (
-        <>
-          <StarRating
-            rating={ratingScore}
-            onRatingChange={rating => setRatingScore(rating)}
-            isEditable
-          />
+        {userId && (
+          <>
+            <StarRating
+              rating={ratingScore}
+              onRatingChange={rating => setRatingScore(rating)}
+              isEditable
+            />
 
-          <ReviewTextbox
-            placeholder={`Write your review about '${packageName}' here...`}
-            value={reviewText}
-            disabled={!userId}
-            onChange={e => {
-              setReviewText(e.target.value)
+            <ReviewTextbox
+              placeholder={`Write your review about '${packageName}' here...`}
+              value={reviewText}
+              disabled={!userId}
+              onChange={e => {
+                setReviewText(e.target.value)
+              }}
+            />
+          </>
+        )}
+
+        {userId ? (
+          <button
+            className="block accent"
+            style={{
+              display: 'block',
+              width: '100%',
+              padding: '10px',
+              fontSize: '20px',
+            }}
+            type="button"
+            onClick={async () => {
+              if (userId) {
+                setMutationLoading(true)
+                setMutationData(null)
+
+                const { data } = await writeReviewMutation({
+                  variables: {
+                    review: reviewText,
+                    rating: {
+                      score: ratingScore,
+                      total: 5,
+                    },
+                    packageName,
+                    currentUserToken: cookies.get('pkgReviewToken'),
+                  },
+                })
+
+                if (data) {
+                  setMutationLoading(false)
+                  setMutationData(data?.writeReview)
+
+                  router.replace(`/npm/${packageName}`)
+                }
+              }
+            }}
+          >
+            <InsideTheButton />
+          </button>
+        ) : (
+          <Login
+            buttonText={<InsideTheButton />}
+            className="block accent reviewLoginButton"
+            style={{
+              display: 'block',
+              width: '100%',
+              padding: '10px',
+              fontSize: '20px',
             }}
           />
-        </>
-      )}
-
-      {userId ? (
-        <button
-          className="block accent"
-          style={{
-            display: 'block',
-            width: '100%',
-            padding: '10px',
-            fontSize: '20px',
-          }}
-          type="button"
-          onClick={async () => {
-            if (userId) {
-              setMutationLoading(true)
-              setMutationData(null)
-
-              const { data } = await writeReviewMutation({
-                variables: {
-                  review: reviewText,
-                  rating: {
-                    score: ratingScore,
-                    total: 5,
-                  },
-                  packageName,
-                  currentUserToken: cookies.get('pkgReviewToken'),
-                },
-              })
-
-              if (data) {
-                setMutationLoading(false)
-                setMutationData(data?.writeReview)
-
-                router.replace(`/npm/${packageName}`)
-              }
-            }
-          }}
-        >
-          <InsideTheButton />
-        </button>
-      ) : (
-        <Login
-          buttonText={<InsideTheButton />}
-          className="block accent reviewLoginButton"
-          style={{
-            display: 'block',
-            width: '100%',
-            padding: '10px',
-            fontSize: '20px',
-          }}
-        />
-      )}
+        )}
+      </>
     </Block>
   )
 }

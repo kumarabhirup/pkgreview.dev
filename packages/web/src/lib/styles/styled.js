@@ -91,9 +91,15 @@ export const FlexContainer = styled.div`
     line-height: 50px;
   }
 
-  p > h3 {
+  data > h3 {
     display: inline;
     border-bottom: 2px solid #000;
+  }
+
+  data {
+    display: block;
+    text-align: justify;
+    margin-top: 5px;
   }
 
   h3 {

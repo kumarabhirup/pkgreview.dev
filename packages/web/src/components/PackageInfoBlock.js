@@ -40,11 +40,11 @@ export default function PackageInfoBlock({ packageInfo }) {
 
           <p>{packageInfo.description}</p>
 
-          <p>
+          <data>
             <h3>Version</h3> v{packageInfo.version}
-          </p>
+          </data>
 
-          <p>
+          <data>
             <h3>{maintainersText}</h3>{' '}
             {packageInfo.maintainers.map(
               (maintainer, index) =>
@@ -60,9 +60,9 @@ export default function PackageInfoBlock({ packageInfo }) {
             )}
             {maximumMaintainersToDisplay < packageInfo.maintainers.length &&
               `, etc.`}
-          </p>
+          </data>
 
-          <p>
+          <data>
             <h3>Rating</h3>{' '}
             {packageInfo.reviews.length > 0 ? (
               <>
@@ -74,7 +74,7 @@ export default function PackageInfoBlock({ packageInfo }) {
                 − / 5 ({packageInfo.reviews.length} {reviewsText})
               </>
             )}
-          </p>
+          </data>
         </div>
 
         <h1>

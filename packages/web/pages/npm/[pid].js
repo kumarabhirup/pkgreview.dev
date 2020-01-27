@@ -73,29 +73,31 @@ export default function Package() {
 
   return (
     <RegularPage>
-      {loading && <p>Loading...</p>}
+      <>
+        {loading && <p>Loading...</p>}
 
-      {error && <p>{error.message}</p>}
+        {error && <p>{error.message}</p>}
 
-      {data && (
-        <>
-          <PackageInfoBlock packageInfo={response} />
-          <PackageReviewsBlock packageReviews={response?.reviews} />
+        {data && (
+          <>
+            <PackageInfoBlock packageInfo={response} />
+            <PackageReviewsBlock packageReviews={response?.reviews} />
 
-          <Spacing />
+            <Spacing />
 
-          <ComposeReviewBlock
-            packageSlug={`npm/${pid}`}
-            existingReview={
-              response?.reviews?.filter(
-                review => review?.author?._id === userId
-              )[0]
-            }
-            averagePackageRating={response?.rating}
-            parentComponentRefetch={refetch}
-          />
-        </>
-      )}
+            <ComposeReviewBlock
+              packageSlug={`npm/${pid}`}
+              existingReview={
+                response?.reviews?.filter(
+                  review => review?.author?._id === userId
+                )[0]
+              }
+              averagePackageRating={response?.rating}
+              parentComponentRefetch={refetch}
+            />
+          </>
+        )}
+      </>
     </RegularPage>
   )
 }
