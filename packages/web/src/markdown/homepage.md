@@ -7,6 +7,11 @@ This website was born out of this tweet.
     max-width: 500px;
     width: 98%;
   }
+
+  .clearfix {
+    clear: both;
+    padding: 5px;
+  }
 </style>
 
 <a href="https://twitter.com/kumar_abhirup/status/1218860389833723905" target="_blank" rel="noopener noreferrer"><img class="readme" src="https://i.ibb.co/pzc77bJ/Screenshot-2020-01-27-at-10-09-30-PM.jpg" alt="Kumar's Tweet" /></a>
@@ -21,6 +26,10 @@ _`What people often miss`_, is the first hand experience of the users who have u
 
 `pkgreview.dev` will help JavaScript Developers understand and analyze what NPM Module is the best choice for them.
 
+---
+
+---
+
 ## ✨ Building a Community ✨
 
 The app that you are currently seeing is in its MVP phase.
@@ -29,11 +38,11 @@ _`To be useful to the masses, we need more reviews.` You, as a developer, can co
 
 This project needs the support of the _`JavaScript Community`_.
 
----
-
 <Login buttonText="💃 Login with GitHub (takes two seconds) 💃" />
 
 and write your first review!
+
+---
 
 ---
 
@@ -42,3 +51,19 @@ and write your first review!
 <div class="small"><Searchbox /></div>
 
 <FeaturedPackages />
+
+<div class="clearfix"></div>
+
+---
+
+---
+
+## Are you a package maintainer?
+
+Encourage your users to review your package on `pkgreview.dev` by pasting the below snippet in your `README.md` file.
+
+Make sure you put your NPM Package Slug instead of `<package-name>`
+
+```
+the readme code goes here
+```
