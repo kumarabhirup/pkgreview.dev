@@ -32,7 +32,7 @@ export default function StarRating({
           ratingScore
         } /* number of selected icon (`0` - none, `1` - first) */
         starCount={5} /* number of icons in rating, default `5` */
-        renderStarIcon={() => `✯`}
+        renderStarIcon={() => <span style={{ userSelect: 'none' }}>✯</span>}
         starColor={starColor || '#4f78ff'}
         emptyStarColor={emptyStarColor || '#eaeaea'}
         onStarClick={(nextValue, prevValue, name) => {
