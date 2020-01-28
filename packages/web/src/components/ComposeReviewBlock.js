@@ -62,6 +62,7 @@ export default function ComposeReviewBlock({
   )
 
   const [mutationLoading, setMutationLoading] = useState(false)
+  const [mutationError, setMutationError] = useState(false)
   const [mutationData, setMutationData] = useState(null)
 
   const packageName = extractPackageNameFromSlug(packageSlug)
@@ -87,15 +88,16 @@ export default function ComposeReviewBlock({
         alt={`${username || 'User'}'s Profile`}
         style={{ borderRadius: '100%' }}
       />
+
       <br />
-      {/* {userId
-        ? `${existingReview ? `Update` : `Post`} Your Review`
-        : '🔥 Sign In with GitHub to Post a review 🔥'} */}
+
       {(() => {
         if (userId) {
           if (mutationData) return `Package Reviewed Successfully!`
 
           if (mutationLoading) return `Reviewing...`
+
+          if (mutationError) return `Please write a review`
 
           return `${existingReview ? `Update` : `Post`} Your Review`
         }
@@ -110,75 +112,88 @@ export default function ComposeReviewBlock({
       <>
         <h1>Help others by reviewing this library</h1>
 
-        {userId && (
-          <>
-            <StarRating
-              rating={ratingScore}
-              onRatingChange={rating => setRatingScore(rating)}
-              isEditable
-            />
+        <form method="post">
+          {userId && (
+            <>
+              <StarRating
+                rating={ratingScore}
+                onRatingChange={rating => setRatingScore(rating)}
+                isEditable
+              />
 
-            <ReviewTextbox
-              placeholder={`Write your review about '${packageName}' here...`}
-              value={reviewText}
-              disabled={!userId}
-              onChange={e => {
-                setReviewText(e.target.value)
+              <ReviewTextbox
+                placeholder={`Write your review about '${packageName}' here...`}
+                value={reviewText}
+                disabled={!userId}
+                onChange={e => {
+                  setReviewText(e.target.value)
+                }}
+                minLength={4}
+                maxLength={5000}
+              />
+            </>
+          )}
+
+          {userId ? (
+            <button
+              className="block accent"
+              style={{
+                display: 'block',
+                width: '100%',
+                padding: '10px',
+                fontSize: '20px',
+              }}
+              type="submit"
+              onClick={async e => {
+                e.preventDefault()
+
+                if (userId) {
+                  setMutationLoading(true)
+                  setMutationData(null)
+                  setMutationError(false)
+
+                  const { data, errors } = await writeReviewMutation({
+                    variables: {
+                      review: reviewText,
+                      rating: {
+                        score: ratingScore,
+                        total: 5,
+                      },
+                      packageName,
+                      currentUserToken: cookies.get('pkgReviewToken'),
+                    },
+                  })
+
+                  if (data) {
+                    setMutationLoading(false)
+                    setMutationData(data?.writeReview)
+
+                    router.replace(`/npm/${packageName}`)
+                  }
+
+                  if (errors) {
+                    setMutationLoading(false)
+                    setMutationError(true)
+                  }
+                }
+              }}
+              disabled={reviewText.length < 3}
+            >
+              <InsideTheButton />
+            </button>
+          ) : (
+            <Login
+              buttonText={<InsideTheButton />}
+              className="block accent reviewLoginButton"
+              style={{
+                display: 'block',
+                width: '100%',
+                padding: '10px',
+                fontSize: '20px',
               }}
             />
-          </>
-        )}
-
-        {userId ? (
-          <button
-            className="block accent"
-            style={{
-              display: 'block',
-              width: '100%',
-              padding: '10px',
-              fontSize: '20px',
-            }}
-            type="button"
-            onClick={async () => {
-              if (userId) {
-                setMutationLoading(true)
-                setMutationData(null)
-
-                const { data } = await writeReviewMutation({
-                  variables: {
-                    review: reviewText,
-                    rating: {
-                      score: ratingScore,
-                      total: 5,
-                    },
-                    packageName,
-                    currentUserToken: cookies.get('pkgReviewToken'),
-                  },
-                })
-
-                if (data) {
-                  setMutationLoading(false)
-                  setMutationData(data?.writeReview)
-
-                  router.replace(`/npm/${packageName}`)
-                }
-              }
-            }}
-          >
-            <InsideTheButton />
-          </button>
-        ) : (
-          <Login
-            buttonText={<InsideTheButton />}
-            className="block accent reviewLoginButton"
-            style={{
-              display: 'block',
-              width: '100%',
-              padding: '10px',
-              fontSize: '20px',
-            }}
-          />
-        )}
+          )}
+        </form>
       </>
     </Block>
   )
