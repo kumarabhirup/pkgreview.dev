@@ -174,3 +174,13 @@ export const SearchBoxStyledComponent = styled.form`
     border: none;
   }
 `
+
+export const Grid = styled.section`
+  display: grid;
+  grid-template-columns: ${props =>
+    `repeat(auto-fit, minmax(${props.elementWidth || '200px'}, auto))`};
+
+  a {
+    text-decoration: none;
+  }
+`

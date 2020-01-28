@@ -3,11 +3,7 @@ import styled from 'styled-components'
 import Link from 'next/link'
 
 import { featuredPackages } from '../api/meta'
-
-const Grid = styled.section`
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(200px, auto));
-`
+import { Grid } from '../lib/styles/styled'
 
 export default function FeaturedPackages() {
   return (

@@ -7,12 +7,13 @@ import gql from 'graphql-tag'
 
 import RegularPage from '../../src/components/RegularPage'
 import PackageInfoBlock from '../../src/components/PackageInfoBlock'
+import PackageGitHubBlock from '../../src/components/PackageGitHubBlock'
 import PackageReviewsBlock from '../../src/components/PackageReviewsBlock'
 import { Spacing } from '../../src/lib/styles/styled'
 import cookies from '../../src/lib/cookies'
+import useUser from '../../src/components/hooks/useUser'
 // eslint-disable-next-line import/no-cycle
 import ComposeReviewBlock from '../../src/components/ComposeReviewBlock'
-import useUser from '../../src/components/hooks/useUser'
 
 export const GET_PACKAGE_AND_REVIEWS_QUERY = gql`
   query GET_PACKAGE_AND_REVIEWS_QUERY(
@@ -83,10 +84,16 @@ function Package() {
         {data && (
           <>
             <PackageInfoBlock packageInfo={response} />
+
+            {response?.githubRepoUrl && (
+              <>
+                <Spacing />
+                <PackageGitHubBlock githubRepoUrl={response?.githubRepoUrl} />
+              </>
+            )}
+
             <PackageReviewsBlock packageReviews={response?.reviews} />
-
             <Spacing />
-
             <ComposeReviewBlock
               packageSlug={`npm/${pid}`}
               existingReview={
