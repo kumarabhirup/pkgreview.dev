@@ -25,9 +25,11 @@ export default function Meta() {
       <meta name="rating" content="General" />
 
       <meta property="og:title" content={meta.metaOgTitle} />
+      <meta property="og:description" content={meta.metaDescription} />
       <meta property="og:type" content="website" />
-      <meta property="og:url" content={meta.domain} />
+      <meta property="og:url" content={`https://${meta.domain}`} />
       <meta property="og:image" content={meta.coverImage} />
+      <meta property="og:image:alt" content={meta.metaOgTitle} />
       {/* <meta name="fb:page_id" content={meta.fbPageId} /> */}
 
       <meta name="twitter:title" content={meta.metaOgTitle} />
