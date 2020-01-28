@@ -3,6 +3,7 @@
 import React from 'react'
 import { useRouter } from 'next/router'
 import { useQuery } from 'react-apollo'
+import Head from 'next/head'
 import gql from 'graphql-tag'
 
 import RegularPage from '../../src/components/RegularPage'
@@ -12,6 +13,7 @@ import PackageReviewsBlock from '../../src/components/PackageReviewsBlock'
 import { Spacing } from '../../src/lib/styles/styled'
 import cookies from '../../src/lib/cookies'
 import useUser from '../../src/components/hooks/useUser'
+import { meta } from '../../src/api/meta'
 // eslint-disable-next-line import/no-cycle
 import ComposeReviewBlock from '../../src/components/ComposeReviewBlock'
 
@@ -74,9 +76,36 @@ function Package() {
 
   const response = data?.getPackageAndReviews
 
+  const metaDescription = `Read reviews and ratings of the NPM Package '${pid}'`
+
   return (
     <RegularPage>
       <>
+        <Head>
+          <title>
+            {pid} - NPM Reviews − {meta.name}
+          </title>
+
+          <meta
+            property="og:title"
+            content={`${pid} - NPM Reviews − ${meta.name}`}
+          />
+          <meta
+            name="twitter:title"
+            content={`${pid} - NPM Reviews − ${meta.name}`}
+          />
+
+          <meta name="description" content={metaDescription} />
+          <meta property="og:description" content={metaDescription} />
+          <meta name="twitter:description" content={metaDescription} />
+
+          <meta name="url" content={`https://${meta.domain}/npm/${pid}`} />
+          <meta
+            name="identifier-URL"
+            content={`https://${meta.domain}/npm/${pid}`}
+          />
+        </Head>
+
         {loading && <p>Loading...</p>}
 
         {error && <p>{error.message}</p>}

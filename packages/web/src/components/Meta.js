@@ -18,8 +18,8 @@ export default function Meta() {
       <meta name="copyright" content={meta.name} />
       <meta name="robots" content="index,follow" />
       <meta name="author" content={`${meta.author}, ${meta.email}`} />
-      <meta name="url" content={meta.domain} />
-      <meta name="identifier-URL" content={meta.domain} />
+      <meta name="url" content={`https://${meta.domain}`} />
+      <meta name="identifier-URL" content={`https://${meta.domain}`} />
       <meta name="coverage" content="Worldwide" />
       <meta name="distribution" content="Global" />
       <meta name="rating" content="General" />
