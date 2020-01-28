@@ -1,6 +1,15 @@
 export const meta = {
-  title: 'pkgreview.dev',
+  title: 'pkgreview.dev − The JavaScript Review and Ratings portal',
   name: 'pkgreview.dev',
+  metaDescription:
+    'A lot of people find it very difficult to decide what NPM Package to use. pkgreview.dev helps developers in the JavaScript Community review and analyze each module before they start using it.',
+  email: 'kumar@iqubex.com',
+  author: 'Kumar Abhirup',
+  domain: 'pkgreview.dev',
+  metaOgTitle: 'pkgreview.dev − The JavaScript Review and Ratings portal',
+  coverImage: 'https://i.ibb.co/WgX9cCX/pkgreview.jpg',
+  fbPageId: '',
+  social: 'kumar_abhirup',
 }
 
 export const placeholderUserImage =

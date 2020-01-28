@@ -1,6 +1,8 @@
 import React, { Component } from 'react'
 import { ThemeProvider } from 'styled-components'
 
+import Meta from './Meta'
+
 const theme = {
   defaultColor: '#ffffff',
 }
@@ -15,7 +17,10 @@ class Page extends Component {
           React.Fragments needed, 
           or see this error 👉 `https://stackoverflow.com/questions/43300897/react-children-only-expected-to-receive-a-single-react-element-child-navigator/43301040` 
         */}
-        <>{children}</>
+        <>
+          <Meta />
+          {children}
+        </>
       </ThemeProvider>
     )
   }

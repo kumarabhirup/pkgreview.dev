@@ -53,10 +53,15 @@ export const Container = styled.main`
 export const Header = styled.header`
   line-height: 20px;
   display: inline-block;
+  padding: 5px;
 
   a {
     color: #ffffff;
     text-decoration: none;
+  }
+
+  img {
+    margin-top: '10px';
   }
 `
 
