@@ -7,7 +7,7 @@ export const meta = {
   author: 'Kumar Abhirup',
   domain: 'pkgreview.dev',
   metaOgTitle: 'pkgreview.dev − The JavaScript Review and Ratings portal',
-  coverImage: 'https://i.ibb.co/2FBDqk8/pkgreview-dev-javascript.jpg',
+  coverImage: 'https://i.ibb.co/D8p6Zv5/pkgreview-dev-javascript.jpg',
   fbPageId: '',
   social: 'kumar_abhirup',
 }
