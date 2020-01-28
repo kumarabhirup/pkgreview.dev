@@ -76,7 +76,7 @@ function Package() {
 
   const response = data?.getPackageAndReviews
 
-  const metaDescription = `Read reviews and ratings of the NPM Package '${pid}'`
+  const metaDescription = `Read reviews and ratings of the NPM Package '${pid}'.`
 
   return (
     <RegularPage>
