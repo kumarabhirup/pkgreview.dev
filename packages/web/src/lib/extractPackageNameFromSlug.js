@@ -1,7 +1,5 @@
 export default function extractPackageNameFromSlug(packageSlug) {
-  const newSlug = packageSlug
+  const newSlug = packageSlug.substr(4)
 
-  const slugArray = newSlug.split('/')
-
-  return slugArray[slugArray.length - 1]
+  return newSlug
 }

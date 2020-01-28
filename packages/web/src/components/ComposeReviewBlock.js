@@ -10,7 +10,6 @@ import useUser from './hooks/useUser'
 import StarRating from './StarRating'
 import { placeholderUserImage } from '../api/meta'
 import { ReviewTextbox } from '../lib/styles/styled'
-import extractPackageNameFromSlug from '../lib/extractPackageNameFromSlug'
 import cookies from '../lib/cookies'
 import { getRatingScore } from './PackageInfoBlock'
 
@@ -51,6 +50,7 @@ export default function ComposeReviewBlock({
   parentComponentRefetch,
 }) {
   const router = useRouter()
+  const { pid } = router.query
 
   const [{ avatar, username }, { userId }] = useUser()
 
@@ -65,14 +65,14 @@ export default function ComposeReviewBlock({
   const [mutationError, setMutationError] = useState(false)
   const [mutationData, setMutationData] = useState(null)
 
-  const packageName = extractPackageNameFromSlug(packageSlug)
+  const packageName = pid
 
   const [writeReviewMutation] = useMutation(WRITE_REVIEW_MUTATION, {
     refetchQueries: () => [
       {
         query: GET_PACKAGE_AND_REVIEWS_QUERY,
         variables: {
-          slug: packageName,
+          slug: encodeURIComponent(packageName),
           currentUserToken: cookies.get('pkgReviewText'),
         },
       },
@@ -168,7 +168,12 @@ export default function ComposeReviewBlock({
                     setMutationLoading(false)
                     setMutationData(data?.writeReview)
 
-                    router.replace(`/npm/${packageName}`)
+                    router.replace(
+                      `/npm/${encodeURIComponent(packageName).replace(
+                        '%40',
+                        '@'
+                      )}`
+                    )
                   }
 
                   if (errors) {
