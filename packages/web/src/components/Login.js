@@ -65,6 +65,10 @@ export default function Login({ buttonText, className, style }) {
         if (mutation.data.loginMutation.token) {
           setUserToken(mutation.data.loginMutation.token)
 
+          // if (cookies.get('pkgReviewToken')) {
+          //   cookies.remove('pkgReviewToken', { path: '/' })
+          // }
+
           cookies.set('pkgReviewToken', mutation.data.loginMutation.token, {
             path: '/',
             maxAge: 1000 * 60 * 60 * 24 * 9,

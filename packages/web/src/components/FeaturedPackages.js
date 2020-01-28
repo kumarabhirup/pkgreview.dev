@@ -6,7 +6,7 @@ import { featuredPackages } from '../api/meta'
 
 const Grid = styled.section`
   display: grid;
-  grid-template-columns: auto auto auto;
+  grid-template-columns: repeat(auto-fit, minmax(200px, auto));
 `
 
 export default function FeaturedPackages() {
