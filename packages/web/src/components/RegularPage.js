@@ -1,6 +1,7 @@
 import React from 'react'
 import Head from 'next/head'
 import Link from 'next/link'
+import { useRouter } from 'next/router'
 import { useSpring, animated } from 'react-spring'
 import PropTypes from 'prop-types'
 
@@ -11,9 +12,12 @@ import SearchBox from './SearchBox'
 import ProvideUser from './ProvideUser'
 import Login from './Login'
 import SignOut from './SignOut'
+import cookies from '../lib/cookies'
 
 export default function RegularPage({ children }) {
   const fadeIn = useSpring(fadeInWithRotation)
+
+  const router = useRouter()
 
   return (
     <>
@@ -31,7 +35,27 @@ export default function RegularPage({ children }) {
           <p className="loginText">
             <ProvideUser>
               {({ data, error, loading }) => {
-                if (error) return `There's an error.`
+                if (error)
+                  return (
+                    <>
+                      There's an error.{' '}
+                      <button
+                        className="block"
+                        style={{ display: 'inline' }}
+                        type="button"
+                        onClick={() => {
+                          if (cookies.get('pkgReviewToken')) {
+                            cookies.remove('pkgReviewToken', { path: '/' })
+
+                            router.reload()
+                          }
+                        }}
+                      >
+                        Click here
+                      </button>{' '}
+                      to get things work properly.
+                    </>
+                  )
 
                 if (loading) return `Loading...`
 
