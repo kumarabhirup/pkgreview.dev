@@ -37,7 +37,9 @@ const Dropdown = styled.div`
     props.mobile
       ? 'box-shadow: 0px 0px 5px rgba(0,0,0,.3); border-radius: 6px;'
       : null};
-  /* padding: 10px; */
+  border: 3px solid #4f78ff;
+  box-shadow: 10px 10px 15px rgba(0, 0, 0, 0.3);
+  ${props => (!props.visible ? `display: none` : '')}
 `
 
 const DropDownItem = styled.div`
@@ -138,15 +140,15 @@ export default function SearchBox({ limit }) {
           </label>
 
           {isOpen ? (
-            <Dropdown packages={packages}>
+            <Dropdown packages={packages} visible={packages.length > 0}>
               {packages.map((packageData, index) => (
                 <DropDownItem
                   {...getItemProps({ item: packageData })}
                   key={packageData.name}
                   highlighted={index === highlightedIndex}
-                  className={`block ${
-                    index === highlightedIndex ? 'accent' : ''
-                  }`}
+                  // className={`block ${
+                  //   index === highlightedIndex ? 'accent' : ''
+                  // }`}
                 >
                   {packageData.type === 'npm' && (
                     <img
