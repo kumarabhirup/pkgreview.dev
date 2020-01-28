@@ -12,6 +12,18 @@ This website was born out of this tweet.
     clear: both;
     padding: 5px;
   }
+
+  code {
+    display: inline;
+     white-space: pre-wrap;
+  }
+
+  pre {
+    height: 200px;
+    overflow: scroll;
+    text-align: left;
+    font-weight: 100;
+  }
 </style>
 
 <a href="https://twitter.com/kumar_abhirup/status/1218860389833723905" target="_blank" rel="noopener noreferrer"><img class="readme" src="https://i.ibb.co/pzc77bJ/Screenshot-2020-01-27-at-10-09-30-PM.jpg" alt="Kumar's Tweet" /></a>
@@ -66,6 +78,20 @@ Encourage your users to review your package on `pkgreview.dev` by pasting the be
 
 Make sure you put your NPM Package Slug instead of `<package-name>`
 
+### Markdown Code
+
+```md
+| **Like us a lot?** Help others know why you like us! **Review this package on [pkgreview.dev](https://pkgreview.dev/npm/<package-name>)** | ➡   | [![Review us on pkgreview.dev](https://i.ibb.co/McjVMfb/pkgreview-dev.jpg)](https://pkgreview.dev/npm/<package-name>) |
+| ----------------------------------------------------------------------------------------------------------------------------------------- | --- | --------------------------------------------------------------------------------------------------------------------- |
+
 ```
-the readme code goes here
-```
+
+### Preview
+
+<img class="readme" src="https://i.ibb.co/HPTDdXH/Screenshot-2020-01-28-at-6-36-44-PM.jpg" alt="Encourage people to review your package on this portal." />
+
+---
+
+---
+
+### `Happy reviewing and rating libraries! 🎉`
