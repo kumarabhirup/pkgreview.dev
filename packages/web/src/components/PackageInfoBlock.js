@@ -28,7 +28,15 @@ export default function PackageInfoBlock({ packageInfo }) {
       <FlexContainer lastTextAlign>
         <div>
           <h1 style={{ textAlign: 'start' }}>
-            {packageInfo.name}{' '}
+            <a
+              href={`https://www.npmjs.com/package/${packageInfo.name}`}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="nextApp"
+            >
+              {packageInfo.name}
+              <sup>↗️</sup>
+            </a>{' '}
             {packageInfo.type === 'npm' && (
               <img
                 src="https://upload.wikimedia.org/wikipedia/commons/d/db/Npm-logo.svg"
