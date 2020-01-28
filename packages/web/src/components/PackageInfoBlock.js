@@ -33,6 +33,7 @@ export default function PackageInfoBlock({ packageInfo }) {
               target="_blank"
               rel="noopener noreferrer"
               className="nextApp"
+              style={{ marginTop: '-10px', lineHeight: '0px' }}
             >
               {packageInfo.name}
               <sup>↗️</sup>

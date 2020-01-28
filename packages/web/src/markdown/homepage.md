@@ -20,11 +20,13 @@ This website was born out of this tweet.
 
 A lot of people find it very difficult to decide what NPM Package, React Component, Module or Library to use.
 
-_`They end up checking GitHub`_ stars, number of forks, ratio of open issues to closed issues, pull requests, last updated date, etc.
+_`They end up checking on GitHub`_ to see how active the community is. GitHub does not tell you a clear picture. It is just a part of the picture.
 
 _`What people often miss`_, is the first hand experience of the users who have used the library.
 
-`pkgreview.dev` will help JavaScript Developers understand and analyze what NPM Module is the best choice for them.
+`pkgreview.dev` displays all sort of important metadata of a package (_reviews, ratings, last updated, stargazers, etc._) and also shows `other developers' opinion` about them.
+
+And you can `contribute by posting your review` about the NPM Package. 🎉
 
 ---
 
