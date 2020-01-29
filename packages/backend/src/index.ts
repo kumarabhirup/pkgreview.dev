@@ -5,11 +5,12 @@ import { GraphQLServer } from 'graphql-yoga'
 import * as cookieParser from 'cookie-parser'
 import * as bodyParser from 'body-parser'
 import * as jwt from 'jsonwebtoken'
+import * as MongoHeartbeat from 'mongo-heartbeat'
 
 import typeDefs from './utils/schema'
 import resolvers from './resolvers'
 import pubsub from './utils/pubsub'
-import db from './utils/database'
+import db, { mongoDB } from './utils/database'
 import userModel from './models/User'
 
 const server: GraphQLServer = new GraphQLServer({
@@ -37,41 +38,22 @@ server.use(
   })
 )
 
-// // Decode the JWT
-// server.express.use((req, res, next) => {
-//   const pkgreviewToken = req?.cookies?.pkgreviewToken
+// Uptime Monitor for MongoDB
+async function monitor(): Promise<void> {
+  const heartBeat = MongoHeartbeat(await mongoDB(), {
+    interval: 5000, // defaults to 5000 ms,
+    timeout: 9000, // defaults to 10000 ms
+    tolerance: 2, // defaults to 1 attempt
+  })
 
-//   if (pkgreviewToken) {
-//     const { userId } = jwt.verify(pkgreviewToken, process.env.PR_JWT_SECRET)
-//     if (userId) {
-//       // @ts-ignore
-//       req.userId = userId
-//     }
-//   }
+  heartBeat.on('error', error => {
+    console.error(
+      `${new Date().toISOString()} - MongoDB didnt respond to the heartbeat message.`
+    )
+  })
+}
 
-//   next()
-// })
-
-// // Populate the user
-// server.express.use(async (req, res, next) => {
-//   // skip if they aren't logged in
-
-//   // @ts-ignore
-//   if (!req.userId) {
-//     return next()
-//   }
-
-//   // @ts-ignore
-//   const user = await userModel
-//     // @ts-ignore
-//     .findById(req.userId)
-//     .select('id name email githubUsername')
-
-//   // @ts-ignore
-//   req.user = user
-
-//   next()
-// })
+monitor()
 
 // Port
 const PORT = 4000

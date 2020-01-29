@@ -47,6 +47,8 @@
     "dotenv": "^8.1.0",
     "graphql-yoga": "^1.18.3",
     "jsonwebtoken": "^8.5.1",
+    "mongo-heartbeat": "^1.1.0",
+    "mongodb": "^3.5.2",
     "mongoose": "^5.7.7",
     "node-cron": "^2.0.3",
     "puppeteer": "^2.0.0",
