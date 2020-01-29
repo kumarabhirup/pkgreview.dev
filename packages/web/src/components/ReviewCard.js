@@ -57,68 +57,74 @@ export default function ReviewCard({ review }) {
           }}
         >
           <Center>
-            <img
-              src={avatar || placeholderUserImage}
-              alt="Profile"
-              width="125"
-              style={{ borderRadius: '100%' }}
-            />
+            <>
+              <img
+                src={avatar || placeholderUserImage}
+                alt="Profile"
+                width="125"
+                style={{ borderRadius: '100%' }}
+              />
 
-            <h1>
-              {username ? (
-                <a
-                  style={{ color: '#fff' }}
-                  href={`https://github.com/${username}`}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                >
-                  {review.author.name}
-                </a>
-              ) : (
-                review.author.name
-              )}
-            </h1>
-
-            <StarRating
-              rating={review?.rating?.score}
-              starColor="#eaeaea"
-              emptyStarColor="#273b7c"
-              fontSize="50px"
-            />
-
-            <h5>{moment(updatedAt).format('dddd, DD MMMM YYYY − hh:mm a')}</h5>
-
-            <br />
-
-            {userId && (
-              <h6>
-                {review?.author?._id === userId ? (
-                  `This is your review`
-                ) : (
-                  <button
-                    className="block"
-                    style={{ padding: '5px' }}
-                    onClick={async () => {
-                      const thisFlagReviewMutation = await flagReviewMutation({
-                        variables: {
-                          reviewId: review._id,
-                          currentUserToken: cookies.get('pkgReviewToken'),
-                        },
-                      })
-
-                      if (thisFlagReviewMutation?.data?.flagReview?._id) {
-                        setIsFlagged(true)
-                      }
-                    }}
-                    disabled={isFlagged || isFlagLoading}
-                    type="button"
+              <h1>
+                {username ? (
+                  <a
+                    style={{ color: '#fff' }}
+                    href={`https://github.com/${username}`}
+                    target="_blank"
+                    rel="noopener noreferrer"
                   >
-                    {isFlagged ? `Reported! Thanks :)` : `Report 🚩`}
-                    {isFlagLoading && `Loading...`}
-                  </button>
+                    {review.author.name}
+                  </a>
+                ) : (
+                  review.author.name
                 )}
-              </h6>
-            )}
+              </h1>
+
+              <StarRating
+                rating={review?.rating?.score}
+                starColor="#eaeaea"
+                emptyStarColor="#273b7c"
+                fontSize="50px"
+              />
+
+              <h5>
+                {moment(updatedAt).format('dddd, DD MMMM YYYY − hh:mm a')}
+              </h5>
+
+              <br />
+
+              {userId && (
+                <h6>
+                  {review?.author?._id === userId ? (
+                    `This is your review`
+                  ) : (
+                    <button
+                      className="block"
+                      style={{ padding: '5px' }}
+                      onClick={async () => {
+                        const thisFlagReviewMutation = await flagReviewMutation(
+                          {
+                            variables: {
+                              reviewId: review._id,
+                              currentUserToken: cookies.get('pkgReviewToken'),
+                            },
+                          }
+                        )
+
+                        if (thisFlagReviewMutation?.data?.flagReview?._id) {
+                          setIsFlagged(true)
+                        }
+                      }}
+                      disabled={isFlagged || isFlagLoading}
+                      type="button"
+                    >
+                      {isFlagged ? `Reported! Thanks :)` : `Report 🚩`}
+                      {isFlagLoading && `Loading...`}
+                    </button>
+                  )}
+                </h6>
+              )}
+            </>
           </Center>
         </div>
 
