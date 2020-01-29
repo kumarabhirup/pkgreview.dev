@@ -129,7 +129,15 @@ export default function ReviewCard({ review }) {
         </div>
 
         <div style={{ padding: '20px' }}>
-          <p style={{ fontSize: '20px' }}>{review.review}</p>
+          <p
+            style={{
+              fontSize: '20px',
+              whiteSpace: 'pre-line',
+              textAlign: 'justify',
+            }}
+          >
+            {review.review}
+          </p>
         </div>
       </FlexContainer>
     </article>
