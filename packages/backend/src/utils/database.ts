@@ -16,9 +16,6 @@ mongoose.connect(connectionUrl, {
 const db = mongoose.connection
 
 // MongoDB
-// eslint-disable-next-line import/no-mutable-exports
-// let mongoDB: any
-
 async function mongoDB(): Promise<any> {
   const client = await MongoClient.connect(connectionUrl, {
     useNewUrlParser: true,

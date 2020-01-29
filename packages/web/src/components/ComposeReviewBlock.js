@@ -187,16 +187,17 @@ export default function ComposeReviewBlock({
               <InsideTheButton />
             </button>
           ) : (
-            <Login
-              buttonText={<InsideTheButton />}
-              className="block accent reviewLoginButton"
-              style={{
-                display: 'block',
-                width: '100%',
-                padding: '10px',
-                fontSize: '20px',
-              }}
-            />
+            // <Login
+            //   buttonText={<InsideTheButton />}
+            //   className="block accent reviewLoginButton"
+            //   style={{
+            //     display: 'block',
+            //     width: '100%',
+            //     padding: '10px',
+            //     fontSize: '20px',
+            //   }}
+            // />
+            <p>Please Sign In to Post a Review</p>
           )}
         </form>
       </>
