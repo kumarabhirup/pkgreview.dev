@@ -27,7 +27,7 @@ export default function RegularPage({ children }) {
       <animated.div style={{ ...fadeIn }}>
         <Container>
           <Link href="/">
-            <Header className="block accent">
+            <Header className="block accent" id="loginSection">
               <h1>{meta.name}</h1>
             </Header>
           </Link>
@@ -70,7 +70,11 @@ export default function RegularPage({ children }) {
                     </>
                   )
 
-                return <Login />
+                return (
+                  // <div id="loginSection">
+                  <Login />
+                  // </div>
+                )
               }}
             </ProvideUser>
           </p>

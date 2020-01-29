@@ -187,17 +187,9 @@ export default function ComposeReviewBlock({
               <InsideTheButton />
             </button>
           ) : (
-            // <Login
-            //   buttonText={<InsideTheButton />}
-            //   className="block accent reviewLoginButton"
-            //   style={{
-            //     display: 'block',
-            //     width: '100%',
-            //     padding: '10px',
-            //     fontSize: '20px',
-            //   }}
-            // />
-            <p>Please Sign In to Post a Review</p>
+            <a href="#loginSection" className="nextApp">
+              <h2>Please Sign In to Post a Review (Scroll to Top 👆)</h2>
+            </a>
           )}
         </form>
       </>
