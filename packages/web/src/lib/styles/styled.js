@@ -22,6 +22,9 @@ export const Container = styled.main`
     text-decoration: none;
     transition: all 0.2s ease;
     border-bottom: 1px solid white;
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+    hyphens: auto;
   }
 
   a.nextApp:hover {

@@ -5,15 +5,19 @@ import { MongoClient } from 'mongodb'
 const dbName = `pkgreview`
 const connectionUrl = `mongodb+srv://${process.env.PR_MONGODB_USERNAME}:${process.env.PR_MONGODB_PASSWORD}@${process.env.PR_MONGODB_CLUSTER}-s4smj.mongodb.net/${dbName}?retryWrites=true&w=majority`
 
-// Mongoose
-mongoose.connect(connectionUrl, {
-  useNewUrlParser: true,
-  useCreateIndex: true,
-  useFindAndModify: false,
-  useUnifiedTopology: false,
-})
+try {
+  // Mongoose
+  mongoose.connect(connectionUrl, {
+    useNewUrlParser: true,
+    useCreateIndex: true,
+    useFindAndModify: false,
+    useUnifiedTopology: false,
+  })
+} catch (error) {
+  console.log(error)
+}
 
-const db = mongoose.connection
+const db = mongoose?.connection
 
 // MongoDB
 async function mongoDB(): Promise<any> {

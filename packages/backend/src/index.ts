@@ -40,11 +40,17 @@ server.use(
 
 // Uptime Monitor for MongoDB
 async function monitor(): Promise<void> {
-  const heartBeat = MongoHeartbeat(await mongoDB(), {
-    interval: 5000, // defaults to 5000 ms,
-    timeout: 9000, // defaults to 10000 ms
-    tolerance: 2, // defaults to 1 attempt
-  })
+  let heartBeat
+
+  try {
+    heartBeat = MongoHeartbeat(await mongoDB(), {
+      interval: 5000, // defaults to 5000 ms,
+      timeout: 9000, // defaults to 10000 ms
+      tolerance: 2, // defaults to 1 attempt
+    })
+  } catch (error) {
+    console.log(error)
+  }
 
   heartBeat.on('error', error => {
     console.error(
