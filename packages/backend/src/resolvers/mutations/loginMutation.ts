@@ -40,14 +40,10 @@ const loginMutation = async (
     throw new Error(error.message)
   }
 
-  const {
-    id,
-    email,
-    name,
-
-    // This is the GitHub Username
-    login,
-  } = user
+  const id = user?.id
+  const email = user?.email
+  const name = user?.name
+  const login = user?.login
 
   // Check if user already exists, if yes, just generate the token...
   const isUserAlreadySignedIn = await userModel.findOne({ githubId: id })
