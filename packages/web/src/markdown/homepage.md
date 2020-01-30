@@ -28,6 +28,18 @@ This website was born out of this tweet.
 
 <a href="https://twitter.com/kumar_abhirup/status/1218860389833723905" target="_blank" rel="noopener noreferrer"><img class="readme" src="https://i.ibb.co/pzc77bJ/Screenshot-2020-01-27-at-10-09-30-PM.jpg" alt="Kumar's Tweet" /></a>
 
+# Go review them now!
+
+<div class="small"><Searchbox /></div>
+
+<FeaturedPackages />
+
+<div class="clearfix"></div>
+
+---
+
+---
+
 ## 🕹 The idea 🕹
 
 A lot of people find it very difficult to decide what NPM Package, React Component, Module or Library to use.
@@ -55,18 +67,6 @@ This project needs the support of the _`JavaScript Community`_.
 <Login buttonText="💃 Login with GitHub (takes two seconds) 💃" />
 
 and write your first review!
-
----
-
----
-
-# Go review them now!
-
-<div class="small"><Searchbox /></div>
-
-<FeaturedPackages />
-
-<div class="clearfix"></div>
 
 ---
 
