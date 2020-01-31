@@ -40,7 +40,7 @@ export default function Meta() {
       <meta name="twitter:site" content={`@${meta.social}`} />
       <meta name="twitter:creator" content={`@${meta.social}`} />
 
-      <script
+      {/* <script
         data-name="BMC-Widget"
         src="https://cdnjs.buymeacoffee.com/1.0.0/widget.prod.min.js"
         data-id="abhirup"
@@ -50,7 +50,7 @@ export default function Meta() {
         data-position="right"
         data-x_margin="18"
         data-y_margin="18"
-      ></script>
+      ></script> */}
     </Head>
   )
 }

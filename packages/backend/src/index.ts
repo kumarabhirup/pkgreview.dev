@@ -43,23 +43,30 @@ async function monitor(): Promise<void> {
   let heartBeat
 
   try {
-    heartBeat = MongoHeartbeat(await mongoDB(), {
-      interval: 5000, // defaults to 5000 ms,
-      timeout: 9000, // defaults to 10000 ms
-      tolerance: 2, // defaults to 1 attempt
+    heartBeat = MongoHeartbeat(
+      await mongoDB().catch(error => console.log(error)),
+      {
+        interval: 5000, // defaults to 5000 ms,
+        timeout: 9000, // defaults to 10000 ms
+        tolerance: 2, // defaults to 1 attempt
+      }
+    )
+
+    heartBeat.on('error', error => {
+      console.error(
+        `${new Date().toISOString()} - MongoDB didnt respond to the heartbeat message.`
+      )
     })
   } catch (error) {
     console.log(error)
   }
-
-  heartBeat.on('error', error => {
-    console.error(
-      `${new Date().toISOString()} - MongoDB didnt respond to the heartbeat message.`
-    )
-  })
 }
 
-monitor()
+try {
+  monitor().catch(error => console.log(error))
+} catch (error) {
+  console.log(error)
+}
 
 // Port
 const PORT = 4000

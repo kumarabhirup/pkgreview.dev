@@ -7,12 +7,15 @@ const connectionUrl = `mongodb+srv://${process.env.PR_MONGODB_USERNAME}:${proces
 
 try {
   // Mongoose
-  mongoose.connect(connectionUrl, {
-    useNewUrlParser: true,
-    useCreateIndex: true,
-    useFindAndModify: false,
-    useUnifiedTopology: false,
-  })
+  mongoose
+    .connect(connectionUrl, {
+      useNewUrlParser: true,
+      useCreateIndex: true,
+      useFindAndModify: false,
+      useUnifiedTopology: false,
+      useMongoClient: true,
+    })
+    .catch(error => console.log(error))
 } catch (error) {
   console.log(error)
 }
