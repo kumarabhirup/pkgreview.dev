@@ -1,0 +1,28 @@
+type User {
+  id: ID! @id
+  name: String!
+  email: String! @unique
+  githubUsername: String! @unique
+  githubId: Int! @unique
+  reviews: [Review]
+  createdAt: DateTime! @createdAt
+  updatedAt: DateTime! @updatedAt
+}
+
+type Review {
+  id: ID! @id
+  author: User!
+  rating: Json!
+  review: String!
+  package: String! # Package! Populate Later
+  createdAt: DateTime! @createdAt
+  updatedAt: DateTime! @updatedAt
+}
+
+type Flag {
+  id: ID! @id
+  by: User!
+  review: Review!
+  createdAt: DateTime! @createdAt
+  updatedAt: DateTime! @updatedAt
+}

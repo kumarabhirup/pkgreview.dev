@@ -2,15 +2,16 @@
   "name": "backend",
   "version": "1.0.0",
   "license": "MIT",
-  "main": "dist/index.js",
+  "main": "dist/src/index.js",
   "scripts": {
     "build": "tsc",
     "build:watch": "tsc --watch",
-    "start": "npm run build && node dist/index.js",
-    "dev": "npm run build && nodemon dist/index.js",
+    "start": "npm run build && node dist/src/index.js",
+    "dev": "npm run build && nodemon dist/src/index.js",
     "lint": "eslint src/*.ts",
     "lint:fix": "eslint src/*.ts --fix",
-    "test": "echo \"No tests specified\""
+    "test": "echo \"No tests specified\"",
+    "deploy:prisma": "prisma deploy -e .env"
   },
   "devDependencies": {
     "@types/cheerio": "^0.22.15",
@@ -34,6 +35,7 @@
     "eslint-plugin-react-hooks": "^1.7.0",
     "nodemon": "^1.19.1",
     "prettier": "^1.18.2",
+    "prisma": "^1.34.10",
     "typescript": "^3.6.2",
     "typings": "^2.1.1"
   },
@@ -51,10 +53,14 @@
     "mongodb": "^3.5.2",
     "mongoose": "^5.7.7",
     "node-cron": "^2.0.3",
+    "prisma-client-lib": "^1.34.10",
     "puppeteer": "^2.0.0",
     "tslib": "^1.10.0"
   },
   "engines": {
     "node": "12.x"
+  },
+  "resolutions": {
+    "graphql": "14.x"
   }
 }

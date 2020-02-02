@@ -1,19 +1,19 @@
 const typeDefs = `
   # Database Fields
   type User {
-    _id: String!
+    id: String!
     name: String!
     email: String!
     githubUsername: String!
     githubId: Int!
     token: String!
-    # reviews: [Review]
+    reviews: [Review]
     createdAt: String!
     updatedAt: String!
   }
 
   type Review {
-    _id: String!
+    id: String!
     author: User!
     rating: Rating!
     review: String!
@@ -23,7 +23,7 @@ const typeDefs = `
   }
 
   type Flag {
-    _id: String!
+    id: String!
     by: User!
     review: Review!
     createdAt: String!

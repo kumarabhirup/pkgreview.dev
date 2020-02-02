@@ -1,10 +1,14 @@
+/* eslint-disable @typescript-eslint/ban-ts-ignore */
 /* eslint-disable @typescript-eslint/member-delimiter-style */
 /* eslint-disable @typescript-eslint/camelcase */
 
 import '../../utils/env'
+import { ContextParameters } from 'graphql-yoga/dist/types'
 
-import reviewModel from '../../models/Review'
 import getCurrentUserQuery from '../queries/getCurrentUserQuery'
+import { Prisma } from '../../../generated/prisma-client'
+
+type Request = ContextParameters['request']
 
 interface Rating {
   score: number
@@ -25,14 +29,14 @@ const writeReviewMutation = async (
     packageName: string
     currentUserToken: string
   },
-  context,
+  { db, request }: { db: Prisma; request: Request },
   info
 ): Promise<object> => {
   // TODO: Check if user exists, if not, error.
   const user = await getCurrentUserQuery(
     null,
     { token: currentUserToken },
-    { request: context.request },
+    { request, db },
     null
   )
 
@@ -46,10 +50,16 @@ const writeReviewMutation = async (
   }
 
   // Find for the existing review...
-  const existingReview = await reviewModel
-    .findOne()
-    .and([{ author: user }, { package: packageName }])
-    .then(data => data?.toObject())
+  // const existingReview = await reviewModel
+  //   .findOne()
+  //   .and([{ author: user }, { package: packageName }])
+  //   .then(data => data?.toObject())
+
+  const existingReview = await db
+    .reviews({
+      where: { AND: [{ author: user }, { package: packageName }] },
+    })
+    .then(data => (data.length > 0 ? data[0] : null))
 
   // TODO: If user exists, write the review
   const time = new Date().toISOString()
@@ -57,42 +67,67 @@ const writeReviewMutation = async (
   let mutateReview
 
   if (existingReview) {
-    mutateReview = await reviewModel
-      .findOneAndUpdate(
-        {
-          author: user,
-          package: packageName,
+    // mutateReview = await reviewModel
+    //   .findOneAndUpdate(
+    //     {
+    //       author: user,
+    //       package: packageName,
+    //     },
+    //     {
+    //       author: user,
+    //       rating,
+    //       package: packageName,
+    //       review,
+    //       updatedAt: time,
+    //     }
+    //   )
+    //   // eslint-disable-next-line no-return-await
+    //   .then(async data => await data?.populate('author')?.execPopulate())
+    //   .then(data => data?.toObject())
+
+    mutateReview = await db.updateReview({
+      where: { id: existingReview?.id },
+      data: {
+        author: {
+          // @ts-ignore
+          connect: { id: user?.id },
         },
-        {
-          author: user,
-          rating,
-          package: packageName,
-          review,
-          updatedAt: time,
-        }
-      )
-      // eslint-disable-next-line no-return-await
-      .then(async data => await data?.populate('author')?.execPopulate())
-      .then(data => data?.toObject())
+        rating,
+        package: packageName,
+        review,
+      },
+    })
   } else {
-    mutateReview = await reviewModel
-      .insertMany([
-        {
-          author: user,
-          rating,
-          package: packageName,
-          review,
-          createdAt: time,
-          updatedAt: time,
+    // mutateReview = await reviewModel
+    //   .insertMany([
+    //     {
+    //       author: user,
+    //       rating,
+    //       package: packageName,
+    //       review,
+    //       createdAt: time,
+    //       updatedAt: time,
+    //     },
+    //   ])
+    //   .then(data => data[0])
+    //   // eslint-disable-next-line no-return-await
+    //   .then(async data => await data?.populate('author')?.execPopulate())
+    //   .then(data => data?.toObject())
+
+    mutateReview = await db.createReview({
+      author: {
+        connect: {
+          // @ts-ignore
+          id: user?.id,
         },
-      ])
-      .then(data => data[0])
-      // eslint-disable-next-line no-return-await
-      .then(async data => await data?.populate('author')?.execPopulate())
-      .then(data => data?.toObject())
+      },
+      rating,
+      package: packageName,
+      review,
+    })
   }
 
-  return { ...mutateReview, _id: mutateReview?._id }
+  return { ...mutateReview, id: mutateReview?.id }
 }
 
 export default writeReviewMutation

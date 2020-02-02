@@ -5,14 +5,14 @@ import '../../utils/env'
 import * as jwt from 'jsonwebtoken'
 
 import { ContextParameters } from 'graphql-yoga/dist/types'
-import userModel from '../../models/User'
+import { Prisma } from '../../../generated/prisma-client'
 
 type Request = ContextParameters['request']
 
 const getCurrentUserQuery = async (
   parent,
   { token }: { token: string },
-  { request }: { request: Request },
+  { request, db }: { request: Request; db: Prisma },
   info
 ): Promise<object | null> => {
   let userId
@@ -24,9 +24,11 @@ const getCurrentUserQuery = async (
   if (request) request.userId = userId
 
   if (userId) {
-    const currentUser = await userModel
-      .findById(userId)
-      .then(data => data.toObject())
+    // const currentUser = await userModel
+    //   .findById(userId)
+    //   .then(data => data.toObject())
+
+    const currentUser = await db.user({ id: userId })
 
     return currentUser
   }

@@ -29,14 +29,14 @@ const WRITE_REVIEW_MUTATION = gql`
       packageName: $packageName
       currentUserToken: $currentUserToken
     ) {
-      _id
+      id
       review
       rating {
         score
         total
       }
       author {
-        _id
+        id
         name
       }
     }

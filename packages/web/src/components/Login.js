@@ -11,7 +11,7 @@ import cookies from '../lib/cookies'
 const SIGNIN_MUTATION = gql`
   mutation SIGNIN_MUTATION($codeForToken: String!) {
     loginMutation(codeForToken: $codeForToken) {
-      _id
+      id
       name
       email
       token

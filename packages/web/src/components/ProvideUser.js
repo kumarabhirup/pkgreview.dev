@@ -7,7 +7,7 @@ import cookies from '../lib/cookies'
 export const CURRENT_USER_QUERY = gql`
   query CURRENT_USER_QUERY($token: String) {
     getCurrentUser(token: $token) {
-      _id
+      id
       name
       email
       githubUsername

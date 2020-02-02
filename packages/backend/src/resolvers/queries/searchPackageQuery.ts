@@ -5,6 +5,8 @@
 import '../../utils/env'
 import axios from 'axios'
 
+import { Prisma } from '../../../generated/prisma-client'
+
 const searchPackageQuery = async (
   parent,
   {
@@ -12,7 +14,7 @@ const searchPackageQuery = async (
     skip,
     limit,
   }: { searchString: string; skip: number; limit: number },
-  context,
+  { db }: { db: Prisma },
   info
 ): Promise<object> => {
   const search = await axios

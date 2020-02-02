@@ -1,19 +1,18 @@
 /* eslint-disable @typescript-eslint/camelcase */
 
 import '../../utils/env'
-import * as mongoose from 'mongoose'
 import * as jwt from 'jsonwebtoken'
 import axios from 'axios'
-
 import { ContextParameters } from 'graphql-yoga/dist/types'
-import userModel from '../../models/User'
+
+import { Prisma } from '../../../generated/prisma-client'
 
 type Response = ContextParameters['response']
 
 const loginMutation = async (
   parent,
   { codeForToken }: { codeForToken: string },
-  { db, response }: { db: mongoose.Connection; response: Response },
+  { db, response }: { db: Prisma; response: Response },
   info
 ): Promise<object> => {
   let user
@@ -46,44 +45,55 @@ const loginMutation = async (
   const login = user?.login
 
   // Check if user already exists, if yes, just generate the token...
-  const isUserAlreadySignedIn = await userModel.findOne({ githubId: id })
+  const isUserAlreadySignedIn = await db.user({ githubId: id })
 
   const time = new Date().toISOString()
 
   let mutateUser
 
   if (await isUserAlreadySignedIn) {
-    mutateUser = await userModel
-      .findOneAndUpdate({ githubId: id }, { updatedAt: time })
-      .exec()
+    // mutateUser = await userModel
+    //   .findOneAndUpdate({ githubId: id }, { updatedAt: time })
+    //   .exec()
+
+    mutateUser = await db.updateUser({ where: { githubId: id }, data: {} })
   } else {
-    mutateUser = await userModel
-      .insertMany([
-        {
-          name,
-          email,
-          githubUsername: login,
-          githubId: id,
-          createdAt: time,
-          updatedAt: time,
-        },
-      ])
-      .then(data => data[0])
+    // mutateUser = await userModel
+    //   .insertMany([
+    //     {
+    //       name,
+    //       email,
+    //       githubUsername: login,
+    //       githubId: id,
+    //       createdAt: time,
+    //       updatedAt: time,
+    //     },
+    //   ])
+    //   .then(data => data[0])
+
+    mutateUser = await db.createUser({
+      name,
+      email,
+      githubUsername: login,
+      githubId: id,
+    })
   }
 
-  const refreshedUserInfo = await userModel
-    .findById(mutateUser?._id?.toString())
-    .then(data => data.toObject())
+  // const refreshedUserInfo = await userModel
+  //   .findById(mutateUser?._id?.toString())
+  //   .then(data => data.toObject())
+
+  const refreshedUserInfo = await db.user({ id: mutateUser?.id?.toString() })
 
   const token = jwt.sign(
-    { userId: refreshedUserInfo?._id?.toString() },
+    { userId: refreshedUserInfo?.id?.toString() },
     process.env.PR_JWT_SECRET,
     { expiresIn: '10d' }
   )
 
   return {
     ...refreshedUserInfo,
-    _id: refreshedUserInfo?._id?.toString(),
+    id: refreshedUserInfo?.id?.toString(),
     token,
   }
 }

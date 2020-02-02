@@ -2,11 +2,13 @@
 /* eslint-disable @typescript-eslint/camelcase */
 
 import '../../utils/env'
+import { ContextParameters } from 'graphql-yoga/dist/types'
 
-import flagModel from '../../models/Flag'
-import reviewModel from '../../models/Review'
 import getCurrentUserQuery from '../queries/getCurrentUserQuery'
 import { generateString } from '../../utils/functions'
+import { Prisma } from '../../../generated/prisma-client'
+
+type Request = ContextParameters['request']
 
 const flagReviewMutation = async (
   parent,
@@ -17,14 +19,14 @@ const flagReviewMutation = async (
     reviewId: string
     currentUserToken: string
   },
-  context,
+  { db, request }: { db: Prisma; request: Request },
   info
 ): Promise<object> => {
   // TODO: Check if user exists, if not, error.
   const user = await getCurrentUserQuery(
     null,
     { token: currentUserToken },
-    { request: context.request },
+    { request, db },
     null
   )
 
@@ -35,12 +37,16 @@ const flagReviewMutation = async (
   // TODO: If user exists, flag the review
   const time = new Date().toISOString()
 
-  const review = await reviewModel.findById(reviewId)
+  const review = await db.review({ id: reviewId })
 
   // Check if the user has already flagged the review...
-  const existingReview = await flagModel
-    .findOne({ by: user, review })
-    .then(data => data?.toObject())
+  // const existingReview = await flagModel
+  //   .findOne({ by: user, review })
+  //   .then(data => data?.toObject())
+
+  const existingReview = await db
+    .flags({ where: { by: user, review } })
+    .then(data => data[0])
 
   if (existingReview) {
     // throw new Error("This review has already been flagged")
@@ -51,23 +57,38 @@ const flagReviewMutation = async (
       review,
       createdAt: existingReview?.createdAt,
       updatedAt: existingReview?.updatedAt,
-      _id: existingReview?._id?.toString(),
+      id: existingReview?.id?.toString(),
     }
   }
 
-  const createFlag = await flagModel
-    .insertMany([
-      {
-        by: user,
-        review,
-        createdAt: time,
-        updatedAt: time,
-      },
-    ])
-    .then(data => data[0])
-    .then(data => data?.populate('by review')?.toObject())
+  // const createFlag = await flagModel
+  //   .insertMany([
+  //     {
+  //       by: user,
+  //       review,
+  //       createdAt: time,
+  //       updatedAt: time,
+  //     },
+  //   ])
+  //   .then(data => data[0])
+  //   .then(data => data?.populate('by review')?.toObject())
 
-  return { ...createFlag, _id: createFlag?._id?.toString() }
+  const createFlag = await db.createFlag({
+    by: {
+      connect: {
+        // eslint-disable-next-line @typescript-eslint/ban-ts-ignore
+        // @ts-ignore
+        id: user?.id,
+      },
+    },
+    review: {
+      connect: {
+        id: review.id,
+      },
+    },
+  })
+
+  return { ...createFlag, id: createFlag?.id?.toString() }
 }
 
 export default flagReviewMutation
