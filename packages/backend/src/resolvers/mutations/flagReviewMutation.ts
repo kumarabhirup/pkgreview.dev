@@ -37,7 +37,7 @@ const flagReviewMutation = async (
   // TODO: If user exists, flag the review
   const time = new Date().toISOString()
 
-  const review = await db.query.review({ where: { id: reviewId } }, info)
+  const review = await db.query.review({ where: { id: reviewId } }, `{ id rating createdAt updatedAt }`)
 
   // Check if the user has already flagged the review...
   // const existingReview = await flagModel
@@ -45,7 +45,8 @@ const flagReviewMutation = async (
   //   .then(data => data?.toObject())
 
   const existingReview = await db.query
-    .flags({ where: { by: user, review } }, info)
+    // @ts-ignore
+    .flags({ where: { by: { id: user.id }, review: { id: review.id } } }, /* GraphQL */ `{ id by { id name email } review { id rating createdAt updatedAt } createdAt updatedAt }`)
     .then(data => data[0])
 
   if (existingReview) {
@@ -90,7 +91,7 @@ const flagReviewMutation = async (
         },
       },
     },
-    info
+    /* GraphQL */ `{ id by { id name email } review { id rating createdAt updatedAt } createdAt updatedAt }`
   )
 
   return { ...createFlag, id: createFlag?.id?.toString() }
