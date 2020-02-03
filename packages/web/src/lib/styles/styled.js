@@ -22,9 +22,10 @@ export const Container = styled.main`
     text-decoration: none;
     transition: all 0.2s ease;
     border-bottom: 1px solid white;
+    word-break: break-all;
     word-wrap: break-word;
     overflow-wrap: break-word;
-    hyphens: auto;
+    /* hyphens: auto; */
   }
 
   a.nextApp:hover {
@@ -117,6 +118,10 @@ export const FlexContainer = styled.div`
   p {
     text-align: justify;
     margin-top: 5px;
+    word-break: break-word;
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+    hyphens: auto;
   }
 
   @media (orientation: portrait) {
