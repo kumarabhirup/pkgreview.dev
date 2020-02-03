@@ -1,3 +1,4 @@
+/* eslint-disable no-useless-escape */
 /* eslint-disable @typescript-eslint/ban-ts-ignore */
 /* eslint-disable @typescript-eslint/member-delimiter-style */
 /* eslint-disable @typescript-eslint/camelcase */
@@ -16,6 +17,23 @@ interface Rating {
   total: number
 }
 
+export const reviewInfo = /* GraphQL */ `
+  {
+    id
+    rating
+    package
+    review
+    author {
+      id
+      name
+      githubUsername
+      githubId
+    }
+    createdAt
+    updatedAt
+  }
+`
+
 const writeReviewMutation = async (
   parent,
   {
@@ -25,7 +43,7 @@ const writeReviewMutation = async (
     currentUserToken,
   }: {
     review: string
-    rating: Rating
+    rating: string // Rating
     packageName: string
     currentUserToken: string
   },
@@ -45,7 +63,8 @@ const writeReviewMutation = async (
   }
 
   // Check Rating (For now, let people only rate out of 5)
-  if (rating.score > rating.total || rating.score <= 0 || rating.total !== 5) {
+  const parsedRating: Rating = JSON.parse(rating)
+  if (parsedRating.score > parsedRating.total || parsedRating.score <= 0 || parsedRating.total !== 5) {
     throw new Error('Invalid rating')
   }
 
@@ -101,42 +120,32 @@ const writeReviewMutation = async (
           review,
         },
       },
-      info
+      reviewInfo
     )
   } else {
-    // mutateReview = await reviewModel
-    //   .insertMany([
-    //     {
-    //       author: user,
-    //       rating,
-    //       package: packageName,
-    //       review,
-    //       createdAt: time,
-    //       updatedAt: time,
-    //     },
-    //   ])
-    //   .then(data => data[0])
-    //   // eslint-disable-next-line no-return-await
-    //   .then(async data => await data?.populate('author')?.execPopulate())
-    //   .then(data => data?.toObject())
-
     mutateReview = await db.mutation.createReview(
       {
-        author: {
-          connect: {
-            // @ts-ignore
-            id: user?.id,
+        data: {
+          author: {
+            connect: {
+              // @ts-ignore
+              id: user?.id,
+            },
           },
+          rating,
+          package: packageName,
+          review,
         },
-        rating,
-        package: packageName,
-        review,
       },
-      info
+      reviewInfo
     )
   }
 
-  return { ...mutateReview, id: mutateReview?.id }
+  return {
+    ...mutateReview,
+    id: mutateReview?.id,
+    // rating: JSON.parse(mutateReview?.rating),
+  }
 }
 
 export default writeReviewMutation

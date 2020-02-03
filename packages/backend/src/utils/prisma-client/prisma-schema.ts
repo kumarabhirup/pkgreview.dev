@@ -126,8 +126,6 @@ export const typeDefs = /* GraphQL */ `
     id: ID
   }
 
-  scalar Json
-
   scalar Long
 
   type Mutation {
@@ -252,7 +250,7 @@ export const typeDefs = /* GraphQL */ `
   type Review {
     id: ID!
     author: User!
-    rating: Json!
+    rating: String!
     review: String!
     package: String!
     createdAt: DateTime!
@@ -268,7 +266,7 @@ export const typeDefs = /* GraphQL */ `
   input ReviewCreateInput {
     id: ID
     author: UserCreateOneWithoutReviewsInput!
-    rating: Json!
+    rating: String!
     review: String!
     package: String!
   }
@@ -285,7 +283,7 @@ export const typeDefs = /* GraphQL */ `
 
   input ReviewCreateWithoutAuthorInput {
     id: ID
-    rating: Json!
+    rating: String!
     review: String!
     package: String!
   }
@@ -312,7 +310,7 @@ export const typeDefs = /* GraphQL */ `
 
   type ReviewPreviousValues {
     id: ID!
-    rating: Json!
+    rating: String!
     review: String!
     package: String!
     createdAt: DateTime!
@@ -334,6 +332,20 @@ export const typeDefs = /* GraphQL */ `
     id_not_starts_with: ID
     id_ends_with: ID
     id_not_ends_with: ID
+    rating: String
+    rating_not: String
+    rating_in: [String!]
+    rating_not_in: [String!]
+    rating_lt: String
+    rating_lte: String
+    rating_gt: String
+    rating_gte: String
+    rating_contains: String
+    rating_not_contains: String
+    rating_starts_with: String
+    rating_not_starts_with: String
+    rating_ends_with: String
+    rating_not_ends_with: String
     review: String
     review_not: String
     review_in: [String!]
@@ -403,26 +415,26 @@ export const typeDefs = /* GraphQL */ `
 
   input ReviewUpdateDataInput {
     author: UserUpdateOneRequiredWithoutReviewsInput
-    rating: Json
+    rating: String
     review: String
     package: String
   }
 
   input ReviewUpdateInput {
     author: UserUpdateOneRequiredWithoutReviewsInput
-    rating: Json
+    rating: String
     review: String
     package: String
   }
 
   input ReviewUpdateManyDataInput {
-    rating: Json
+    rating: String
     review: String
     package: String
   }
 
   input ReviewUpdateManyMutationInput {
-    rating: Json
+    rating: String
     review: String
     package: String
   }
@@ -452,7 +464,7 @@ export const typeDefs = /* GraphQL */ `
   }
 
   input ReviewUpdateWithoutAuthorDataInput {
-    rating: Json
+    rating: String
     review: String
     package: String
   }
@@ -489,6 +501,20 @@ export const typeDefs = /* GraphQL */ `
     id_ends_with: ID
     id_not_ends_with: ID
     author: UserWhereInput
+    rating: String
+    rating_not: String
+    rating_in: [String!]
+    rating_not_in: [String!]
+    rating_lt: String
+    rating_lte: String
+    rating_gt: String
+    rating_gte: String
+    rating_contains: String
+    rating_not_contains: String
+    rating_starts_with: String
+    rating_not_starts_with: String
+    rating_ends_with: String
+    rating_not_ends_with: String
     review: String
     review_not: String
     review_in: [String!]

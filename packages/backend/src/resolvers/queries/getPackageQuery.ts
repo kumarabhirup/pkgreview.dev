@@ -47,7 +47,7 @@ const getPackageQuery = async (
           where: { package: fetchedPackage?.collected?.metadata?.name },
           orderBy: 'updatedAt_DESC',
         },
-        info
+        /* GraphQL */ `{ id author { id name githubUsername githubId } rating review package updatedAt createdAt }`
       )
 
       // Calculate average rating
@@ -58,9 +58,10 @@ const getPackageQuery = async (
 
         for (const review of reviews) {
           const {
-            // @ts-ignore
-            rating: { score, total },
+            rating,
           } = review
+
+          const { score, total } = JSON.parse(rating)
 
           const rate = score / total
 
@@ -121,7 +122,7 @@ const getPackageQuery = async (
           await db.query
             .reviews(
               {
-                where: { AND: [{ author: user }, { package: slug }] },
+                where: { AND: [{ author: { id: user?.id } }, { package: slug }] },
               },
               info
             )
@@ -129,7 +130,7 @@ const getPackageQuery = async (
               const review = data[0]
 
               if (review.id) {
-                userReviewId = review.id
+                userReviewId = review?.id
                 hasUserReviewed = true
               } else {
                 hasUserReviewed = false

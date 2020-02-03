@@ -19,7 +19,7 @@ import { GET_PACKAGE_AND_REVIEWS_QUERY } from '../../pages/npm/[pid]'
 const WRITE_REVIEW_MUTATION = gql`
   mutation WRITE_REVIEW_MUTATION(
     $review: String!
-    $rating: RatingInput!
+    $rating: String! # RatingInput!
     $packageName: String!
     $currentUserToken: String!
   ) {
@@ -31,10 +31,11 @@ const WRITE_REVIEW_MUTATION = gql`
     ) {
       id
       review
-      rating {
-        score
-        total
-      }
+      rating
+      # {
+      #   score
+      #   total
+      # }
       author {
         id
         name
@@ -57,8 +58,13 @@ export default function ComposeReviewBlock({
   const [averageRatingScore] = getRatingScore(averagePackageRating)
 
   const [reviewText, setReviewText] = useState(existingReview?.review || '')
+
+  const parsedRating = existingReview
+    ? JSON.parse(existingReview?.rating)
+    : null
+
   const [ratingScore, setRatingScore] = useState(
-    existingReview?.rating?.score || averageRatingScore || 3
+    parsedRating?.score || averageRatingScore || 3
   )
 
   const [mutationLoading, setMutationLoading] = useState(false)
@@ -155,10 +161,10 @@ export default function ComposeReviewBlock({
                   const { data, errors } = await writeReviewMutation({
                     variables: {
                       review: reviewText,
-                      rating: {
+                      rating: JSON.stringify({
                         score: ratingScore,
                         total: 5,
-                      },
+                      }),
                       packageName,
                       currentUserToken: cookies.get('pkgReviewToken'),
                     },

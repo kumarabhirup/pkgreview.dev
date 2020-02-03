@@ -81,7 +81,7 @@ export default function ReviewCard({ review }) {
               </h1>
 
               <StarRating
-                rating={review?.rating?.score}
+                rating={JSON.parse(review?.rating)?.score}
                 starColor="#eaeaea"
                 emptyStarColor="#273b7c"
                 fontSize="50px"

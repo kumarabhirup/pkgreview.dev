@@ -3,7 +3,6 @@
 // Please don't change this file manually but run `prisma generate` to update it.
 // For more information, please read the docs: https://www.prisma.io/docs/prisma-client/
 
-import '../env'
 import { DocumentNode } from "graphql";
 import {
   makePrismaClientClass,
@@ -237,6 +236,20 @@ export interface ReviewWhereInput {
   id_ends_with?: Maybe<ID_Input>;
   id_not_ends_with?: Maybe<ID_Input>;
   author?: Maybe<UserWhereInput>;
+  rating?: Maybe<String>;
+  rating_not?: Maybe<String>;
+  rating_in?: Maybe<String[] | String>;
+  rating_not_in?: Maybe<String[] | String>;
+  rating_lt?: Maybe<String>;
+  rating_lte?: Maybe<String>;
+  rating_gt?: Maybe<String>;
+  rating_gte?: Maybe<String>;
+  rating_contains?: Maybe<String>;
+  rating_not_contains?: Maybe<String>;
+  rating_starts_with?: Maybe<String>;
+  rating_not_starts_with?: Maybe<String>;
+  rating_ends_with?: Maybe<String>;
+  rating_not_ends_with?: Maybe<String>;
   review?: Maybe<String>;
   review_not?: Maybe<String>;
   review_in?: Maybe<String[] | String>;
@@ -453,7 +466,7 @@ export interface ReviewCreateManyWithoutAuthorInput {
 
 export interface ReviewCreateWithoutAuthorInput {
   id?: Maybe<ID_Input>;
-  rating: Json;
+  rating: String;
   review: String;
   package: String;
 }
@@ -466,7 +479,7 @@ export interface ReviewCreateOneInput {
 export interface ReviewCreateInput {
   id?: Maybe<ID_Input>;
   author: UserCreateOneWithoutReviewsInput;
-  rating: Json;
+  rating: String;
   review: String;
   package: String;
 }
@@ -533,7 +546,7 @@ export interface ReviewUpdateWithWhereUniqueWithoutAuthorInput {
 }
 
 export interface ReviewUpdateWithoutAuthorDataInput {
-  rating?: Maybe<Json>;
+  rating?: Maybe<String>;
   review?: Maybe<String>;
   package?: Maybe<String>;
 }
@@ -559,6 +572,20 @@ export interface ReviewScalarWhereInput {
   id_not_starts_with?: Maybe<ID_Input>;
   id_ends_with?: Maybe<ID_Input>;
   id_not_ends_with?: Maybe<ID_Input>;
+  rating?: Maybe<String>;
+  rating_not?: Maybe<String>;
+  rating_in?: Maybe<String[] | String>;
+  rating_not_in?: Maybe<String[] | String>;
+  rating_lt?: Maybe<String>;
+  rating_lte?: Maybe<String>;
+  rating_gt?: Maybe<String>;
+  rating_gte?: Maybe<String>;
+  rating_contains?: Maybe<String>;
+  rating_not_contains?: Maybe<String>;
+  rating_starts_with?: Maybe<String>;
+  rating_not_starts_with?: Maybe<String>;
+  rating_ends_with?: Maybe<String>;
+  rating_not_ends_with?: Maybe<String>;
   review?: Maybe<String>;
   review_not?: Maybe<String>;
   review_in?: Maybe<String[] | String>;
@@ -614,7 +641,7 @@ export interface ReviewUpdateManyWithWhereNestedInput {
 }
 
 export interface ReviewUpdateManyDataInput {
-  rating?: Maybe<Json>;
+  rating?: Maybe<String>;
   review?: Maybe<String>;
   package?: Maybe<String>;
 }
@@ -633,7 +660,7 @@ export interface ReviewUpdateOneRequiredInput {
 
 export interface ReviewUpdateDataInput {
   author?: Maybe<UserUpdateOneRequiredWithoutReviewsInput>;
-  rating?: Maybe<Json>;
+  rating?: Maybe<String>;
   review?: Maybe<String>;
   package?: Maybe<String>;
 }
@@ -664,13 +691,13 @@ export interface ReviewUpsertNestedInput {
 
 export interface ReviewUpdateInput {
   author?: Maybe<UserUpdateOneRequiredWithoutReviewsInput>;
-  rating?: Maybe<Json>;
+  rating?: Maybe<String>;
   review?: Maybe<String>;
   package?: Maybe<String>;
 }
 
 export interface ReviewUpdateManyMutationInput {
-  rating?: Maybe<Json>;
+  rating?: Maybe<String>;
   review?: Maybe<String>;
   package?: Maybe<String>;
 }
@@ -834,7 +861,7 @@ export interface UserNullablePromise
 
 export interface Review {
   id: ID_Output;
-  rating: Json;
+  rating: String;
   review: String;
   package: String;
   createdAt: DateTimeOutput;
@@ -844,7 +871,7 @@ export interface Review {
 export interface ReviewPromise extends Promise<Review>, Fragmentable {
   id: () => Promise<ID_Output>;
   author: <T = UserPromise>() => T;
-  rating: () => Promise<Json>;
+  rating: () => Promise<String>;
   review: () => Promise<String>;
   package: () => Promise<String>;
   createdAt: () => Promise<DateTimeOutput>;
@@ -856,7 +883,7 @@ export interface ReviewSubscription
     Fragmentable {
   id: () => Promise<AsyncIterator<ID_Output>>;
   author: <T = UserSubscription>() => T;
-  rating: () => Promise<AsyncIterator<Json>>;
+  rating: () => Promise<AsyncIterator<String>>;
   review: () => Promise<AsyncIterator<String>>;
   package: () => Promise<AsyncIterator<String>>;
   createdAt: () => Promise<AsyncIterator<DateTimeOutput>>;
@@ -868,7 +895,7 @@ export interface ReviewNullablePromise
     Fragmentable {
   id: () => Promise<ID_Output>;
   author: <T = UserPromise>() => T;
-  rating: () => Promise<Json>;
+  rating: () => Promise<String>;
   review: () => Promise<String>;
   package: () => Promise<String>;
   createdAt: () => Promise<DateTimeOutput>;
@@ -1150,7 +1177,7 @@ export interface ReviewSubscriptionPayloadSubscription
 
 export interface ReviewPreviousValues {
   id: ID_Output;
-  rating: Json;
+  rating: String;
   review: String;
   package: String;
   createdAt: DateTimeOutput;
@@ -1161,7 +1188,7 @@ export interface ReviewPreviousValuesPromise
   extends Promise<ReviewPreviousValues>,
     Fragmentable {
   id: () => Promise<ID_Output>;
-  rating: () => Promise<Json>;
+  rating: () => Promise<String>;
   review: () => Promise<String>;
   package: () => Promise<String>;
   createdAt: () => Promise<DateTimeOutput>;
@@ -1172,7 +1199,7 @@ export interface ReviewPreviousValuesSubscription
   extends Promise<AsyncIterator<ReviewPreviousValues>>,
     Fragmentable {
   id: () => Promise<AsyncIterator<ID_Output>>;
-  rating: () => Promise<AsyncIterator<Json>>;
+  rating: () => Promise<AsyncIterator<String>>;
   review: () => Promise<AsyncIterator<String>>;
   package: () => Promise<AsyncIterator<String>>;
   createdAt: () => Promise<AsyncIterator<DateTimeOutput>>;
@@ -1263,8 +1290,6 @@ export type DateTimeInput = Date | string;
 DateTime scalar output type, which is always a string
 */
 export type DateTimeOutput = string;
-
-export type Json = any;
 
 /*
 The `Boolean` scalar type represents `true` or `false`.

@@ -1,4 +1,6 @@
-const typeDefs = `
+const typeDefs = /* GraphQL */ `
+  # import * from 'src/utils/prisma-client/prisma-schema.ts'
+
   # Database Fields
   type User {
     id: String!
@@ -15,7 +17,7 @@ const typeDefs = `
   type Review {
     id: String!
     author: User!
-    rating: Rating!
+    rating: String! # Rating!
     review: String!
     package: String! # Package! Populate Later
     createdAt: String!
@@ -63,7 +65,12 @@ const typeDefs = `
   type Mutation {
     exampleMutation: String
     loginMutation(codeForToken: String!): User
-    writeReview(review: String!, rating: RatingInput!, packageName: String!, currentUserToken: String!): Review
+    writeReview(
+      review: String!
+      rating: String! # RatingInput!
+      packageName: String!
+      currentUserToken: String!
+    ): Review
     flagReview(reviewId: String!, currentUserToken: String!): Flag!
   }
 
@@ -71,8 +78,16 @@ const typeDefs = `
   type Query {
     exampleQuery: String
     getCurrentUser(token: String): User
-    getPackageAndReviews(slug: String!, type: String!, currentUserToken: String): Package
-    searchPackage(searchString: String!, skip: Int = 0, limit: Int = 5): [Package]
+    getPackageAndReviews(
+      slug: String!
+      type: String!
+      currentUserToken: String
+    ): Package
+    searchPackage(
+      searchString: String!
+      skip: Int = 0
+      limit: Int = 5
+    ): [Package]
   }
 `
 

@@ -12,7 +12,7 @@ type User {
 type Review {
   id: ID! @id
   author: User!
-  rating: Json!
+  rating: String! # Json has issues
   review: String!
   package: String! # Package! Populate Later
   createdAt: DateTime! @createdAt

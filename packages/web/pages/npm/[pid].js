@@ -44,10 +44,11 @@ export const GET_PACKAGE_AND_REVIEWS_QUERY = gql`
           githubUsername
           githubId
         }
-        rating {
-          score
-          total
-        }
+        rating
+        # {
+        #   score
+        #   total
+        # }
         updatedAt
       }
       rating
