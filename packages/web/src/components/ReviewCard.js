@@ -17,12 +17,12 @@ const FLAG_REVIEW_MUTATION = gql`
     $currentUserToken: String!
   ) {
     flagReview(reviewId: $reviewId, currentUserToken: $currentUserToken) {
-      _id
+      id
       by {
-        _id
+        id
       }
       review {
-        _id
+        id
       }
     }
   }
@@ -81,7 +81,7 @@ export default function ReviewCard({ review }) {
               </h1>
 
               <StarRating
-                rating={review?.rating?.score}
+                rating={JSON.parse(review?.rating)?.score}
                 starColor="#eaeaea"
                 emptyStarColor="#273b7c"
                 fontSize="50px"
@@ -95,7 +95,7 @@ export default function ReviewCard({ review }) {
 
               {userId && (
                 <h6>
-                  {review?.author?._id === userId ? (
+                  {review?.author?.id === userId ? (
                     `This is your review`
                   ) : (
                     <button
@@ -105,13 +105,13 @@ export default function ReviewCard({ review }) {
                         const thisFlagReviewMutation = await flagReviewMutation(
                           {
                             variables: {
-                              reviewId: review._id,
+                              reviewId: review.id,
                               currentUserToken: cookies.get('pkgReviewToken'),
                             },
                           }
                         )
 
-                        if (thisFlagReviewMutation?.data?.flagReview?._id) {
+                        if (thisFlagReviewMutation?.data?.flagReview?.id) {
                           setIsFlagged(true)
                         }
                       }}

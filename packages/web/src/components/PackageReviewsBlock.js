@@ -22,7 +22,7 @@ export default function PackageReviewsBlock({ packageReviews }) {
             or just <a href="#composeReview">POST A REVIEW HERE</a>.
           </span>
           {packageReviews.map(review => (
-            <ReviewCard key={review._id} review={review} />
+            <ReviewCard key={review.id} review={review} />
           ))}
         </section>
       )}

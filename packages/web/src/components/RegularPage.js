@@ -59,7 +59,7 @@ export default function RegularPage({ children }) {
 
                 if (loading) return `Loading...`
 
-                if (data?.getCurrentUser?._id)
+                if (data?.getCurrentUser?.id)
                   return (
                     <>
                       <span>Heya 👋 {data.getCurrentUser.name}!</span>

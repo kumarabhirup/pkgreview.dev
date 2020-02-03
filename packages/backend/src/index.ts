@@ -2,16 +2,14 @@
 
 import './utils/env'
 import { GraphQLServer } from 'graphql-yoga'
+import { Prisma } from 'prisma-binding'
 import * as cookieParser from 'cookie-parser'
 import * as bodyParser from 'body-parser'
-import * as jwt from 'jsonwebtoken'
-import * as MongoHeartbeat from 'mongo-heartbeat'
 
 import typeDefs from './utils/schema'
+import { typeDefs as prismaTypedefs } from './utils/prisma-client/prisma-schema'
 import resolvers from './resolvers'
 import pubsub from './utils/pubsub'
-import db, { mongoDB } from './utils/database'
-import userModel from './models/User'
 
 const server: GraphQLServer = new GraphQLServer({
   typeDefs,
@@ -22,7 +20,12 @@ const server: GraphQLServer = new GraphQLServer({
   context: (request): object => ({
     ...request,
     pubsub,
-    db,
+    db: new Prisma({
+      typeDefs: prismaTypedefs,
+      endpoint: process.env.PR_DB_ENDPOINT,
+      secret: process.env.PR_JWT_SECRET,
+      debug: false,
+    }),
   }),
 })
 
@@ -37,36 +40,6 @@ server.use(
     parameterLimit: 50000,
   })
 )
-
-// Uptime Monitor for MongoDB
-async function monitor(): Promise<void> {
-  let heartBeat
-
-  try {
-    heartBeat = MongoHeartbeat(
-      await mongoDB().catch(error => console.log(error)),
-      {
-        interval: 5000, // defaults to 5000 ms,
-        timeout: 9000, // defaults to 10000 ms
-        tolerance: 2, // defaults to 1 attempt
-      }
-    )
-
-    heartBeat.on('error', error => {
-      console.error(
-        `${new Date().toISOString()} - MongoDB didnt respond to the heartbeat message.`
-      )
-    })
-  } catch (error) {
-    console.log(error)
-  }
-}
-
-try {
-  monitor().catch(error => console.log(error))
-} catch (error) {
-  console.log(error)
-}
 
 // Port
 const PORT = 4000

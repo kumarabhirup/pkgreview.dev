@@ -4,8 +4,9 @@
 
 import '../../utils/env'
 import axios from 'axios'
+import { Prisma } from 'prisma-binding'
+import { Context } from 'graphql-yoga/dist/types'
 
-import reviewModel from '../../models/Review'
 import getCurrentUserQuery from './getCurrentUserQuery'
 import { arrayElementMove } from '../../utils/functions'
 
@@ -18,7 +19,7 @@ const getPackageQuery = async (
     type,
     currentUserToken,
   }: { slug: string; type: PackageType; currentUserToken: string },
-  context,
+  { db, context }: { db: Prisma; context: Context },
   info
 ): Promise<object> => {
   if (type === 'npm') {
@@ -33,13 +34,21 @@ const getPackageQuery = async (
     }
 
     if (fetchedPackage?.collected?.metadata?.name) {
-      const reviews = await reviewModel
-        .find({
-          package: fetchedPackage?.collected?.metadata?.name,
-        })
-        .sort('-updatedAt')
-        .populate('author')
-        .exec()
+      // const reviews = await reviewModel
+      //   .find({
+      //     package: fetchedPackage?.collected?.metadata?.name,
+      //   })
+      //   .sort('-updatedAt')
+      //   .populate('author')
+      //   .exec()
+
+      const reviews = await db.query.reviews(
+        {
+          where: { package: fetchedPackage?.collected?.metadata?.name },
+          orderBy: 'updatedAt_DESC',
+        },
+        /* GraphQL */ `{ id author { id name githubUsername githubId } rating review package updatedAt createdAt }`
+      )
 
       // Calculate average rating
       let averageRating = null
@@ -49,9 +58,10 @@ const getPackageQuery = async (
 
         for (const review of reviews) {
           const {
-            // @ts-ignore
-            rating: { score, total },
+            rating,
           } = review
+
+          const { score, total } = JSON.parse(rating)
 
           const rate = score / total
 
@@ -68,7 +78,7 @@ const getPackageQuery = async (
         user = await getCurrentUserQuery(
           null,
           { token: currentUserToken },
-          { request: context.request },
+          { request: context?.request, db },
           null
         )
       }
@@ -96,13 +106,31 @@ const getPackageQuery = async (
 
       if (user) {
         try {
-          await reviewModel
-            .findOne()
-            .and([{ author: user }, { package: slug }])
-            .then(data => {
-              if (data.toObject()._id) {
-                userReviewId = data.toObject()._id
+          // await reviewModel
+          //   .findOne()
+          //   .and([{ author: user }, { package: slug }])
+          //   .then(data => {
+          //     if (data.toObject()._id) {
+          //       userReviewId = data.toObject()._id
 
+          //       hasUserReviewed = true
+          //     } else {
+          //       hasUserReviewed = false
+          //     }
+          //   })
+
+          await db.query
+            .reviews(
+              {
+                where: { AND: [{ author: { id: user?.id } }, { package: slug }] },
+              },
+              info
+            )
+            .then(data => {
+              const review = data[0]
+
+              if (review.id) {
+                userReviewId = review?.id
                 hasUserReviewed = true
               } else {
                 hasUserReviewed = false
@@ -116,8 +144,7 @@ const getPackageQuery = async (
       // Find Index of the review in the `reviews` array that is authored by the currentUser
       const userReviewIndex = userReviewId
         ? reviews.findIndex(
-            review =>
-              review.toObject()._id.toString() === userReviewId.toString()
+            review => review.id.toString() === userReviewId.toString()
           )
         : null
 

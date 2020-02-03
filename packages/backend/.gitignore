@@ -15,3 +15,5 @@ yarn-error.log*
 /.changelog
 .npm/
 .env
+prisma.yml
+prisma-client/index.ts

@@ -18,8 +18,8 @@ export default function useUser(githubId = null) {
     ;(async () => {
       const user = await getCurrentUser(client)
 
-      if (user?.data?.getCurrentUser?._id) {
-        setUserId(user?.data?.getCurrentUser?._id)
+      if (user?.data?.getCurrentUser?.id) {
+        setUserId(user?.data?.getCurrentUser?.id)
         setUserGithubId(user?.data?.getCurrentUser?.githubId)
       }
     })()

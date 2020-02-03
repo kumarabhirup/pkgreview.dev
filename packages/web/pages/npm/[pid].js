@@ -36,18 +36,19 @@ export const GET_PACKAGE_AND_REVIEWS_QUERY = gql`
       githubRepoUrl
       description
       reviews {
-        _id
+        id
         review
         author {
-          _id
+          id
           name
           githubUsername
           githubId
         }
-        rating {
-          score
-          total
-        }
+        rating
+        # {
+        #   score
+        #   total
+        # }
         updatedAt
       }
       rating
@@ -127,7 +128,7 @@ function Package() {
               packageSlug={`npm/${pid}`}
               existingReview={
                 response?.reviews?.filter(
-                  review => review?.author?._id === userId
+                  review => review?.author?.id === userId
                 )[0]
               }
               averagePackageRating={response?.rating}
