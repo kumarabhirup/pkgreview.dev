@@ -2,13 +2,14 @@
 
 import './utils/env'
 import { GraphQLServer } from 'graphql-yoga'
+import { Prisma } from 'prisma-binding'
 import * as cookieParser from 'cookie-parser'
 import * as bodyParser from 'body-parser'
 
 import typeDefs from './utils/schema'
+import { typeDefs as prismaTypedefs } from './utils/prisma-client/prisma-schema'
 import resolvers from './resolvers'
 import pubsub from './utils/pubsub'
-import { prisma } from '../generated/prisma-client'
 
 const server: GraphQLServer = new GraphQLServer({
   typeDefs,
@@ -19,7 +20,12 @@ const server: GraphQLServer = new GraphQLServer({
   context: (request): object => ({
     ...request,
     pubsub,
-    db: prisma,
+    db: new Prisma({
+      typeDefs: prismaTypedefs,
+      endpoint: process.env.PR_DB_ENDPOINT,
+      secret: process.env.PR_JWT_SECRET,
+      debug: false,
+    }),
   }),
 })
 

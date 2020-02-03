@@ -3,7 +3,7 @@
 // Please don't change this file manually but run `prisma generate` to update it.
 // For more information, please read the docs: https://www.prisma.io/docs/prisma-client/
 
-import '../../src/utils/env'
+import '../env'
 import { DocumentNode } from "graphql";
 import {
   makePrismaClientClass,

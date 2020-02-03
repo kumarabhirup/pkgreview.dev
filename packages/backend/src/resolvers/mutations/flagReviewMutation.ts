@@ -3,10 +3,10 @@
 
 import '../../utils/env'
 import { ContextParameters } from 'graphql-yoga/dist/types'
+import { Prisma } from 'prisma-binding'
 
 import getCurrentUserQuery from '../queries/getCurrentUserQuery'
 import { generateString } from '../../utils/functions'
-import { Prisma } from '../../../generated/prisma-client'
 
 type Request = ContextParameters['request']
 
@@ -37,15 +37,15 @@ const flagReviewMutation = async (
   // TODO: If user exists, flag the review
   const time = new Date().toISOString()
 
-  const review = await db.review({ id: reviewId })
+  const review = await db.query.review({ where: { id: reviewId } }, info)
 
   // Check if the user has already flagged the review...
   // const existingReview = await flagModel
   //   .findOne({ by: user, review })
   //   .then(data => data?.toObject())
 
-  const existingReview = await db
-    .flags({ where: { by: user, review } })
+  const existingReview = await db.query
+    .flags({ where: { by: user, review } }, info)
     .then(data => data[0])
 
   if (existingReview) {
@@ -73,20 +73,25 @@ const flagReviewMutation = async (
   //   .then(data => data[0])
   //   .then(data => data?.populate('by review')?.toObject())
 
-  const createFlag = await db.createFlag({
-    by: {
-      connect: {
-        // eslint-disable-next-line @typescript-eslint/ban-ts-ignore
-        // @ts-ignore
-        id: user?.id,
+  const createFlag = await db.mutation.createFlag(
+    {
+      data: {
+        by: {
+          connect: {
+            // eslint-disable-next-line @typescript-eslint/ban-ts-ignore
+            // @ts-ignore
+            id: user?.id,
+          },
+        },
+        review: {
+          connect: {
+            id: review.id,
+          },
+        },
       },
     },
-    review: {
-      connect: {
-        id: review.id,
-      },
-    },
-  })
+    info
+  )
 
   return { ...createFlag, id: createFlag?.id?.toString() }
 }

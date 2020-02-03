@@ -4,11 +4,11 @@
 
 import '../../utils/env'
 import axios from 'axios'
+import { Prisma } from 'prisma-binding'
 import { Context } from 'graphql-yoga/dist/types'
 
 import getCurrentUserQuery from './getCurrentUserQuery'
 import { arrayElementMove } from '../../utils/functions'
-import { Prisma } from '../../../generated/prisma-client'
 
 type PackageType = 'npm'
 
@@ -42,10 +42,13 @@ const getPackageQuery = async (
       //   .populate('author')
       //   .exec()
 
-      const reviews = await db.reviews({
-        where: { package: fetchedPackage?.collected?.metadata?.name },
-        orderBy: 'updatedAt_DESC',
-      })
+      const reviews = await db.query.reviews(
+        {
+          where: { package: fetchedPackage?.collected?.metadata?.name },
+          orderBy: 'updatedAt_DESC',
+        },
+        info
+      )
 
       // Calculate average rating
       let averageRating = null
@@ -115,10 +118,13 @@ const getPackageQuery = async (
           //     }
           //   })
 
-          await db
-            .reviews({
-              where: { AND: [{ author: user }, { package: slug }] },
-            })
+          await db.query
+            .reviews(
+              {
+                where: { AND: [{ author: user }, { package: slug }] },
+              },
+              info
+            )
             .then(data => {
               const review = data[0]
 

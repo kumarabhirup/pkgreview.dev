@@ -23,7 +23,8 @@
     "PR_MONGODB_CLUSTER": "@prmongodbcluster",
     "PR_GITHUB_CLIENT_SECRET": "@prgithubclientsecret",
     "PR_GITHUB_CLIENT_ID": "@prgithubclientid",
-    "PR_JWT_SECRET": "@prjwtsecret"
+    "PR_JWT_SECRET": "@prjwtsecret",
+    "PR_DB_ENDPOINT": "@prdbendpoint"
   },
   "builds": [
     {

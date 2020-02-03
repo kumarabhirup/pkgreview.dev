@@ -3,10 +3,10 @@
 /* eslint-disable @typescript-eslint/camelcase */
 
 import '../../utils/env'
+import { Prisma } from 'prisma-binding'
 import { ContextParameters } from 'graphql-yoga/dist/types'
 
 import getCurrentUserQuery from '../queries/getCurrentUserQuery'
-import { Prisma } from '../../../generated/prisma-client'
 
 type Request = ContextParameters['request']
 
@@ -55,10 +55,13 @@ const writeReviewMutation = async (
   //   .and([{ author: user }, { package: packageName }])
   //   .then(data => data?.toObject())
 
-  const existingReview = await db
-    .reviews({
-      where: { AND: [{ author: user }, { package: packageName }] },
-    })
+  const existingReview = await db.query
+    .reviews(
+      {
+        where: { AND: [{ author: user }, { package: packageName }] },
+      },
+      info
+    )
     .then(data => (data.length > 0 ? data[0] : null))
 
   // TODO: If user exists, write the review
@@ -85,18 +88,21 @@ const writeReviewMutation = async (
     //   .then(async data => await data?.populate('author')?.execPopulate())
     //   .then(data => data?.toObject())
 
-    mutateReview = await db.updateReview({
-      where: { id: existingReview?.id },
-      data: {
-        author: {
-          // @ts-ignore
-          connect: { id: user?.id },
+    mutateReview = await db.mutation.updateReview(
+      {
+        where: { id: existingReview?.id },
+        data: {
+          author: {
+            // @ts-ignore
+            connect: { id: user?.id },
+          },
+          rating,
+          package: packageName,
+          review,
         },
-        rating,
-        package: packageName,
-        review,
       },
-    })
+      info
+    )
   } else {
     // mutateReview = await reviewModel
     //   .insertMany([
@@ -114,17 +120,20 @@ const writeReviewMutation = async (
     //   .then(async data => await data?.populate('author')?.execPopulate())
     //   .then(data => data?.toObject())
 
-    mutateReview = await db.createReview({
-      author: {
-        connect: {
-          // @ts-ignore
-          id: user?.id,
+    mutateReview = await db.mutation.createReview(
+      {
+        author: {
+          connect: {
+            // @ts-ignore
+            id: user?.id,
+          },
         },
+        rating,
+        package: packageName,
+        review,
       },
-      rating,
-      package: packageName,
-      review,
-    })
+      info
+    )
   }
 
   return { ...mutateReview, id: mutateReview?.id }

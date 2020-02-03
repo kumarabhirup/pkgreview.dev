@@ -4,8 +4,8 @@
 import '../../utils/env'
 import * as jwt from 'jsonwebtoken'
 
+import { Prisma } from 'prisma-binding'
 import { ContextParameters } from 'graphql-yoga/dist/types'
-import { Prisma } from '../../../generated/prisma-client'
 
 type Request = ContextParameters['request']
 
@@ -24,11 +24,8 @@ const getCurrentUserQuery = async (
   if (request) request.userId = userId
 
   if (userId) {
-    // const currentUser = await userModel
-    //   .findById(userId)
-    //   .then(data => data.toObject())
-
-    const currentUser = await db.user({ id: userId })
+    // const currentUser = await db.user({ id: userId })
+    const currentUser = await db.query.user({ where: { id: userId } }, info)
 
     return currentUser
   }

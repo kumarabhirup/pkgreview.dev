@@ -5,7 +5,7 @@
 import '../../utils/env'
 import axios from 'axios'
 
-import { Prisma } from '../../../generated/prisma-client'
+import { Prisma } from 'prisma-binding'
 
 const searchPackageQuery = async (
   parent,

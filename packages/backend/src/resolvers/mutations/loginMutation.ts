@@ -3,9 +3,9 @@
 import '../../utils/env'
 import * as jwt from 'jsonwebtoken'
 import axios from 'axios'
-import { ContextParameters } from 'graphql-yoga/dist/types'
+import { Prisma } from 'prisma-binding'
 
-import { Prisma } from '../../../generated/prisma-client'
+import { ContextParameters } from 'graphql-yoga/dist/types'
 
 type Response = ContextParameters['response']
 
@@ -36,7 +36,7 @@ const loginMutation = async (
       })
       .then(({ data }) => data)
   } catch (error) {
-    throw new Error(error.message)
+    throw new Error(`${error.message}`)
   }
 
   const id = user?.id
@@ -45,7 +45,10 @@ const loginMutation = async (
   const login = user?.login
 
   // Check if user already exists, if yes, just generate the token...
-  const isUserAlreadySignedIn = await db.user({ githubId: id })
+  const isUserAlreadySignedIn = await db.query.user(
+    { where: { githubId: id } },
+    info
+  )
 
   const time = new Date().toISOString()
 
@@ -56,7 +59,13 @@ const loginMutation = async (
     //   .findOneAndUpdate({ githubId: id }, { updatedAt: time })
     //   .exec()
 
-    mutateUser = await db.updateUser({ where: { githubId: id }, data: {} })
+    mutateUser = await db.mutation.updateUser(
+      {
+        where: { githubId: id },
+        data: {},
+      },
+      info
+    )
   } else {
     // mutateUser = await userModel
     //   .insertMany([
@@ -71,19 +80,26 @@ const loginMutation = async (
     //   ])
     //   .then(data => data[0])
 
-    mutateUser = await db.createUser({
-      name,
-      email,
-      githubUsername: login,
-      githubId: id,
-    })
+    mutateUser = await db.mutation.createUser(
+      {
+        data: { name, email, githubUsername: login, githubId: id },
+      },
+      info
+    )
   }
+
+  console.log(mutateUser)
 
   // const refreshedUserInfo = await userModel
   //   .findById(mutateUser?._id?.toString())
   //   .then(data => data.toObject())
 
-  const refreshedUserInfo = await db.user({ id: mutateUser?.id?.toString() })
+  const refreshedUserInfo = await db.query.user(
+    {
+      where: { id: mutateUser?.id?.toString() },
+    },
+    info
+  )
 
   const token = jwt.sign(
     { userId: refreshedUserInfo?.id?.toString() },
