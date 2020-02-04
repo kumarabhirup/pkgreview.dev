@@ -2,6 +2,7 @@ import React, { useState } from 'react'
 import StarRatingComponent from 'react-star-rating-component'
 import styled from 'styled-components'
 import PropTypes from 'prop-types'
+import { Link } from 'react-scroll'
 
 const Wrapper = styled.div`
   .dv-star-rating {
@@ -11,6 +12,13 @@ const Wrapper = styled.div`
   .dv-star-rating-star {
     font-size: ${({ fontSize }) => fontSize || '60px'};
   }
+
+  .star-untappable {
+    color: red;
+    display: block;
+    font-size: 20px;
+    line-height: 20px;
+  }
 `
 
 export default function StarRating({
@@ -19,12 +27,13 @@ export default function StarRating({
   starColor,
   emptyStarColor,
   isEditable,
+  shouldShowNotEditableMessage,
   onRatingChange,
 }) {
   const [ratingScore, setRatingScore] = useState(rating)
   const [hoverScore, setHoverScore] = useState(rating)
 
-  return (
+  const ChildComponent = () => (
     <Wrapper fontSize={fontSize}>
       <StarRatingComponent
         name="review" /* name of the radio input, it is required */
@@ -46,10 +55,23 @@ export default function StarRating({
       />
     </Wrapper>
   )
+
+  // return <Link {...{ to: 'composeReview', spy: true, smooth: true }}></Link>
+
+  if (shouldShowNotEditableMessage === true) {
+    return (
+      <Link {...{ to: 'composeReview', spy: true, smooth: true }}>
+        <ChildComponent />
+      </Link>
+    )
+  }
+
+  return <ChildComponent />
 }
 
 StarRating.defaultProps = {
   isEditable: false,
+  shouldShowNotEditableMessage: false,
 }
 
 StarRating.propTypes = {
@@ -58,5 +80,6 @@ StarRating.propTypes = {
   starColor: PropTypes.string,
   emptyStarColor: PropTypes.string,
   isEditable: PropTypes.bool,
+  shouldShowNotEditableMessage: PropTypes.bool,
   onRatingChange: PropTypes.func,
 }

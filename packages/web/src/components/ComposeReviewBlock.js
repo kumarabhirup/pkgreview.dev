@@ -3,6 +3,7 @@ import React, { useState } from 'react'
 import PropTypes from 'prop-types'
 import gql from 'graphql-tag'
 import { useRouter } from 'next/router'
+import { Element, Link } from 'react-scroll'
 
 import Block from './Block'
 import Login from './Login'
@@ -114,92 +115,94 @@ export default function ComposeReviewBlock({
   )
 
   return (
-    <Block id="composeReview">
-      <>
-        <h1>Help others by reviewing this library</h1>
+    <Element name="composeReview">
+      <Block>
+        <>
+          <h1>Help others by reviewing this library</h1>
 
-        <form method="post">
-          {userId && (
-            <>
-              <StarRating
-                rating={ratingScore}
-                onRatingChange={rating => setRatingScore(rating)}
-                isEditable
-              />
+          <form method="post">
+            {userId && (
+              <>
+                <StarRating
+                  rating={ratingScore}
+                  onRatingChange={rating => setRatingScore(rating)}
+                  isEditable
+                />
 
-              <ReviewTextbox
-                placeholder={`Write your review about '${packageName}' here...`}
-                value={reviewText}
-                disabled={!userId}
-                onChange={e => {
-                  setReviewText(e.target.value)
+                <ReviewTextbox
+                  placeholder={`Write your review about '${packageName}' here...`}
+                  value={reviewText}
+                  disabled={!userId}
+                  onChange={e => {
+                    setReviewText(e.target.value)
+                  }}
+                  minLength={4}
+                  maxLength={5000}
+                />
+              </>
+            )}
+
+            {userId ? (
+              <button
+                className="block accent"
+                style={{
+                  display: 'block',
+                  width: '100%',
+                  padding: '10px',
+                  fontSize: '20px',
                 }}
-                minLength={4}
-                maxLength={5000}
-              />
-            </>
-          )}
+                type="submit"
+                onClick={async e => {
+                  e.preventDefault()
 
-          {userId ? (
-            <button
-              className="block accent"
-              style={{
-                display: 'block',
-                width: '100%',
-                padding: '10px',
-                fontSize: '20px',
-              }}
-              type="submit"
-              onClick={async e => {
-                e.preventDefault()
+                  if (userId) {
+                    setMutationLoading(true)
+                    setMutationData(null)
+                    setMutationError(false)
 
-                if (userId) {
-                  setMutationLoading(true)
-                  setMutationData(null)
-                  setMutationError(false)
+                    const { data, errors } = await writeReviewMutation({
+                      variables: {
+                        review: reviewText,
+                        rating: JSON.stringify({
+                          score: ratingScore,
+                          total: 5,
+                        }),
+                        packageName,
+                        currentUserToken: cookies.get('pkgReviewToken'),
+                      },
+                    })
 
-                  const { data, errors } = await writeReviewMutation({
-                    variables: {
-                      review: reviewText,
-                      rating: JSON.stringify({
-                        score: ratingScore,
-                        total: 5,
-                      }),
-                      packageName,
-                      currentUserToken: cookies.get('pkgReviewToken'),
-                    },
-                  })
+                    if (data) {
+                      setMutationLoading(false)
+                      setMutationData(data?.writeReview)
 
-                  if (data) {
-                    setMutationLoading(false)
-                    setMutationData(data?.writeReview)
+                      router.replace(
+                        `/npm/${encodeURIComponent(packageName).replace(
+                          '%40',
+                          '@'
+                        )}`
+                      )
+                    }
 
-                    router.replace(
-                      `/npm/${encodeURIComponent(packageName).replace(
-                        '%40',
-                        '@'
-                      )}`
-                    )
+                    if (errors) {
+                      setMutationLoading(false)
+                      setMutationError(true)
+                    }
                   }
-
-                  if (errors) {
-                    setMutationLoading(false)
-                    setMutationError(true)
-                  }
-                }
-              }}
-              disabled={reviewText.length < 3}
-            >
-              <InsideTheButton />
-            </button>
-          ) : (
-            <a href="#loginSection" className="nextApp">
-              <h2>Please Sign In to Post a Review (Scroll to Top 👆)</h2>
-            </a>
-          )}
-        </form>
-      </>
-    </Block>
+                }}
+                disabled={reviewText.length < 3}
+              >
+                <InsideTheButton />
+              </button>
+            ) : (
+              <Link to="loginSection" smooth offset={-100} className="nextApp">
+                <h2>Please Sign In to Post a Review (Scroll to Top 👆)</h2>
+              </Link>
+            )}
+          </form>
+        </>
+      </Block>
+    </Element>
   )
 }
 

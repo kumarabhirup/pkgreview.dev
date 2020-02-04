@@ -87,7 +87,7 @@ export default function PackageInfoBlock({ packageInfo }) {
         </div>
 
         <h1>
-          <StarRating rating={ratingScore} />
+          <StarRating rating={ratingScore} shouldShowNotEditableMessage />
         </h1>
       </FlexContainer>
     </Block>
