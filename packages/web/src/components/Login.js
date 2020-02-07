@@ -7,6 +7,9 @@ import SocialLogin from 'react-social-login'
 import PropTypes from 'prop-types'
 
 import cookies from '../lib/cookies'
+import ProvideUser from './ProvideUser'
+import SignOut from './SignOut'
+import { GithubSignInButton } from '../lib/styles/styled'
 
 const SIGNIN_MUTATION = gql`
   mutation SIGNIN_MUTATION($codeForToken: String!) {
@@ -88,4 +91,67 @@ Login.propTypes = {
   buttonText: PropTypes.any,
   className: PropTypes.string,
   style: PropTypes.object,
+}
+
+export function LoginDynamic() {
+  const router = useRouter()
+
+  return (
+    <p className="loginText">
+      <ProvideUser>
+        {({ data, error, loading }) => {
+          if (error)
+            return (
+              <>
+                There's an error.{' '}
+                <button
+                  className="block"
+                  style={{ display: 'inline' }}
+                  type="button"
+                  onClick={() => {
+                    if (cookies.get('pkgReviewToken')) {
+                      cookies.remove('pkgReviewToken', { path: '/' })
+
+                      router.reload()
+                    }
+                  }}
+                >
+                  Click here
+                </button>{' '}
+                to get things work properly.
+              </>
+            )
+
+          if (loading) return `Loading...`
+
+          if (data?.getCurrentUser?.id)
+            return (
+              <>
+                <span>Heya 👋 {data.getCurrentUser.name}!</span>
+                <span>&nbsp;•&nbsp;</span>
+                <SignOut className="loginText underline pointer">
+                  Sign Out
+                </SignOut>
+              </>
+            )
+
+          return (
+            // <div id="loginSection">
+            <Login
+              buttonText={
+                <GithubSignInButton type="button">
+                  <img
+                    alt="GitHub Logo"
+                    src="https://image.flaticon.com/icons/svg/25/25231.svg"
+                  />
+                  <span>Sign in with GitHub</span>
+                </GithubSignInButton>
+              }
+            />
+            // </div>
+          )
+        }}
+      </ProvideUser>
+    </p>
+  )
 }

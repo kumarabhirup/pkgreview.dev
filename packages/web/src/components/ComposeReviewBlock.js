@@ -6,7 +6,7 @@ import { useRouter } from 'next/router'
 import { Element, Link } from 'react-scroll'
 
 import Block from './Block'
-import Login from './Login'
+import Login, { LoginDynamic } from './Login'
 import useUser from './hooks/useUser'
 import StarRating from './StarRating'
 import { placeholderUserImage } from '../api/meta'
@@ -195,9 +195,9 @@ export default function ComposeReviewBlock({
                 <InsideTheButton />
               </button>
             ) : (
-              <Link to="loginSection" smooth offset={-100} className="nextApp">
-                <h2>Please Sign In to Post a Review (Scroll to Top 👆)</h2>
-              </Link>
+              // <Link to="loginSection" smooth offset={-100} className="nextApp">
+              <h2>Please Sign In to Post a Review</h2>
+              // </Link>
             )}
           </form>
         </>

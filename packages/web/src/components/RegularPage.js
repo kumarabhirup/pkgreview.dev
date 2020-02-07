@@ -10,7 +10,7 @@ import { Container, Header, Footer, Spacing } from '../lib/styles/styled'
 import { fadeInWithRotation } from '../lib/reactSpringAnimations'
 import SearchBox from './SearchBox'
 import ProvideUser from './ProvideUser'
-import Login from './Login'
+import Login, { LoginDynamic } from './Login'
 import SignOut from './SignOut'
 import cookies from '../lib/cookies'
 
@@ -32,58 +32,17 @@ export default function RegularPage({ children }) {
             </Header>
           </Link>
 
-          <p className="loginText">
-            <ProvideUser>
-              {({ data, error, loading }) => {
-                if (error)
-                  return (
-                    <>
-                      There's an error.{' '}
-                      <button
-                        className="block"
-                        style={{ display: 'inline' }}
-                        type="button"
-                        onClick={() => {
-                          if (cookies.get('pkgReviewToken')) {
-                            cookies.remove('pkgReviewToken', { path: '/' })
-
-                            router.reload()
-                          }
-                        }}
-                      >
-                        Click here
-                      </button>{' '}
-                      to get things work properly.
-                    </>
-                  )
-
-                if (loading) return `Loading...`
-
-                if (data?.getCurrentUser?.id)
-                  return (
-                    <>
-                      <span>Heya 👋 {data.getCurrentUser.name}!</span>
-                      <span>&nbsp;•&nbsp;</span>
-                      <SignOut className="loginText underline pointer">
-                        Sign Out
-                      </SignOut>
-                    </>
-                  )
-
-                return (
-                  // <div id="loginSection">
-                  <Login />
-                  // </div>
-                )
-              }}
-            </ProvideUser>
-          </p>
+          <LoginDynamic />
 
           <SearchBox />
 
           <Spacing />
 
           {children}
+
+          <Spacing />
+
+          <LoginDynamic />
 
           <Spacing />
 

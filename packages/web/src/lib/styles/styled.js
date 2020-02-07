@@ -197,3 +197,35 @@ export const Grid = styled.section`
     text-decoration: none;
   }
 `
+
+export const GithubSignInButton = styled.button`
+  color: #fff;
+  padding: 15px 30px;
+  background: #000;
+  border-radius: 20px;
+  font-size: 20px;
+  font-family: 'dankmono';
+  cursor: pointer;
+  transition: all 0.5s ease-out;
+
+  display: flex;
+  vertical-align: center;
+  -ms-flex-align: center;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  align-items: center;
+
+  &:hover {
+    background: #111111;
+    transform: scale(1.1);
+  }
+
+  img {
+    filter: invert(100%);
+    width: 30px;
+  }
+
+  & > * {
+    padding: 0px 10px;
+  }
+`
