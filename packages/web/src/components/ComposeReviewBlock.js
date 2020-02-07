@@ -196,7 +196,7 @@ export default function ComposeReviewBlock({
               </button>
             ) : (
               // <Link to="loginSection" smooth offset={-100} className="nextApp">
-              <h2>Please Sign In to Post a Review</h2>
+              <h2>Please Sign In to Post a Review 👇</h2>
               // </Link>
             )}
           </form>
