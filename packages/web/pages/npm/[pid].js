@@ -107,7 +107,15 @@ function Package() {
           />
         </Head>
 
-        {loading && <p>Loading...</p>}
+        {loading && (
+          <p>
+            <img
+              src="https://i.ibb.co/Gd5pHQH/loadingimg.gif"
+              alt="Loading..."
+              width="125"
+            />
+          </p>
+        )}
 
         {error && <p>{error.message}</p>}
 

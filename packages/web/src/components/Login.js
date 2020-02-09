@@ -122,7 +122,14 @@ export function LoginDynamic() {
               </>
             )
 
-          if (loading) return `Loading...`
+          if (loading)
+            return (
+              <img
+                src="https://i.ibb.co/Gd5pHQH/loadingimg.gif"
+                alt="Loading..."
+                width="75"
+              />
+            )
 
           if (data?.getCurrentUser?.id)
             return (
