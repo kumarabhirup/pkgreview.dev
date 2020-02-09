@@ -114,6 +114,42 @@ export default function ComposeReviewBlock({
     </>
   )
 
+  const onSubmit = async e => {
+    e.preventDefault()
+
+    if (userId) {
+      setMutationLoading(true)
+      setMutationData(null)
+      setMutationError(false)
+
+      const { data, errors } = await writeReviewMutation({
+        variables: {
+          review: reviewText,
+          rating: JSON.stringify({
+            score: ratingScore,
+            total: 5,
+          }),
+          packageName,
+          currentUserToken: cookies.get('pkgReviewToken'),
+        },
+      })
+
+      if (data) {
+        setMutationLoading(false)
+        setMutationData(data?.writeReview)
+
+        router.replace(
+          `/npm/${encodeURIComponent(packageName).replace('%40', '@')}`
+        )
+      }
+
+      if (errors) {
+        setMutationLoading(false)
+        setMutationError(true)
+      }
+    }
+  }
+
   return (
     <Element name="composeReview">
       <Block>
@@ -152,44 +188,12 @@ export default function ComposeReviewBlock({
                   fontSize: '20px',
                 }}
                 type="submit"
-                onClick={async e => {
-                  e.preventDefault()
-
-                  if (userId) {
-                    setMutationLoading(true)
-                    setMutationData(null)
-                    setMutationError(false)
-
-                    const { data, errors } = await writeReviewMutation({
-                      variables: {
-                        review: reviewText,
-                        rating: JSON.stringify({
-                          score: ratingScore,
-                          total: 5,
-                        }),
-                        packageName,
-                        currentUserToken: cookies.get('pkgReviewToken'),
-                      },
-                    })
-
-                    if (data) {
-                      setMutationLoading(false)
-                      setMutationData(data?.writeReview)
-
-                      router.replace(
-                        `/npm/${encodeURIComponent(packageName).replace(
-                          '%40',
-                          '@'
-                        )}`
-                      )
-                    }
-
-                    if (errors) {
-                      setMutationLoading(false)
-                      setMutationError(true)
-                    }
-                  }
-                }}
+                onClick={onSubmit}
+                // onKeyPress={e => {
+                //   if (e.key === ' ') {
+                //     onSubmit(e)
+                //   }
+                // }}
                 disabled={reviewText.length < 3}
               >
                 <InsideTheButton />
