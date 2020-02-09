@@ -88,8 +88,6 @@ const loginMutation = async (
     )
   }
 
-  console.log(mutateUser)
-
   // const refreshedUserInfo = await userModel
   //   .findById(mutateUser?._id?.toString())
   //   .then(data => data.toObject())

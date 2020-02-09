@@ -106,25 +106,12 @@ const getPackageQuery = async (
 
       if (user) {
         try {
-          // await reviewModel
-          //   .findOne()
-          //   .and([{ author: user }, { package: slug }])
-          //   .then(data => {
-          //     if (data.toObject()._id) {
-          //       userReviewId = data.toObject()._id
-
-          //       hasUserReviewed = true
-          //     } else {
-          //       hasUserReviewed = false
-          //     }
-          //   })
-
           await db.query
             .reviews(
               {
                 where: { AND: [{ author: { id: user?.id } }, { package: slug }] },
               },
-              info
+              /* GraphQL */ `{ id }`
             )
             .then(data => {
               const review = data[0]
@@ -144,7 +131,7 @@ const getPackageQuery = async (
       // Find Index of the review in the `reviews` array that is authored by the currentUser
       const userReviewIndex = userReviewId
         ? reviews.findIndex(
-            review => review.id.toString() === userReviewId.toString()
+            review => review.id === userReviewId
           )
         : null
 
