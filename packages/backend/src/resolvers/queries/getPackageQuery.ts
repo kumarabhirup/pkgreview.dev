@@ -47,7 +47,22 @@ const getPackageQuery = async (
           where: { package: fetchedPackage?.collected?.metadata?.name },
           orderBy: 'updatedAt_DESC',
         },
-        /* GraphQL */ `{ id author { id name githubUsername githubId } rating review package updatedAt createdAt }`
+        /* GraphQL */ `
+          {
+            id
+            author {
+              id
+              name
+              githubUsername
+              githubId
+            }
+            rating
+            review
+            package
+            updatedAt
+            createdAt
+          }
+        `
       )
 
       // Calculate average rating
@@ -57,9 +72,7 @@ const getPackageQuery = async (
         let totalRating = 0
 
         for (const review of reviews) {
-          const {
-            rating,
-          } = review
+          const { rating } = review
 
           const { score, total } = JSON.parse(rating)
 
@@ -109,9 +122,15 @@ const getPackageQuery = async (
           await db.query
             .reviews(
               {
-                where: { AND: [{ author: { id: user?.id } }, { package: slug }] },
+                where: {
+                  AND: [{ author: { id: user?.id } }, { package: slug }],
+                },
               },
-              /* GraphQL */ `{ id }`
+              /* GraphQL */ `
+                {
+                  id
+                }
+              `
             )
             .then(data => {
               const review = data[0]
@@ -130,9 +149,7 @@ const getPackageQuery = async (
 
       // Find Index of the review in the `reviews` array that is authored by the currentUser
       const userReviewIndex = userReviewId
-        ? reviews.findIndex(
-            review => review.id === userReviewId
-          )
+        ? reviews.findIndex(review => review.id === userReviewId)
         : null
 
       return {
