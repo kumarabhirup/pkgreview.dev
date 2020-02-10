@@ -10,14 +10,14 @@ import { useState, useEffect } from 'react'
 export default function useIsMobile(shouldHideIfLesserThan = 760) {
   const [isMobile, setIsMobile] = useState(false)
 
-  const resize = () => {
-    setIsMobile(window.innerWidth <= shouldHideIfLesserThan)
-  }
-
   useEffect(() => {
+    const resize = () => {
+      setIsMobile(window.innerWidth <= shouldHideIfLesserThan)
+    }
+
     window.addEventListener('resize', resize)
     resize()
-  })
+  }, [shouldHideIfLesserThan])
 
   return isMobile
 }

@@ -2,8 +2,11 @@ import React from 'react'
 import Head from 'next/head'
 
 import { meta } from '../api/meta'
+import useIsMobile from './hooks/useIsMobile'
 
 export default function Meta() {
+  const isMobile = useIsMobile(400)
+
   return (
     <Head>
       <meta charSet="utf-8" />
@@ -40,17 +43,20 @@ export default function Meta() {
       <meta name="twitter:site" content={`@${meta.social}`} />
       <meta name="twitter:creator" content={`@${meta.social}`} />
 
-      {/* <script
-        data-name="BMC-Widget"
-        src="https://cdnjs.buymeacoffee.com/1.0.0/widget.prod.min.js"
-        data-id="abhirup"
-        data-description="Support the creator of pkgreview.dev "
-        data-message="Support my work by buying me a coffee!"
-        data-color="#5F7FFF"
-        data-position="right"
-        data-x_margin="18"
-        data-y_margin="18"
-      ></script> */}
+      {isMobile === false && (
+        <script
+          data-name="BMC-Widget"
+          src="https://cdnjs.buymeacoffee.com/1.0.0/widget.prod.min.js"
+          data-id="abhirup"
+          data-description="Support the creator of pkgreview.dev "
+          data-message="Support my work by buying me a coffee!"
+          data-color="#5F7FFF"
+          data-position="right"
+          data-x_margin="18"
+          data-y_margin="18"
+          style={{ display: isMobile === false ? 'block' : 'none' }}
+        ></script>
+      )}
     </Head>
   )
 }
