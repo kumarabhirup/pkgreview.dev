@@ -30,18 +30,30 @@ const loginMutation = async (
       )
       .then(({ data }) => data.access_token)
 
+      console.log(accessToken)
+
     user = await axios
       .get('https://api.github.com/user', {
         headers: { Authorization: `token ${accessToken}` },
       })
       .then(({ data }) => data)
+
+    console.log(user)
+
+    user.email = await axios
+    .get('https://api.github.com/user/emails', {
+      headers: { Authorization: `token ${accessToken}` },
+    })
+    .then(({ data }) => data.filter(email => email.primary === true)[0].email)
+
+    console.log(user)
   } catch (error) {
     throw new Error(`${error.message}`)
   }
 
   const id = user?.id
   const email = user?.email
-  const name = user?.name
+  const name = user?.name || user?.login
   const login = user?.login
 
   // Check if user already exists, if yes, just generate the token...

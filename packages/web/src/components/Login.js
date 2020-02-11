@@ -59,7 +59,7 @@ export default function Login({ buttonText, className, style }) {
         buttonText || 'Sign In with GitHub 😻 to Post and Moderate reviews'
       }
       redirectUri=""
-      scope="read:user"
+      scope="read:user user:email"
       onSuccess={async ({ code }) => {
         await setCodeForToken(code)
 

@@ -2,10 +2,10 @@ import React from 'react'
 import Head from 'next/head'
 
 import { meta } from '../api/meta'
-// import useIsMobile from './hooks/useIsMobile'
+import useIsMobile from './hooks/useIsMobile'
 
 export default function Meta() {
-  // const isMobile = useIsMobile(400)
+  const isMobile = useIsMobile(400)
 
   return (
     <Head>
@@ -43,7 +43,7 @@ export default function Meta() {
       <meta name="twitter:site" content={`@${meta.social}`} />
       <meta name="twitter:creator" content={`@${meta.social}`} />
 
-      {/* {isMobile === false && (
+      {isMobile === false && (
         <script
           data-name="BMC-Widget"
           src="https://cdnjs.buymeacoffee.com/1.0.0/widget.prod.min.js"
@@ -56,7 +56,7 @@ export default function Meta() {
           data-y_margin="18"
           style={{ display: isMobile === false ? 'block' : 'none' }}
         ></script>
-      )} */}
+      )}
     </Head>
   )
 }
