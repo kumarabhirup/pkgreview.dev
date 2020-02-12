@@ -10,7 +10,7 @@ import { Context } from 'graphql-yoga/dist/types'
 import getCurrentUserQuery from './getCurrentUserQuery'
 import { arrayElementMove } from '../../utils/functions'
 
-type PackageType = 'npm'
+export type PackageType = 'npm'
 
 const getPackageQuery = async (
   parent,
@@ -18,7 +18,7 @@ const getPackageQuery = async (
     slug,
     type,
     currentUserToken,
-  }: { slug: string; type: PackageType; currentUserToken: string },
+  }: { slug: string; type: PackageType | string; currentUserToken?: string },
   { db, context }: { db: Prisma; context: Context },
   info
 ): Promise<object> => {
@@ -177,7 +177,9 @@ const getPackageQuery = async (
     throw new Error('The provided package does not exist')
   }
 
-  return {}
+  // return {}
+
+  throw new Error('The provided package does not exist')
 }
 
 export default getPackageQuery
