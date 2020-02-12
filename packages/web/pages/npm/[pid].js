@@ -58,7 +58,7 @@ export const GET_PACKAGE_AND_REVIEWS_QUERY = gql`
   }
 `
 
-function Package() {
+function PackagePage() {
   const router = useRouter()
   const { pid } = router.query
 
@@ -149,4 +149,4 @@ function Package() {
   )
 }
 
-export default Package
+export default PackagePage

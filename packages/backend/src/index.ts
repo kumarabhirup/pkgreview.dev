@@ -48,7 +48,7 @@ const database: Prisma = server.context().db
 server.express.get('/api/v1/:pkgManager/:pkgName', async (req, res) => {
   const pkgManager = req?.params?.pkgManager
 
-  const pkgName = req?.params?.pkgName
+  const pkgName = encodeURIComponent(req?.params?.pkgName)
 
   let pkgInformation
   try {
@@ -85,7 +85,7 @@ server.express.get('/api/v1/:pkgManager/:pkgName', async (req, res) => {
   }
 
   res.status(200).send({
-    name: pkgName,
+    name: decodeURIComponent(pkgName),
     type: pkgManager,
 
     // @ts-ignore
