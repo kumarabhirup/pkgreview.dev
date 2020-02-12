@@ -63,6 +63,8 @@ server.express.get('/api/v1/:pkgManager/:pkgName', async (req, res) => {
       error: true,
       message: error.message,
     })
+
+    return
   }
 
   const score: number | null = pkgInformation?.rating
