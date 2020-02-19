@@ -103,7 +103,7 @@ export function LoginDynamic() {
           if (error)
             return (
               <>
-                There's an error.{' '}
+                {/* There's an error.{' '}
                 <button
                   className="block"
                   style={{ display: 'inline' }}
@@ -118,7 +118,19 @@ export function LoginDynamic() {
                 >
                   Click here
                 </button>{' '}
-                to get things work properly.
+                to get things work properly. */}
+
+                <Login
+                  buttonText={
+                    <GithubSignInButton type="button">
+                      <img
+                        alt="GitHub Logo"
+                        src="https://image.flaticon.com/icons/svg/25/25231.svg"
+                      />
+                      <span>Sign in with GitHub</span>
+                    </GithubSignInButton>
+                  }
+                />
               </>
             )
 
@@ -143,7 +155,6 @@ export function LoginDynamic() {
             )
 
           return (
-            // <div id="loginSection">
             <Login
               buttonText={
                 <GithubSignInButton type="button">
@@ -155,7 +166,6 @@ export function LoginDynamic() {
                 </GithubSignInButton>
               }
             />
-            // </div>
           )
         }}
       </ProvideUser>
