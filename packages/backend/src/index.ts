@@ -5,6 +5,8 @@ import { GraphQLServer } from 'graphql-yoga'
 import { Prisma } from 'prisma-binding'
 import * as cookieParser from 'cookie-parser'
 import * as bodyParser from 'body-parser'
+import * as timeout from 'connect-timeout'
+import * as createError from 'http-errors'
 
 import typeDefs from './utils/schema'
 import { typeDefs as prismaTypedefs } from './utils/prisma-client/prisma-schema'
@@ -42,62 +44,95 @@ server.use(
   })
 )
 
+function haltOnTimedout(req, res, next): void {
+  if (!req.timedout) {
+    next()
+  }
+}
+
+function errorFilter(err, req, res, next): void {
+  console.warn(err.stack) // the stack is actually not going to be helpful in a timeout
+
+  if (!res.headersSent) {
+    // just because of your current problem, no need to exacerbate it.
+    const errcode = err.status || 500
+
+    res.status(errcode).send({
+      error: true,
+      message: 'Response timed out. Please try again later.',
+    })
+  }
+}
+
 // pkgreview.dev API
 const database: Prisma = server.context().db
 
-server.express.get('/api/v1/:pkgManager/:pkgName', async (req, res) => {
-  const pkgManager = req?.params?.pkgManager
+server.express.get(
+  '/api/v1/:pkgManager/:pkgName',
+  timeout('9s'),
+  haltOnTimedout,
+  async (req, res, next) => {
+    // @ts-ignore
+    if (req.timedout) {
+      next(createError(503, 'Response timeout'))
+    }
 
-  const pkgName = encodeURIComponent(req?.params?.pkgName)
+    const pkgManager = req?.params?.pkgManager
 
-  let pkgInformation
-  try {
-    pkgInformation = await getPackageQuery(
-      null,
-      { currentUserToken: null, type: pkgManager, slug: pkgName },
-      { context: server.context(), db: database },
-      null
-    )
-  } catch (error) {
-    res.status(400).send({
-      error: true,
-      message: error.message,
-    })
+    const pkgName = encodeURIComponent(req?.params?.pkgName)
 
-    return
-  }
+    let pkgInformation
 
-  const score: number | null = pkgInformation?.rating
-    ? Math.floor(pkgInformation?.rating * 5) // score out of 5
-    : null
+    try {
+      pkgInformation = await getPackageQuery(
+        null,
+        { currentUserToken: null, type: pkgManager, slug: pkgName },
+        { context: server.context(), db: database },
+        null
+      )
+    } catch (error) {
+      res.status(400).send({
+        error: true,
+        message: error.message,
+      })
 
-  let starString: string | null = score ? `` : null
+      return
+    }
 
-  if (starString !== null) {
-    // eslint-disable-next-line no-plusplus
-    for (let i = 1; i <= 5; i++) {
-      if (i <= score) {
-        starString += `★`
-      } else {
-        starString += `☆`
+    const score: number | null = pkgInformation?.rating
+      ? Math.floor(pkgInformation?.rating * 5) // score out of 5
+      : null
+
+    let starString: string | null = score ? `` : null
+
+    if (starString !== null) {
+      // eslint-disable-next-line no-plusplus
+      for (let i = 1; i <= 5; i++) {
+        if (i <= score) {
+          starString += `★`
+        } else {
+          starString += `☆`
+        }
       }
     }
+
+    res.status(200).send({
+      name: decodeURIComponent(pkgName),
+      type: pkgManager,
+
+      // @ts-ignore
+      reviewsCount: pkgInformation?.reviews?.length,
+
+      // @ts-ignore
+      rating: pkgInformation?.rating,
+
+      icon: pkgManager,
+      starString,
+    })
   }
+)
 
-  res.status(200).send({
-    name: decodeURIComponent(pkgName),
-    type: pkgManager,
-
-    // @ts-ignore
-    reviewsCount: pkgInformation?.reviews?.length,
-
-    // @ts-ignore
-    rating: pkgInformation?.rating,
-
-    icon: pkgManager,
-    starString,
-  })
-})
+server.express.use(errorFilter)
 
 // Port
 const PORT = 4000
