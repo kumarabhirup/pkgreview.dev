@@ -12,7 +12,9 @@ import typeDefs from './utils/schema'
 import { typeDefs as prismaTypedefs } from './utils/prisma-client/prisma-schema'
 import resolvers from './resolvers'
 import pubsub from './utils/pubsub'
-import getPackageQuery from './resolvers/queries/getPackageQuery'
+import getPackageQuery, {
+  PackageType,
+} from './resolvers/queries/getPackageQuery'
 
 const server: GraphQLServer = new GraphQLServer({
   typeDefs,
@@ -55,7 +57,7 @@ function errorFilter(err, req, res, next): void {
 
   if (!res.headersSent) {
     // just because of your current problem, no need to exacerbate it.
-    const errcode = err.status || 500
+    const errcode = 408 // err.status || 500
 
     res.status(errcode).send({
       error: true,
@@ -74,10 +76,19 @@ server.express.get(
   async (req, res, next) => {
     // @ts-ignore
     if (req.timedout) {
-      next(createError(503, 'Response timeout'))
+      next(createError(408, 'Response timeout'))
     }
 
     const pkgManager = req?.params?.pkgManager
+
+    if (pkgManager !== 'npm') {
+      res.status(400).send({
+        error: true,
+        message: 'Bad Request',
+      })
+
+      return
+    }
 
     const pkgName = encodeURIComponent(req?.params?.pkgName)
 
@@ -91,7 +102,7 @@ server.express.get(
         null
       )
     } catch (error) {
-      res.status(400).send({
+      res.status(404).send({
         error: true,
         message: error.message,
       })
