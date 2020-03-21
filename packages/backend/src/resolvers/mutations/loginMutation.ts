@@ -30,23 +30,17 @@ const loginMutation = async (
       )
       .then(({ data }) => data.access_token)
 
-      console.log(accessToken)
-
     user = await axios
       .get('https://api.github.com/user', {
         headers: { Authorization: `token ${accessToken}` },
       })
       .then(({ data }) => data)
 
-    console.log(user)
-
     user.email = await axios
     .get('https://api.github.com/user/emails', {
       headers: { Authorization: `token ${accessToken}` },
     })
     .then(({ data }) => data.filter(email => email.primary === true)[0].email)
-
-    console.log(user)
   } catch (error) {
     throw new Error(`${error.message}`)
   }
@@ -67,10 +61,6 @@ const loginMutation = async (
   let mutateUser
 
   if (await isUserAlreadySignedIn) {
-    // mutateUser = await userModel
-    //   .findOneAndUpdate({ githubId: id }, { updatedAt: time })
-    //   .exec()
-
     mutateUser = await db.mutation.updateUser(
       {
         where: { githubId: id },
@@ -79,19 +69,6 @@ const loginMutation = async (
       info
     )
   } else {
-    // mutateUser = await userModel
-    //   .insertMany([
-    //     {
-    //       name,
-    //       email,
-    //       githubUsername: login,
-    //       githubId: id,
-    //       createdAt: time,
-    //       updatedAt: time,
-    //     },
-    //   ])
-    //   .then(data => data[0])
-
     mutateUser = await db.mutation.createUser(
       {
         data: { name, email, githubUsername: login, githubId: id },
@@ -99,10 +76,6 @@ const loginMutation = async (
       info
     )
   }
-
-  // const refreshedUserInfo = await userModel
-  //   .findById(mutateUser?._id?.toString())
-  //   .then(data => data.toObject())
 
   const refreshedUserInfo = await db.query.user(
     {

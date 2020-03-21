@@ -34,14 +34,6 @@ const getPackageQuery = async (
     }
 
     if (fetchedPackage?.collected?.metadata?.name) {
-      // const reviews = await reviewModel
-      //   .find({
-      //     package: fetchedPackage?.collected?.metadata?.name,
-      //   })
-      //   .sort('-updatedAt')
-      //   .populate('author')
-      //   .exec()
-
       const reviews = await db.query.reviews(
         {
           where: { package: fetchedPackage?.collected?.metadata?.name },

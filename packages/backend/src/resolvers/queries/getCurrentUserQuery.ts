@@ -17,8 +17,12 @@ const getCurrentUserQuery = async (
 ): Promise<object | null> => {
   let userId
 
-  // eslint-disable-next-line prefer-destructuring
-  if (token) userId = jwt.verify(token, process.env.PR_JWT_SECRET).userId
+  try {
+    // eslint-disable-next-line prefer-destructuring
+    if (token) userId = jwt.verify(token, process.env.PR_JWT_SECRET)?.userId
+  } catch (error) {
+    userId = null
+  }
 
   // @ts-ignore
   if (request) request.userId = userId
